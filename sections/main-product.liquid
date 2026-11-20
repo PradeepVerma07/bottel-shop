@@ -116,17 +116,22 @@
                         price_class: 'price--large'
                       -%}
                     </div>
-                    <div class="bs-price-review-card__divider" aria-hidden="true"></div>
-                    <div class="bs-price-review-card__reviews">
-                      <span class="bs-price-review-card__stars" aria-label="5 out of 5 stars">★★★★★</span>
-                      <span class="bs-price-review-card__count">
-                        {%- if product.metafields.reviews.rating_count != blank -%}
-                          ({{ product.metafields.reviews.rating_count }} reviews)
-                        {%- else -%}
-                          (128 reviews)
-                        {%- endif -%}
-                      </span>
-                    </div>
+                    {%- if product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count != blank and product.metafields.reviews.rating_count > 0 -%}
+                      <div class="bs-price-review-card__divider" aria-hidden="true"></div>
+                      <div class="bs-price-review-card__reviews">
+                        {% liquid
+                          assign rating_val = product.metafields.reviews.rating.value.rating | round
+                        %}
+                        <span class="bs-price-review-card__stars" aria-label="{{ product.metafields.reviews.rating.value }} out of 5 stars">
+                          {%- for i in (1..5) -%}
+                            {%- if i <= rating_val -%}★{%- else -%}☆{%- endif -%}
+                          {%- endfor -%}
+                        </span>
+                        <span class="bs-price-review-card__count">
+                          ({{ product.metafields.reviews.rating_count }} {% if product.metafields.reviews.rating_count == 1 %}review{% else %}reviews{% endif %})
+                        </span>
+                      </div>
+                    {%- endif -%}
                   </div>
                   {%- if product.quantity_price_breaks_configured? -%}
                     <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
