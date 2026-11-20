@@ -1496,16 +1496,27 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
     margin-bottom: 8px !important;
   }
   :where(body:not(:has(#MainContent[data-template="index"]))) .bs-store .bs-heading {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
     font-size: 36px !important;
-    line-height: 1 !important;
+    line-height: 0.92 !important;
+  }
+  .bs-store .bs-heading {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    line-height: 0.92 !important;
   }
   .bs-store__heading-main,
   .bs-store__heading-accent {
     display: block !important;
     white-space: nowrap !important;
+    line-height: 0.92 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
-  .bs-store__heading-main br,
-  .bs-store__heading-accent br {
+  .bs-store .bs-heading br {
     display: none !important;
   }
   :where(body:not(:has(#MainContent[data-template="index"]))) .bs-store .bs-copy {

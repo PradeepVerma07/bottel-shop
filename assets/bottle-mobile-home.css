@@ -93,11 +93,10 @@
   #MainContent[data-template='index'] .bs-store__panel { min-height: 0; order: 0; padding: clamp(14px,3vw,24px) clamp(10px,2.8vw,23px); }
   #MainContent[data-template='index'] .bs-store .bs-eyebrow { font-size: clamp(9px,1.8vw,13px); margin-bottom: 8px; gap: 8px; letter-spacing: .04em; }
   #MainContent[data-template='index'] .bs-store .bs-eyebrow::after { width: 30px; flex-basis: 30px; }
-  #MainContent[data-template='index'] .bs-store .bs-heading { font-size: min(var(--bs-title-mobile,62px),clamp(18px,4.5vw,34px)); line-height: 1; }
+  #MainContent[data-template='index'] .bs-store .bs-heading { display: flex !important; flex-direction: column !important; gap: 0 !important; font-size: min(var(--bs-title-mobile,62px),clamp(18px,4.6vw,34px)); line-height: .92 !important; }
   #MainContent[data-template='index'] .bs-store__heading-main,
-  #MainContent[data-template='index'] .bs-store__heading-accent { display: block !important; white-space: nowrap !important; }
-  #MainContent[data-template='index'] .bs-store__heading-main br,
-  #MainContent[data-template='index'] .bs-store__heading-accent br { display: none !important; }
+  #MainContent[data-template='index'] .bs-store__heading-accent { display: block !important; white-space: nowrap !important; line-height: .92 !important; margin: 0 !important; padding: 0 !important; }
+  #MainContent[data-template='index'] .bs-store .bs-heading br { display: none !important; }
   #MainContent[data-template='index'] .bs-store__panel > .bs-copy { margin-top: 10px; font-size: clamp(10px,1.9vw,14px); line-height: 1.25; }
   #MainContent[data-template='index'] .bs-store__details { gap: 8px; margin-top: 12px; }
   #MainContent[data-template='index'] .bs-detail { gap: 6px; }
