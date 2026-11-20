@@ -6,6 +6,7 @@
         assign collection = block.settings.collection
         assign card_title = block.settings.heading | default: collection.title
         assign card_image = block.settings.image | default: collection.image
+        assign card_image_mobile = block.settings.mobile_image
         assign card_link = block.settings.link | default: collection.url | default: routes.all_products_collection_url
         assign fallback = ''
         unless block.settings.reference_image == 'none'
@@ -17,7 +18,14 @@
         endunless
       -%}
       <a class="bs-collection-card" href="{{ card_link }}" style="--bs-card-x: {{ block.settings.image_x }}%;" {{ block.shopify_attributes }}>
-        {% render 'bottle-media', image: card_image, fallback: fallback, class: 'bs-background', width: 1024, height: 1536, sizes: '(min-width: 801px) 20vw, 50vw', alt: block.settings.image_alt %}
+        {% if card_image_mobile != blank %}
+          <div class="bs-background-wrap bs-collection-card__mobile">
+            {% render 'bottle-media', image: card_image_mobile, class: 'bs-background', width: 750, height: 1125, sizes: '50vw', alt: block.settings.image_alt %}
+          </div>
+        {% endif %}
+        <div class="bs-background-wrap{% if card_image_mobile != blank %} bs-collection-card__desktop{% endif %}">
+          {% render 'bottle-media', image: card_image, fallback: fallback, class: 'bs-background', width: 1024, height: 1536, sizes: '(min-width: 801px) 20vw, 50vw', alt: block.settings.image_alt %}
+        </div>
         <div class="bs-collection-card__content"><h3 class="bs-heading">{{ card_title | escape | newline_to_br }}</h3>{% if block.settings.browse_label != blank %}<span class="bs-browse">{{ block.settings.browse_label | escape }}{% if settings.bottle_show_arrows %}{% render 'bottle-icon', icon: 'arrow' %}{% endif %}</span>{% endif %}</div>
       </a>
     {% endfor %}
@@ -201,6 +209,11 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image override"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Image override — mobile"
         },
         {
           "type": "select",

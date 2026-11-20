@@ -67,6 +67,8 @@
 bottle-slideshow { display: block; }
 .bs-hero { isolation: isolate; overflow: hidden; }
 .bs-hero__slide { position: relative; isolation: isolate; min-height: var(--bs-hero-height,800px); }
+.bs-hero__slide:not([hidden]) { animation: bsHeroFade 0.4s ease-in-out; }
+@keyframes bsHeroFade { from { opacity: 0.6; } to { opacity: 1; } }
 .bs-hero__slide > .bs-background-wrap { z-index: -2; }
 .bs-hero__slide > .bs-overlay { z-index: -1; }
 .bs-hero__background { object-position: var(--bs-image-x,50%) center; }
@@ -105,6 +107,11 @@ bottle-slideshow { display: block; }
 .bs-collection-card:hover .bs-background { transform: scale(1.05); }
 .bs-collection-card__content { position: relative; z-index: 1; }
 .bs-collection-card .bs-heading { font-size: var(--bs-title-size,44px); }
+.bs-collection-card__mobile { display: none; }
+@media (max-width: 800px) {
+  .bs-collection-card__mobile { display: block; }
+  .bs-collection-card__desktop { display: none; }
+}
 .bs-browse { display: flex; align-items: center; gap: 12px; margin-top: 16px; font-size: calc(var(--bs-body-size,16px) * .75); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .bs-browse svg { width: 18px; height: 18px; }
 

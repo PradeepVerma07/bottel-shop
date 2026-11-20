@@ -13,16 +13,71 @@ if (!customElements.get('bottle-slideshow')) {
       this.progress = this.querySelector('[data-bs-progress]');
       this.dots = [...this.querySelectorAll('[data-bs-dot]')];
       this.paused = false;
-      this.previous?.addEventListener('click', () => this.show(this.current - 1), options);
-      this.next?.addEventListener('click', () => this.show(this.current + 1), options);
-      this.dots.forEach(dot => dot.addEventListener('click', () => this.show(Number(dot.dataset.bsDot)), options));
+      this.previous?.addEventListener('click', () => { this.show(this.current - 1); this.start(); }, options);
+      this.next?.addEventListener('click', () => { this.show(this.current + 1); this.start(); }, options);
+      this.dots.forEach(dot => dot.addEventListener('click', () => { this.show(Number(dot.dataset.bsDot)); this.start(); }, options));
       this.addEventListener('keydown', event => {
         if (event.target.closest('input, textarea, select')) return;
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
           event.preventDefault();
           this.show(this.current + (event.key === 'ArrowRight' ? 1 : -1));
+          this.start();
         }
       }, options);
+
+      // Touch swipe gestures for mobile phones & tablets
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchEndX = 0;
+      let touchEndY = 0;
+      this.addEventListener('touchstart', event => {
+        if (!event.touches?.length) return;
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+        touchEndX = touchStartX;
+        touchEndY = touchStartY;
+      }, { passive: true, signal: this.abort.signal });
+
+      this.addEventListener('touchmove', event => {
+        if (!event.touches?.length) return;
+        touchEndX = event.touches[0].clientX;
+        touchEndY = event.touches[0].clientY;
+      }, { passive: true, signal: this.abort.signal });
+
+      this.addEventListener('touchend', () => {
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+          this.show(this.current + (diffX < 0 ? 1 : -1));
+          this.start();
+        }
+      }, { passive: true, signal: this.abort.signal });
+
+      // Pointer drag gestures for mouse and pen
+      let pointerStartX = 0;
+      let pointerStartY = 0;
+      let isPointerDown = false;
+      this.addEventListener('pointerdown', event => {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        if (event.target.closest('button, a, input, select, textarea')) return;
+        isPointerDown = true;
+        pointerStartX = event.clientX;
+        pointerStartY = event.clientY;
+      }, options);
+
+      this.addEventListener('pointerup', event => {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        const diffX = event.clientX - pointerStartX;
+        const diffY = event.clientY - pointerStartY;
+        if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+          this.show(this.current + (diffX < 0 ? 1 : -1));
+          this.start();
+        }
+      }, options);
+
+      this.addEventListener('pointercancel', () => { isPointerDown = false; }, options);
+
       this.addEventListener('pointerenter', () => this.stop(), options);
       this.addEventListener('pointerleave', () => this.start(), options);
       this.addEventListener('focusin', () => this.stop(), options);
@@ -51,8 +106,9 @@ if (!customElements.get('bottle-slideshow')) {
     }
     start() {
       this.stop();
-      if (this.dataset.autoplay !== 'true' || this.paused || this.slides.length < 2 || document.hidden || window.Shopify?.designMode || matchMedia('(prefers-reduced-motion: reduce)').matches || this.contains(document.activeElement)) return;
-      this.timer = setInterval(() => this.show(this.current + 1), Math.max(4, Number(this.dataset.interval) || 7) * 1000);
+      if (this.dataset.autoplay !== 'true' || this.paused || this.slides.length < 2 || document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches || this.contains(document.activeElement)) return;
+      const intervalSec = Math.max(3, Number(this.dataset.interval) || 5);
+      this.timer = setInterval(() => this.show(this.current + 1), intervalSec * 1000);
     }
     stop() { clearInterval(this.timer); }
     disconnectedCallback() { this.stop(); this.abort?.abort(); this.abort = null; }
