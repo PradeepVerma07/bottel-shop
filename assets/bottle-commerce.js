@@ -50,3 +50,59 @@ document.addEventListener('change', event => {
   if (!sort) return;
   document.getElementById(sort.dataset.bsForm)?.requestSubmit();
 });
+
+document.addEventListener('click', event => {
+  if (!(event.target instanceof Element)) return;
+  const minus = event.target.closest('.bs-qty-btn--minus');
+  const plus = event.target.closest('.bs-qty-btn--plus');
+  if (minus) {
+    const input = minus.closest('.bs-qty-pill')?.querySelector('.bs-qty-input');
+    if (input) {
+      const min = Number(input.min) || 1;
+      const step = Number(input.step) || 1;
+      const current = Number(input.value) || min;
+      if (current > min) {
+        input.value = Math.max(min, current - step);
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  }
+  if (plus) {
+    const input = plus.closest('.bs-qty-pill')?.querySelector('.bs-qty-input');
+    if (input) {
+      const max = input.max ? Number(input.max) : Infinity;
+      const step = Number(input.step) || 1;
+      const current = Number(input.value) || 1;
+      if (current < max) {
+        input.value = current + step;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  }
+});
+
+function polishBuyButtons() {
+  document.querySelectorAll('.shopify-payment-button__button--unbranded').forEach(btn => {
+    btn.childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE && /buy/i.test(node.nodeValue)) {
+        node.nodeValue = ' BUY NOW';
+      }
+    });
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', polishBuyButtons);
+} else {
+  polishBuyButtons();
+}
+
+const payObserver = new MutationObserver(() => {
+  polishBuyButtons();
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const payContainer = document.querySelector('.shopify-payment-button') || document.body;
+  if (payContainer) {
+    payObserver.observe(payContainer, { childList: true, subtree: true });
+  }
+});

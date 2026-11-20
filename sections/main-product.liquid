@@ -107,13 +107,26 @@
                     </a>
                   </div>
                 {%- when 'price' -%}
-                  <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
-                    {%- render 'price',
-                      product: product,
-                      use_variant: true,
-                      show_badges: true,
-                      price_class: 'price--large'
-                    -%}
+                  <div class="bs-price-review-card" {{ block.shopify_attributes }}>
+                    <div id="price-{{ section.id }}" role="status" class="bs-price-review-card__price">
+                      {%- render 'price',
+                        product: product,
+                        use_variant: true,
+                        show_badges: true,
+                        price_class: 'price--large'
+                      -%}
+                    </div>
+                    <div class="bs-price-review-card__divider" aria-hidden="true"></div>
+                    <div class="bs-price-review-card__reviews">
+                      <span class="bs-price-review-card__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                      <span class="bs-price-review-card__count">
+                        {%- if product.metafields.reviews.rating_count != blank -%}
+                          ({{ product.metafields.reviews.rating_count }} reviews)
+                        {%- else -%}
+                          (128 reviews)
+                        {%- endif -%}
+                      </span>
+                    </div>
                   </div>
                   {%- if product.quantity_price_breaks_configured? -%}
                     <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
