@@ -30,30 +30,31 @@
   .bs-header--home .bs-cart-count { min-width: 16px; height: 16px; top: 0; right: 0; font-size: 10px; }
 
   /* Keep the product scene on the right, with readable copy and a single CTA. */
-  #MainContent[data-template='index'] .bs-hero__slide { min-height: clamp(330px,59vw,455px); }
-  #MainContent[data-template='index'] .bs-hero__desktop, #MainContent[data-template='index'] .bs-hero__mobile { inset: 0; width: 100%; height: 100%; }
-  #MainContent[data-template='index'] .bs-hero__slide--portrait > .bs-hero__desktop { width: 64%; left: auto; }
-  #MainContent[data-template='index'] .bs-hero__slide .bs-hero__background { object-position: calc(var(--bs-image-x-mobile,60%) - 8%) center; }
-  #MainContent[data-template='index'] .bs-hero__content { width: 48%; margin-left: 0; text-align: left; padding-top: clamp(20px,3.3vw,28px); padding-bottom: 58px; padding-right: 0; }
-  #MainContent[data-template='index'] .bs-hero__content .bs-eyebrow { position: relative; display: block; max-width: 72%; font-size: clamp(10px,2.5vw,18px); line-height: 1.3; letter-spacing: .025em; margin-bottom: clamp(7px,2vw,14px); }
-  #MainContent[data-template='index'] .bs-hero__content .bs-eyebrow::after { display: block; position: absolute; left: calc(100% + 8px); bottom: .35em; width: clamp(25px,8vw,65px); }
-  #MainContent[data-template='index'] .bs-hero__heading { font-size: min(var(--bs-hero-title-mobile,72px),10vw); line-height: 1; letter-spacing: -.025em; }
-  #MainContent[data-template='index'] .bs-hero__subheading { font-size: min(var(--bs-hero-subtitle-mobile,50px),6.9vw); line-height: .98; margin-top: 3px !important; }
-  #MainContent[data-template='index'] .bs-hero__description { max-width: 100%; font-size: clamp(11px,2.2vw,var(--bs-body-size,16px)); line-height: 1.25; margin-top: clamp(9px,2vw,15px); }
-  #MainContent[data-template='index'] .bs-hero .bs-actions { flex-direction: row; margin-top: clamp(10px,2.2vw,18px); }
-  #MainContent[data-template='index'] .bs-hero .bs-actions .bs-button { padding: 8px clamp(8px,2.5vw,20px); font-size: clamp(8px,1.7vw,var(--bs-button-size,12px)) !important; gap: 8px; }
-  #MainContent[data-template='index'] .bs-hero .bs-actions .bs-button--text { display: none; }
-  #MainContent[data-template='index'] .bs-hero__slide > .bs-overlay { opacity: var(--bs-overlay-mobile,.7); background: linear-gradient(90deg,#0e0c09 0%,#0e0c09d0 36%,#0e0c0920 59%,transparent 76%); }
-  #MainContent[data-template='index'] .bs-hero__signature { display: block; top: clamp(24px,7vw,54px); right: 4%; max-width: 26%; }
-  #MainContent[data-template='index'] .bs-hero__signature p { font-size: clamp(10px,2.5vw,19px); line-height: 1.15; }
-  #MainContent[data-template='index'] .bs-hero__signature small { margin-top: 10px; font-size: clamp(6px,1.25vw,9px); letter-spacing: .1em; }
-  #MainContent[data-template='index'] .bs-hero__controls { left: var(--bs-phone-gutter); bottom: clamp(12px,3vw,22px); gap: 20px; max-width: calc(100% - 2 * var(--bs-phone-gutter)); }
-  #MainContent[data-template='index'] .bs-hero__controls .bs-circle, #MainContent[data-template='index'] .bs-hero__controls .bs-track { display: none; }
-  #MainContent[data-template='index'] .bs-counter { font-size: clamp(10px,1.9vw,14px); gap: 6px; }
-  #MainContent[data-template='index'] .bs-hero__dots { display: flex; gap: 1px; }
-  #MainContent[data-template='index'] .bs-hero__dots button { display: grid; place-items: center; width: 22px; height: 24px; border: 0; background: transparent; padding: 6px; color: inherit; }
-  #MainContent[data-template='index'] .bs-hero__dots span { display: block; width: 7px; height: 7px; border: 1px solid currentColor; border-radius: 50%; }
-  #MainContent[data-template='index'] .bs-hero__dots [aria-pressed='true'] span { background: currentColor; }
+  .bs-hero { --bs-phone-gutter: clamp(16px,5.6vw,42px); }
+  .bs-hero__slide { min-height: clamp(330px,59vw,455px); }
+  .bs-hero__desktop, .bs-hero__mobile { inset: 0; width: 100%; height: 100%; }
+  .bs-hero__slide--portrait > .bs-hero__desktop { width: 64%; left: auto; }
+  .bs-hero__slide .bs-hero__background { object-position: calc(var(--bs-image-x-mobile,60%) - 8%) center; }
+  .bs-hero__content { width: 48%; margin-left: 0; text-align: left; padding-top: clamp(20px,3.3vw,28px); padding-bottom: 58px; padding-right: 0; }
+  .bs-hero__content .bs-eyebrow { position: relative; display: block; max-width: 72%; font-size: clamp(10px,2.5vw,18px); line-height: 1.3; letter-spacing: .025em; margin-bottom: clamp(7px,2vw,14px); }
+  .bs-hero__content .bs-eyebrow::after { display: block; position: absolute; left: calc(100% + 8px); bottom: .35em; width: clamp(25px,8vw,65px); }
+  .bs-hero__heading { font-size: min(var(--bs-hero-title-mobile,72px),10vw); line-height: 1; letter-spacing: -.025em; }
+  .bs-hero__subheading { font-size: min(var(--bs-hero-subtitle-mobile,50px),6.9vw); line-height: .98; margin-top: 3px !important; }
+  .bs-hero__description { max-width: 100%; font-size: clamp(11px,2.2vw,var(--bs-body-size,16px)); line-height: 1.25; margin-top: clamp(9px,2vw,15px); }
+  .bs-hero .bs-actions { flex-direction: row; margin-top: clamp(10px,2.2vw,18px); }
+  .bs-hero .bs-actions .bs-button { padding: 8px clamp(8px,2.5vw,20px); font-size: clamp(8px,1.7vw,var(--bs-button-size,12px)) !important; gap: 8px; }
+  .bs-hero .bs-actions .bs-button--text { display: none; }
+  .bs-hero__slide > .bs-overlay { opacity: var(--bs-overlay-mobile,.7); background: linear-gradient(90deg,#0e0c09 0%,#0e0c09d0 36%,#0e0c0920 59%,transparent 76%); }
+  .bs-hero__signature { display: block; top: clamp(24px,7vw,54px); right: 4%; max-width: 26%; }
+  .bs-hero__signature p { font-size: clamp(10px,2.5vw,19px); line-height: 1.15; }
+  .bs-hero__signature small { margin-top: 10px; font-size: clamp(6px,1.25vw,9px); letter-spacing: .1em; }
+  .bs-hero__controls { left: var(--bs-phone-gutter); bottom: clamp(12px,3vw,22px); gap: 20px; max-width: calc(100% - 2 * var(--bs-phone-gutter)); }
+  .bs-hero__controls .bs-circle, .bs-hero__controls .bs-track { display: none; }
+  .bs-hero .bs-counter { font-size: clamp(10px,1.9vw,14px); gap: 6px; }
+  .bs-hero__dots { display: flex; gap: 1px; }
+  .bs-hero__dots button { display: grid; place-items: center; width: 22px; height: 24px; border: 0; background: transparent; padding: 6px; color: inherit; }
+  .bs-hero__dots span { display: block; width: 7px; height: 7px; border: 1px solid currentColor; border-radius: 50%; }
+  .bs-hero__dots [aria-pressed='true'] span { background: currentColor; }
 
   /* Six existing collections, in the reference's three-column card layout. */
   #MainContent[data-template='index'] .bs-collections { padding: 0 0 clamp(10px,2.5vw,20px); }

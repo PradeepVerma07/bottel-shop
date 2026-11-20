@@ -9,6 +9,125 @@
  */
 {
   "sections": {
+    "hero": {
+      "type": "bottle-hero",
+      "blocks": {
+        "block_1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "This month's featured bottle",
+            "heading": "Blanton's",
+            "subheading": "Single Barrel\nBourbon",
+            "description": "<p>A true icon. Rich character, unmatched craftsmanship, and a favorite among collectors for a reason.</p>",
+            "reference_image": "hero",
+            "image_alt": "Bourbon and a crystal glass on an oak barrel",
+            "image_x": 50,
+            "image_x_mobile": 60,
+            "overlay": 35,
+            "overlay_mobile": 70,
+            "product": "",
+            "button_label": "Shop Blanton's",
+            "button_link": "",
+            "secondary_label": "Explore our bourbon selection",
+            "secondary_link": "shopify://collections/all",
+            "signature": "Bold Heritage.\nExceptional Taste.",
+            "origin": "Kentucky, USA",
+            "signature_size": 34,
+            "text_color": "",
+            "accent_color": ""
+          }
+        },
+        "block_2": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "A bottle for every table",
+            "heading": "A great pour.",
+            "subheading": "An even better\nevening.",
+            "description": "<p>An old favorite or a new discovery. Find the wine that turns a simple evening into something worth sharing.</p>",
+            "reference_image": "wine",
+            "image_alt": "Ruby red wine in an elegant glass",
+            "image_x": 75,
+            "image_x_mobile": 60,
+            "overlay": 65,
+            "overlay_mobile": 70,
+            "product": "",
+            "button_label": "Explore our wines",
+            "button_link": "/collections/all",
+            "secondary_label": "Find your next favorite",
+            "secondary_link": "/collections/all",
+            "signature": "",
+            "origin": "",
+            "signature_size": 34,
+            "text_color": "",
+            "accent_color": ""
+          }
+        },
+        "block_3": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Here for the good times",
+            "heading": "Cold beer.",
+            "subheading": "Warm company.\nGood times.",
+            "description": "<p>From crisp classics to something a little unexpected. Bring home a great beer and let the good times follow.</p>",
+            "reference_image": "beer",
+            "image_alt": "A golden beer with creamy foam",
+            "image_x": 75,
+            "image_x_mobile": 60,
+            "overlay": 65,
+            "overlay_mobile": 70,
+            "product": "",
+            "button_label": "Explore our beers",
+            "button_link": "/collections/all",
+            "secondary_label": "Discover our collection",
+            "secondary_link": "/collections/all",
+            "signature": "",
+            "origin": "",
+            "signature_size": 34,
+            "text_color": "",
+            "accent_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3"
+      ],
+      "settings": {
+        "height": 800,
+        "height_mobile": 760,
+        "copy_width": 52,
+        "copy_top": 205,
+        "alignment": "left",
+        "heading_tag": "h1",
+        "title_size": 108,
+        "subtitle_size": 68,
+        "title_size_mobile": 72,
+        "subtitle_size_mobile": 50,
+        "show_controls": true,
+        "show_counter": true,
+        "control_size": 48,
+        "arrow_size": 24,
+        "control_size_mobile": 44,
+        "arrow_size_mobile": 22,
+        "autoplay": false,
+        "interval": 7,
+        "accessibility_label": "Featured collections",
+        "controls_label": "Featured collection controls",
+        "previous_label": "Previous featured collection",
+        "next_label": "Next featured collection",
+        "pause_label": "Pause / resume",
+        "background_color": "",
+        "text_color": "",
+        "accent_color": "",
+        "button_color": "",
+        "button_text_color": "",
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "main": {
       "type": "main-page",
       "settings": {
@@ -18,6 +137,7 @@
     }
   },
   "order": [
+    "hero",
     "main"
   ]
 }
