@@ -75,10 +75,11 @@
 
 <section
   id="BottleNewArrivals-{{ section.id }}"
-  class="bs bs-new-arrivals{% if section.settings.show_wood_texture %} bs-new-arrivals--wood{% endif %}"
+  class="bs bs-new-arrivals bs-new-arrivals--mobile-{{ section.settings.columns_mobile | default: '2' }}{% if section.settings.show_wood_texture %} bs-new-arrivals--wood{% endif %}"
   style="
     {% render 'bottle-vars', section: section %}
     --bs-shop-columns: {{ section.settings.columns }};
+    --bs-mobile-columns: {{ section.settings.columns_mobile | default: '2' }};
     --bs-card-title-size: {{ section.settings.card_title_size }}px;
     --bs-card-image-fit: {{ section.settings.image_fit }};
     --bs-card-bg: {{ section.settings.card_color }};
@@ -204,6 +205,22 @@
       "max": 4,
       "step": 1,
       "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "2"
     },
     {
       "type": "checkbox",
@@ -406,6 +423,7 @@
         "button_label": "Explore All New",
         "products_to_show": 4,
         "columns": 4,
+        "columns_mobile": "2",
         "show_badge": true,
         "badge_text": "New",
         "quick_add": true
