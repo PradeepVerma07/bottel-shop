@@ -10,7 +10,7 @@
   assign instagram = section.settings.instagram | default: settings.social_instagram_link
   assign facebook = section.settings.facebook | default: settings.social_facebook_link
 -%}
-<footer class="bs bs-footer{% if template.name == 'index' %} bs-footer--home{% endif %}" style="{% render 'bottle-vars', section: section %} --bs-footer-columns: {{ section.blocks.size }}; --bs-footer-logo: {{ section.settings.logo_width }}px;">
+<footer class="bs bs-footer bs-footer--home" style="{% render 'bottle-vars', section: section %} --bs-footer-columns: {{ section.blocks.size }}; --bs-footer-logo: {{ section.settings.logo_width }}px;">
   {% render 'bottle-media', image: section.settings.background_image, fallback: fallback, class: 'bs-background', width: 2172, height: 724, decorative: true %}
   <div class="bs-inner">
     <div class="bs-footer__grid">
