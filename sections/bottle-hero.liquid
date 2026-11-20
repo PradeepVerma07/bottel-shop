@@ -46,6 +46,7 @@
       {% if section.settings.show_counter %}<span class="bs-counter"><strong data-bs-current>01</strong><span>/ {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span></span><span class="bs-track" aria-hidden="true"><span class="bs-progress" data-bs-progress></span></span>{% endif %}
       <button class="bs-circle" data-bs-previous type="button" aria-label="{{ section.settings.previous_label | escape }}">{% render 'bottle-icon', icon: 'arrow-left' %}</button>
       <button class="bs-circle" data-bs-next type="button" aria-label="{{ section.settings.next_label | escape }}">{% render 'bottle-icon', icon: 'arrow-right' %}</button>
+      <div class="bs-hero__dots">{% for block in section.blocks %}<button type="button" data-bs-dot="{{ forloop.index0 }}" aria-label="{{ forloop.index }} / {{ section.blocks.size }}: {{ block.settings.heading | escape }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"><span aria-hidden="true"></span></button>{% endfor %}</div>
       {% if section.settings.autoplay %}<button class="bs-pause" data-bs-pause type="button" aria-pressed="false">{{ section.settings.pause_label | escape }}</button>{% endif %}
     </div>
   {% endif %}

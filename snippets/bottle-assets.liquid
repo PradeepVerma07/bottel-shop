@@ -22,3 +22,4 @@
 <script src="{{ 'bottle-shop.js' | asset_url }}" defer="defer"></script>
 {{ 'bottle-commerce.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'bottle-commerce.js' | asset_url }}" defer="defer"></script>
+{% if template.name == 'index' %}{{ 'bottle-mobile-home.css' | asset_url | stylesheet_tag }}{% endif %}

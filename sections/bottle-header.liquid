@@ -12,7 +12,7 @@
     assign logo_fallback = 'bs-logo.png'
   endif
 -%}
-<header class="bs bs-header{% if overlay %} bs-header--overlay{% endif %}{% if compact %} bs-header--compact{% endif %}" style="{% render 'bottle-vars', section: section %} --bs-logo-width: {{ section.settings.logo_width }}px; --bs-mobile-logo: {{ section.settings.logo_width_mobile }}px; --bs-nav-size: {{ section.settings.menu_size }}px;">
+<header class="bs bs-header{% if template.name == 'index' %} bs-header--home{% endif %}{% if overlay %} bs-header--overlay{% endif %}{% if compact %} bs-header--compact{% endif %}" style="{% render 'bottle-vars', section: section %} --bs-logo-width: {{ section.settings.logo_width }}px; --bs-mobile-logo: {{ section.settings.logo_width_mobile }}px; --bs-nav-size: {{ section.settings.menu_size }}px;">
   <div class="bs-inner bs-header__inner">
     <a class="bs-logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }}">
       {% if section.settings.logo != blank or logo_fallback != blank %}
@@ -40,8 +40,9 @@
         </form>
       {% endif %}
       <div class="bs-header__actions">
+        {% if section.settings.show_search %}<details class="bs-mobile-search"><summary class="bs-icon-link" aria-label="{{ section.settings.search_label | escape }}">{% render 'bottle-icon', icon: 'search' %}</summary><form class="bs-mobile-search__form" action="{{ routes.search_url }}" method="get" role="search"><label class="bs-sr-only" for="BottleMobileSearch-{{ section.id }}">{{ section.settings.search_label | escape }}</label><input id="BottleMobileSearch-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder | escape }}"><input type="hidden" name="options[prefix]" value="last"><button class="bs-icon-link" type="submit" aria-label="{{ section.settings.search_label | escape }}">{% render 'bottle-icon', icon: 'search' %}</button></form></details>{% endif %}
         {% if section.settings.show_account and shop.customer_accounts_enabled %}<a class="bs-icon-link bs-header__account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">{% render 'bottle-icon', icon: 'user' %}</a>{% endif %}
-        {% if section.settings.show_cart %}<a id="cart-icon-bubble" class="bs-icon-link bs-cart-link" href="{{ routes.cart_url }}" aria-label="{{ section.settings.cart_label | escape }} ({{ cart.item_count }})">{% render 'bottle-icon', icon: 'bag' %}<span class="bs-cart-count" aria-hidden="true">{{ cart.item_count }}</span></a>{% endif %}
+        {% if section.settings.show_cart %}<a id="cart-icon-bubble" class="bs-icon-link bs-cart-link" href="{{ routes.cart_url }}" aria-label="{{ section.settings.cart_label | escape }} ({{ cart.item_count }})">{% render 'bottle-icon', icon: 'bag' %}<svg class="bs-icon bs-cart-phone" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 3h3l3 13h11l3-10H6M8 19h11"/><circle cx="9" cy="22" r=".7"/><circle cx="18" cy="22" r=".7"/></svg><span class="bs-cart-count" aria-hidden="true">{{ cart.item_count }}</span></a>{% endif %}
         <details class="bs-mobile-menu">
           <summary class="bs-icon-link" aria-label="{{ section.settings.menu_label | escape }}">{% render 'bottle-icon', icon: 'menu' %}</summary>
           <nav class="bs-mobile-menu__panel" aria-label="{{ section.settings.menu_label | escape }}"><ul>

@@ -11,9 +11,11 @@ if (!customElements.get('bottle-slideshow')) {
       this.next = this.querySelector('[data-bs-next]');
       this.counter = this.querySelector('[data-bs-current]');
       this.progress = this.querySelector('[data-bs-progress]');
+      this.dots = [...this.querySelectorAll('[data-bs-dot]')];
       this.paused = false;
       this.previous?.addEventListener('click', () => this.show(this.current - 1), options);
       this.next?.addEventListener('click', () => this.show(this.current + 1), options);
+      this.dots.forEach(dot => dot.addEventListener('click', () => this.show(Number(dot.dataset.bsDot)), options));
       this.addEventListener('keydown', event => {
         if (event.target.closest('input, textarea, select')) return;
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
@@ -44,6 +46,7 @@ if (!customElements.get('bottle-slideshow')) {
       this.current = (index + this.slides.length) % this.slides.length;
       this.slides.forEach((slide, i) => { slide.hidden = i !== this.current; });
       if (this.counter) this.counter.textContent = String(this.current + 1).padStart(2, '0');
+      this.dots.forEach((dot, i) => dot.setAttribute('aria-pressed', String(i === this.current)));
       if (this.progress) this.progress.style.width = `${(this.current + 1) / this.slides.length * 100}%`;
     }
     start() {
@@ -58,14 +61,17 @@ if (!customElements.get('bottle-slideshow')) {
 document.addEventListener('shopify:block:select', event => {
   const menu = event.target instanceof Element ? event.target.closest('.bs-mobile-menu') : null;
   if (menu) menu.open = true;
+  const footerColumn = event.target instanceof Element ? event.target.closest('.bs-footer__column') : null;
+  const disclosure = footerColumn?.querySelector('.bs-footer__mobile-disclosure');
+  if (disclosure) disclosure.open = true;
 });
 document.addEventListener('click', event => {
   const menu = event.target.closest('.bs-mobile-menu');
   if (menu && event.target.closest('a')) menu.open = false;
-  document.querySelectorAll('.bs-mobile-menu[open]').forEach(item => { if (!item.contains(event.target)) item.open = false; });
+  document.querySelectorAll('.bs-mobile-menu[open], .bs-mobile-search[open]').forEach(item => { if (!item.contains(event.target)) item.open = false; });
 });
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') document.querySelectorAll('.bs-mobile-menu[open]').forEach(item => { item.open = false; item.querySelector('summary')?.focus(); });
+  if (event.key === 'Escape') document.querySelectorAll('.bs-mobile-menu[open], .bs-mobile-search[open]').forEach(item => { item.open = false; item.querySelector('summary')?.focus(); });
 });
 
 // Keep optional navigation anchors unique when a merchant duplicates a section.

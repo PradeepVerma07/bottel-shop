@@ -31,6 +31,7 @@
 .bs .bs-overlay { display: block; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bs-shade,#090805) 0%, transparent 75%); opacity: var(--bs-overlay,.35); pointer-events: none; }
 
 /* Header: real Shopify navigation, search, account and cart routes. */
+.bs-mobile-search, .bs-hero__dots, .bs-footer__mobile-disclosure, .bs-cart-phone { display: none; }
 .bs-header { z-index: 40; }
 .bs-header--overlay { position: absolute; top: 0; left: 0; width: 100%; background: linear-gradient(#100d0990,transparent); }
 .bs-header__inner { display: flex; align-items: flex-start; gap: clamp(22px,2.5vw,45px); padding-top: var(--bs-padding-top,22px); padding-bottom: var(--bs-padding-bottom,22px); }
