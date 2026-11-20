@@ -1,6 +1,6 @@
 {%- liquid
   assign overlay = false
-  if template.name == 'index' and section.settings.overlay_home
+  if section.settings.overlay_home
     assign overlay = true
   endif
   assign logo_fallback = ''
@@ -123,7 +123,7 @@
     {
       "type": "checkbox",
       "id": "overlay_home",
-      "label": "Overlay the homepage hero",
+      "label": "Transparent overlay header on all pages",
       "default": true
     },
     {

@@ -90,7 +90,7 @@ bottle-slideshow { display: block; }
 .bs-circle { display: grid; place-items: center; width: var(--bs-control-size,48px); height: var(--bs-control-size,48px); flex: 0 0 var(--bs-control-size,48px); border: 2px solid #827d70; border-radius: 50%; background: transparent; color: inherit; padding: 0; line-height: 1; }
 .bs-circle svg { width: min(var(--bs-arrow-size,24px),calc(var(--bs-control-size,48px) - 12px)); height: min(var(--bs-arrow-size,24px),calc(var(--bs-control-size,48px) - 12px)); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .bs-circle:hover { border-color: var(--bs-accent); background: #f4ebd908; }
-.bs-pause { border: 0; color: inherit; background: transparent; font-size: 12px !important; padding: 10px; }
+.bs-pause { display: none !important; }
 .bs-hero--center .bs-hero__content { margin: 0 auto; text-align: center; }
 .bs-hero--center .bs-eyebrow, .bs-hero--center .bs-actions { justify-content: center; }
 .bs-hero--center .bs-hero__description { margin-left: auto; margin-right: auto; }

@@ -7,6 +7,21 @@
 .bs-breadcrumbs { display: flex; align-items: center; gap: 7px; margin-bottom: 14px; font-size: 14px; font-weight: 600; }
 .bs-breadcrumbs a { color: var(--bs-accent); }
 .bs-breadcrumbs::after { content: ''; width: 100px; height: 1px; background: var(--bs-accent); margin-left: 12px; }
+
+@media (min-width: 801px) {
+  body:has(.bs-header--overlay) .bs-shop-banner,
+  .bs-header--overlay ~ #MainContent .bs-shop-banner {
+    min-height: max(var(--bs-banner-height, 280px), 360px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: calc(var(--bs-padding-top, 22px) + var(--bs-padding-bottom, 22px) + 90px);
+    padding-bottom: 45px;
+  }
+  body:has(.bs-header--overlay) #MainContent > .shopify-section:first-child > :not(.bs-hero):not(.bs-shop-banner):not(bottle-slideshow) {
+    padding-top: calc(var(--bs-padding-top, 22px) + var(--bs-padding-bottom, 22px) + 80px);
+  }
+}
 .bs-shop { isolation: isolate; }
 .bs-shop::before { content: ''; position: absolute; inset: 0; z-index: -1; background: url(bs-wood.png) center/600px auto; opacity: .12; pointer-events: none; }
 .bs-shop-tabs { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px; padding-bottom: 30px; }
