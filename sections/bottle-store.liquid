@@ -10,7 +10,7 @@
   <div class="bs-store__panel">
     {% render 'bottle-media', image: section.settings.background_image, fallback: wood_fallback, class: 'bs-background', width: 1024, height: 1536, decorative: true %}
     {% if section.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
-    <h2 class="bs-heading">{{ section.settings.heading | escape | newline_to_br }}{% if section.settings.accent_heading != blank %}<br><span style="color: var(--bs-accent)">{{ section.settings.accent_heading | escape | newline_to_br }}</span>{% endif %}</h2>
+    <h2 class="bs-heading"><span class="bs-store__heading-main">{{ section.settings.heading | escape | newline_to_br }}</span>{% if section.settings.accent_heading != blank %}<br class="bs-store__heading-break"><span class="bs-store__heading-accent" style="color: var(--bs-accent)">{{ section.settings.accent_heading | escape | newline_to_br }}</span>{% endif %}</h2>
     <div class="bs-copy">{{ section.settings.description }}</div>
     <div class="bs-store__details">{% for block in section.blocks %}<div class="bs-detail" {{ block.shopify_attributes }}>{% if section.settings.show_icons and block.settings.icon != 'none' %}<span class="bs-detail__icon">{% render 'bottle-icon', icon: block.settings.icon %}</span>{% endif %}<div><h3>{{ block.settings.heading | escape }}</h3>{% if block.settings.link != blank %}<a class="bs-copy" href="{{ block.settings.link }}">{{ block.settings.body }}</a>{% else %}<div class="bs-copy">{{ block.settings.body }}</div>{% endif %}</div></div>{% endfor %}</div>
     <div class="bs-actions">{% render 'bottle-button', label: section.settings.button_label, link: section.settings.button_link, new_tab: section.settings.button_new_tab %}</div>

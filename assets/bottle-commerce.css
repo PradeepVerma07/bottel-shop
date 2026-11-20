@@ -1499,6 +1499,15 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
     font-size: 36px !important;
     line-height: 1 !important;
   }
+  .bs-store__heading-main,
+  .bs-store__heading-accent {
+    display: block !important;
+    white-space: nowrap !important;
+  }
+  .bs-store__heading-main br,
+  .bs-store__heading-accent br {
+    display: none !important;
+  }
   :where(body:not(:has(#MainContent[data-template="index"]))) .bs-store .bs-copy {
     font-size: 13px !important;
     line-height: 1.4 !important;
