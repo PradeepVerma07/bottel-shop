@@ -1,9 +1,7 @@
 {%- liquid
   assign overlay = false
-  if section.settings.overlay_home
-    if template.name == 'index' or template.name == 'collection' or template.name == 'list-collections' or template.name == 'page'
-      assign overlay = true
-    endif
+  if template.name == 'index' and section.settings.overlay_home
+    assign overlay = true
   endif
   assign logo_fallback = ''
   if section.settings.use_default_logo

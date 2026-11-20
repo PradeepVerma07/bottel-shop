@@ -1053,6 +1053,101 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
    MOBILE VIEW POLISH (MATCHING MOCKUP — DESKTOP UNCHANGED)
    ========================================================================== */
 @media (max-width: 800px) {
+  /* 2. Hero Section */
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__slide {
+    min-height: 640px !important;
+    height: 640px !important;
+    position: relative !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__slide .bs-hero__background {
+    object-position: 72% center !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__slide > .bs-overlay {
+    background: linear-gradient(90deg, rgba(9, 8, 5, 0.88) 0%, rgba(9, 8, 5, 0.62) 50%, rgba(9, 8, 5, 0.12) 100%),
+                linear-gradient(0deg, rgba(9, 8, 5, 0.85) 0%, transparent 40%) !important;
+    opacity: 1 !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__content {
+    width: 65% !important;
+    max-width: 320px !important;
+    padding-top: 100px !important;
+    padding-bottom: 75px !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__content .bs-eyebrow {
+    font-size: 10px !important;
+    letter-spacing: 0.14em !important;
+    color: #d6ad74 !important;
+    margin-bottom: 10px !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__content .bs-eyebrow::after {
+    display: none !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__heading {
+    font-size: 40px !important;
+    line-height: 0.95 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.02em !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__subheading {
+    font-size: 26px !important;
+    line-height: 0.95 !important;
+    color: #d6ad74 !important;
+    margin-top: 4px !important;
+    letter-spacing: 0.02em !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__description {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #e0d7c7 !important;
+    max-width: 250px !important;
+    margin-top: 12px !important;
+    margin-bottom: 16px !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero .bs-actions .bs-button {
+    padding: 12px 20px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    border-radius: 4px !important;
+    background: #d6ad74 !important;
+    color: #15120e !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__signature {
+    display: block !important;
+    position: absolute !important;
+    top: 65px !important;
+    right: 14px !important;
+    max-width: 145px !important;
+    text-align: right !important;
+    z-index: 2 !important;
+    color: #d6ad74 !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__signature p {
+    font-size: 17px !important;
+    font-style: italic !important;
+    font-family: Georgia, serif !important;
+    line-height: 1.15 !important;
+    transform: rotate(-4deg) !important;
+    margin: 0 !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__signature small {
+    display: block !important;
+    margin-top: 5px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase !important;
+    color: #c9bea9 !important;
+  }
+  :where(body:not(:has(#MainContent[data-template="index"]))) .bs-hero__controls {
+    bottom: 20px !important;
+    left: var(--bs-gutter-mobile, 16px) !important;
+    gap: 12px !important;
+  }
+
   /* 3. Explore Our Collection Grid (3 Columns x 2 Rows) */
   :where(body:not(:has(#MainContent[data-template="index"]))) .bs-collections {
     border-top: 1px solid rgba(214, 173, 116, 0.25) !important;
