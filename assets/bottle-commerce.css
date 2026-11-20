@@ -434,6 +434,13 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   }
 }
 
+.bs-header .bs-logo,
+.bs-logo {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  box-sizing: border-box !important;
+}
+
 @media (min-width: 801px) {
   .bs-header--compact .bs-header__inner { align-items: center; min-height: 78px; padding-top: 10px; padding-bottom: 10px; }
   .bs-header--compact .bs-logo { position: relative; flex-basis: 100px; width: 100px; height: 58px; }
@@ -1073,6 +1080,8 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
     align-items: center !important;
     justify-content: center !important;
     margin: 0 !important;
+    padding: 2px 0 !important;
+    box-sizing: border-box !important;
   }
   :where(body:not(:has(#MainContent[data-template="index"]))) .bs-logo img {
     max-height: 52px !important;
