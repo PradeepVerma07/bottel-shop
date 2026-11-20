@@ -228,6 +228,7 @@
         "button_link": "/#bottle-store",
         "button_style": "outline",
         "desktop_background_enabled": true,
+        "desktop_background_image": "shopify://shop_images/WhatsApp_Image_2026-11-20_at_12.42.00.jpg",
         "desktop_background_position": 100,
         "image_alt": "Vintage-style Bottle Shop storefront",
         "caption": "Longmeadow, 1963",
@@ -280,6 +281,47 @@
         "body_size": 16,
         "padding_top": 44,
         "padding_bottom": 44
+      }
+    },
+    "bottle_new_arrivals_hXpAHH": {
+      "type": "bottle-new-arrivals",
+      "name": "Bottle Shop new arrivals",
+      "settings": {
+        "eyebrow": "Fresh Pours & Rare Finds",
+        "heading": "New Arrivals",
+        "description": "",
+        "center_header": false,
+        "show_button": true,
+        "button_label": "Explore All New",
+        "button_link": "",
+        "collection": "",
+        "sort_by_newest": true,
+        "products_to_show": 4,
+        "columns": 4,
+        "show_sold_out": true,
+        "show_badge": true,
+        "badge_text": "New",
+        "show_product_category": true,
+        "show_description": false,
+        "quick_add": true,
+        "add_label": "Add to cart",
+        "options_label": "View details",
+        "sold_out_label": "Sold out",
+        "from_label": "From",
+        "card_color": "#eddfc5",
+        "card_text_color": "#15120e",
+        "card_texture": true,
+        "card_title_size": 24,
+        "image_fit": "cover",
+        "show_wood_texture": true,
+        "background_color": "#15120e",
+        "text_color": "#f4ebd9",
+        "accent_color": "#d6ad74",
+        "heading_size": 56,
+        "heading_size_mobile": 36,
+        "padding_top": 48,
+        "padding_bottom": 64,
+        "editor_empty_message": "Select a collection containing published products to preview new arrivals."
       }
     },
     "store": {
@@ -374,49 +416,14 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
-    },
-    "new_arrivals": {
-      "type": "bottle-new-arrivals",
-      "settings": {
-        "eyebrow": "Fresh Pours & Rare Finds",
-        "heading": "New Arrivals",
-        "show_button": true,
-        "button_label": "Explore All New",
-        "products_to_show": 4,
-        "columns": 4,
-        "show_badge": true,
-        "badge_text": "New",
-        "quick_add": true
-      }
-    },
-    "featured_product": {
-      "type": "bottle-featured-product",
-      "settings": {
-        "eyebrow": "Bottle of the Month",
-        "show_badge": true,
-        "badge_text": "Staff Pick",
-        "show_specs": true,
-        "spec_1_lbl": "Origin",
-        "spec_1_val": "Kentucky, USA",
-        "spec_2_lbl": "Proof",
-        "spec_2_val": "93 Proof",
-        "spec_3_lbl": "Type",
-        "spec_3_val": "Single Barrel",
-        "spec_4_lbl": "Volume",
-        "spec_4_val": "750 mL",
-        "show_quantity": true,
-        "show_dynamic_checkout": true,
-        "show_view_link": true
-      }
     }
   },
   "order": [
     "hero",
-    "new_arrivals",
     "collections",
-    "featured_product",
     "story",
     "gathering",
+    "bottle_new_arrivals_hXpAHH",
     "store",
     "newsletter"
   ]
