@@ -1,0 +1,254 @@
+{%- assign fallback = '' -%}{%- if section.settings.use_reference_image -%}{%- assign fallback = 'bs-gathering.png' -%}{%- endif -%}
+<div class="bs bs-gathering bs-gathering--{{ section.settings.alignment }}" style="{% render 'bottle-vars', section: section %} --bs-banner-height: {{ section.settings.height }}px; --bs-banner-mobile: {{ section.settings.height_mobile }}px; --bs-copy-width: {{ section.settings.copy_width }}%; --bs-image-x: {{ section.settings.image_x }}%; --bs-overlay: {{ section.settings.overlay | divided_by: 100.0 }};">
+  <div class="bs-background-wrap">{% render 'bottle-media', image: section.settings.image, fallback: fallback, class: 'bs-background', width: 2172, height: 724, alt: section.settings.image_alt %}</div><div class="bs-overlay"></div>
+  <div class="bs-inner"><div class="bs-gathering__copy">{% if section.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2 class="bs-heading">{{ section.settings.heading | escape | newline_to_br }}</h2><div class="bs-copy">{{ section.settings.description }}</div><div class="bs-actions">{% render 'bottle-button', label: section.settings.button_label, link: section.settings.button_link, style: section.settings.button_style %}</div></div></div>
+</div>
+
+{% schema %}
+{
+  "name": "Bottle Shop gathering",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "image_x",
+      "label": "Image horizontal position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Good drinks\nbring people\ntogether."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>From quiet nights to big celebrations, we're here to help you find the perfect bottle for life's best moments.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Explore our collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "text",
+          "label": "Text link"
+        }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alternative text",
+      "default": "Friends sharing a wine toast at dinner"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_reference_image",
+      "label": "Use included image when no image is selected",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "copy_width",
+      "label": "Content width",
+      "min": 30,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "default": 43
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Dark overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Minimum height — desktop",
+      "min": 320,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 470
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Minimum height — mobile",
+      "min": 320,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 450
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background override"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text override"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size — desktop",
+      "min": 28,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size — mobile",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size (disable global size first)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop gathering"
+    }
+  ]
+}
+{% endschema %}

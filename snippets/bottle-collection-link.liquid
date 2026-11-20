@@ -1,0 +1,13 @@
+{%- liquid
+  assign linked_collection = block.settings.collection
+  if linked_collection == blank and block.settings.handle != blank
+    assign linked_collection = collections[block.settings.handle]
+  endif
+  assign link_label = block.settings.label | default: linked_collection.title
+  assign link_url = block.settings.link | default: linked_collection.url
+  assign active = false
+  if linked_collection != blank and collection.handle == linked_collection.handle
+    assign active = true
+  endif
+-%}
+{% if link_url != blank %}<a class="bs-shop-category{% if active %} is-active{% endif %}" href="{{ link_url }}"{% if active %} aria-current="page"{% endif %}>{{ link_label | escape }}{% if show_count and linked_collection != blank %}<span>{{ linked_collection.all_products_count }}</span>{% endif %}</a>{% else %}<span class="bs-shop-category is-unconfigured">{{ link_label | escape }}</span>{% endif %}

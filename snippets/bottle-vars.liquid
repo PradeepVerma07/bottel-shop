@@ -1,0 +1,10 @@
+--bs-bg: {{ section.settings.background_color | default: settings.bottle_background }};
+--bs-text: {{ section.settings.text_color | default: settings.bottle_text }};
+--bs-accent: {{ section.settings.accent_color | default: settings.bottle_accent }};
+--bs-button-bg: {{ section.settings.button_color | default: settings.bottle_accent }};
+--bs-button-text: {{ section.settings.button_text_color | default: settings.bottle_button_text | default: '#15120e' }};
+--bs-title-size: {{ section.settings.heading_size | default: 64 }}px;
+--bs-title-mobile: {{ section.settings.heading_size_mobile | default: 48 }}px;
+--bs-body-size: {% if section.settings.inherit_body_size %}{{ settings.bottle_body_size | default: 16 }}{% else %}{{ section.settings.body_size | default: 16 }}{% endif %}px;
+--bs-padding-top: {{ section.settings.padding_top | default: 0 }}px;
+--bs-padding-bottom: {{ section.settings.padding_bottom | default: 0 }}px;

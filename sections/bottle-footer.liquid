@@ -1,0 +1,288 @@
+{%- liquid
+  assign fallback = ''
+  assign logo_fallback = ''
+  if section.settings.use_reference_background
+    assign fallback = 'bs-footer.png'
+  endif
+  if section.settings.use_default_logo
+    assign logo_fallback = 'bs-logo.png'
+  endif
+  assign instagram = section.settings.instagram | default: settings.social_instagram_link
+  assign facebook = section.settings.facebook | default: settings.social_facebook_link
+-%}
+<footer class="bs bs-footer" style="{% render 'bottle-vars', section: section %} --bs-footer-columns: {{ section.blocks.size }}; --bs-footer-logo: {{ section.settings.logo_width }}px;">
+  {% render 'bottle-media', image: section.settings.background_image, fallback: fallback, class: 'bs-background', width: 2172, height: 724, decorative: true %}
+  <div class="bs-inner">
+    <div class="bs-footer__grid">
+      <div class="bs-footer__brand"><a class="bs-footer__logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }}">{% if section.settings.logo != blank or logo_fallback != blank %}{% render 'bottle-media', image: section.settings.logo, fallback: logo_fallback, width: 1254, height: 1254, alt: section.settings.brand_name, sizes: '180px' %}{% else %}<span class="bs-logo-text">{{ section.settings.brand_name | escape }}</span>{% endif %}</a></div>
+      {% for block in section.blocks %}<div class="bs-footer__column" {{ block.shopify_attributes }}><h2>{{ block.settings.heading | escape }}</h2>
+        {% case block.type %}{% when 'menu' %}{% if block.settings.menu != blank %}<ul>{% for link in block.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}</ul>{% else %}<div class="bs-copy">{{ block.settings.fallback_links }}</div>{% endif %}
+        {% when 'contact' %}<div class="bs-copy">{% if block.settings.location != blank %}<a class="bs-footer__contact" href="{{ block.settings.location_link | default: routes.root_url }}">{% if block.settings.show_icons %}{% render 'bottle-icon', icon: 'location' %}{% endif %}{{ block.settings.location | escape }}</a>{% endif %}{% if block.settings.hours_label != blank %}<a class="bs-footer__contact" href="{{ block.settings.hours_link | default: routes.root_url }}">{% if block.settings.show_icons %}{% render 'bottle-icon', icon: 'clock' %}{% endif %}{{ block.settings.hours_label | escape }}</a>{% endif %}{% if block.settings.phone != blank %}<a class="bs-footer__contact" href="{% if block.settings.phone_link != blank %}{{ block.settings.phone_link }}{% else %}tel:{{ block.settings.phone | remove: ' ' | remove: '(' | remove: ')' | replace: '–', '-' }}{% endif %}">{% if block.settings.show_icons %}{% render 'bottle-icon', icon: 'phone' %}{% endif %}{{ block.settings.phone | escape }}</a>{% endif %}</div>{% endcase %}
+      </div>{% endfor %}
+      {% if section.settings.brand_message != blank or instagram != blank or facebook != blank %}<div class="bs-footer__message"><p>{{ section.settings.brand_message | escape | newline_to_br }}</p><div class="bs-footer__social">{% if instagram != blank %}<a class="bs-icon-link" href="{{ instagram }}" aria-label="Instagram" target="_blank" rel="noopener noreferrer">{% render 'bottle-icon', icon: 'instagram' %}</a>{% endif %}{% if facebook != blank %}<a class="bs-icon-link" href="{{ facebook }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer">{% render 'bottle-icon', icon: 'facebook' %}</a>{% endif %}</div></div>{% endif %}
+    </div>
+    <div class="bs-footer__bottom"><div class="bs-footer__legal"><span>{% if section.settings.show_year %}&copy; {{ 'now' | date: '%Y' }} {% endif %}{{ section.settings.copyright | escape }}</span>{% if section.settings.responsibility != blank %}<span>{{ section.settings.responsibility | escape }}</span>{% endif %}{% if section.settings.age_note != blank %}<span>{{ section.settings.age_note | escape }}</span>{% endif %}</div>{% if section.settings.tagline != blank %}<p class="bs-footer__tagline">{{ section.settings.tagline | escape }}</p>{% endif %}</div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Bottle Shop footer",
+  "tag": "div",
+  "enabled_on": {
+    "groups": [
+      "footer"
+    ]
+  },
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_logo",
+      "label": "Use included logo when no image is selected",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand / logo alternative text",
+      "default": "The Bottle Shop"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 60,
+      "max": 220,
+      "step": 2,
+      "unit": "px",
+      "default": 140
+    },
+    {
+      "type": "textarea",
+      "id": "brand_message",
+      "label": "Brand message",
+      "default": "Support Local.\nDrink Better."
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "The Bottle Shop. All rights reserved."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_year",
+      "label": "Show current copyright year",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "responsibility",
+      "label": "Responsibility note",
+      "default": "Drink responsibly."
+    },
+    {
+      "type": "text",
+      "id": "age_note",
+      "label": "Age note",
+      "default": "21+ only."
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Bottom tagline",
+      "default": "Good drinks. Great people."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_reference_background",
+      "label": "Use included background when no image is selected",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size (disable global size first)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Shopify menu"
+        },
+        {
+          "type": "richtext",
+          "id": "fallback_links",
+          "label": "Links when no menu is selected",
+          "default": "<p><a href=\"/collections/all\">Shop all</a></p>"
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Store contact column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Store"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Longmeadow, MA"
+        },
+        {
+          "type": "url",
+          "id": "location_link",
+          "label": "Location link"
+        },
+        {
+          "type": "text",
+          "id": "hours_label",
+          "label": "Hours link label",
+          "default": "Store hours"
+        },
+        {
+          "type": "url",
+          "id": "hours_link",
+          "label": "Hours link"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone number",
+          "default": "(413) 555\u20130123"
+        },
+        {
+          "type": "url",
+          "id": "phone_link",
+          "label": "Phone link"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icons",
+          "label": "Show icons",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop footer",
+      "blocks": [
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "fallback_links": "<p><a href=\"/collections/all\">Wine</a></p><p><a href=\"/collections/all\">Spirits</a></p><p><a href=\"/collections/all\">Beer</a></p><p><a href=\"/collections/all\">Ready to drink</a></p><p><a href=\"/collections/all\">Gifts</a></p>"
+          }
+        },
+        {
+          "type": "menu",
+          "settings": {
+            "heading": "About",
+            "fallback_links": "<p><a href=\"/#bottle-story\">Our story</a></p><p><a href=\"/#bottle-store\">Visit us</a></p><p><a href=\"/#bottle-newsletter\">Events</a></p><p><a href=\"/#bottle-store\">Contact</a></p>"
+          }
+        },
+        {
+          "type": "contact",
+          "settings": {
+            "location_link": "/#bottle-store",
+            "hours_link": "/#bottle-store"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

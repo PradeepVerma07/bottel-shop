@@ -1,0 +1,423 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "bottle-hero",
+      "blocks": {
+        "block_1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "This month's featured bottle",
+            "heading": "Blanton's",
+            "subheading": "Single Barrel\nBourbon",
+            "description": "<p>A true icon. Rich character, unmatched craftsmanship, and a favorite among collectors for a reason.</p>",
+            "reference_image": "hero",
+            "image_alt": "Bourbon and a crystal glass on an oak barrel",
+            "image_x": 50,
+            "image_x_mobile": 60,
+            "overlay": 35,
+            "overlay_mobile": 70,
+            "product": "",
+            "button_label": "Shop Blanton's",
+            "button_link": "",
+            "secondary_label": "Explore our bourbon selection",
+            "secondary_link": "shopify://collections/all",
+            "signature": "Bold Heritage.\nExceptional Taste.",
+            "origin": "Kentucky, USA",
+            "signature_size": 34,
+            "text_color": "",
+            "accent_color": ""
+          }
+        },
+        "block_2": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "A bottle for every table",
+            "heading": "A great pour.",
+            "subheading": "An even better\nevening.",
+            "description": "<p>An old favorite or a new discovery. Find the wine that turns a simple evening into something worth sharing.</p>",
+            "reference_image": "wine",
+            "image_alt": "Ruby red wine in an elegant glass",
+            "image_x": 75,
+            "image_x_mobile": 60,
+            "overlay": 65,
+            "overlay_mobile": 70,
+            "product": "",
+            "button_label": "Explore our wines",
+            "button_link": "/collections/all",
+            "secondary_label": "Find your next favorite",
+            "secondary_link": "/collections/all",
+            "signature": "",
+            "origin": "",
+            "signature_size": 34,
+            "text_color": "",
+            "accent_color": ""
+          }
+        },
+        "block_3": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Here for the good times",
+            "heading": "Cold beer.",
+            "subheading": "Warm company.\nGood times.",
+            "description": "<p>From crisp classics to something a little unexpected. Bring home a great beer and let the good times follow.</p>",
+            "reference_image": "beer",
+            "image_alt": "A golden beer with creamy foam",
+            "image_x": 75,
+            "image_x_mobile": 60,
+            "overlay": 65,
+            "overlay_mobile": 70,
+            "product": "",
+            "button_label": "Explore our beers",
+            "button_link": "/collections/all",
+            "secondary_label": "Discover our collection",
+            "secondary_link": "/collections/all",
+            "signature": "",
+            "origin": "",
+            "signature_size": 34,
+            "text_color": "",
+            "accent_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3"
+      ],
+      "settings": {
+        "height": 800,
+        "height_mobile": 760,
+        "copy_width": 52,
+        "copy_top": 205,
+        "alignment": "left",
+        "heading_tag": "h1",
+        "title_size": 108,
+        "subtitle_size": 68,
+        "title_size_mobile": 72,
+        "subtitle_size_mobile": 50,
+        "show_controls": true,
+        "show_counter": true,
+        "control_size": 48,
+        "arrow_size": 24,
+        "control_size_mobile": 44,
+        "arrow_size_mobile": 22,
+        "autoplay": false,
+        "interval": 7,
+        "accessibility_label": "Featured collections",
+        "controls_label": "Featured collection controls",
+        "previous_label": "Previous featured collection",
+        "next_label": "Next featured collection",
+        "pause_label": "Pause / resume",
+        "background_color": "",
+        "text_color": "",
+        "accent_color": "",
+        "button_color": "",
+        "button_text_color": "",
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "collections": {
+      "type": "bottle-collections",
+      "blocks": {
+        "block_1": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "heading": "Wine",
+            "reference_image": "wine",
+            "image_alt": "",
+            "link": "shopify://collections/all",
+            "browse_label": "Browse",
+            "image_x": 50
+          }
+        },
+        "block_2": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "heading": "Spirits",
+            "reference_image": "spirits",
+            "image_alt": "",
+            "link": "shopify://collections/all",
+            "browse_label": "Browse",
+            "image_x": 50
+          }
+        },
+        "block_3": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "heading": "Beer",
+            "reference_image": "beer",
+            "image_alt": "",
+            "link": "shopify://collections/all",
+            "browse_label": "Browse",
+            "image_x": 50
+          }
+        },
+        "block_4": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "heading": "Ready\nto drink",
+            "reference_image": "ready-to-drink",
+            "image_alt": "",
+            "link": "shopify://collections/all",
+            "browse_label": "Browse",
+            "image_x": 50
+          }
+        },
+        "block_5": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "heading": "Gifts",
+            "reference_image": "gifts",
+            "image_alt": "",
+            "link": "shopify://collections/all",
+            "browse_label": "Browse",
+            "image_x": 50
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5"
+      ],
+      "settings": {
+        "heading": "Explore our collection",
+        "anchor": "bottle-collections",
+        "columns": 5,
+        "columns_mobile": "2",
+        "card_height": 420,
+        "card_height_mobile": 310,
+        "background_color": "",
+        "text_color": "",
+        "accent_color": "",
+        "heading_size": 44,
+        "heading_size_mobile": 38,
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "story": {
+      "type": "bottle-story",
+      "settings": {
+        "anchor": "bottle-story",
+        "eyebrow": "A local story. A lasting legacy.",
+        "heading": "Rooted in\nLongmeadow\nsince 1963.",
+        "description": "<p>For over 60 years, The Bottle Shop has been more than a store — it's part of the Longmeadow community. We're proud to bring people together through great wines, spirits and beers from around the world.</p>",
+        "button_label": "Our story",
+        "button_link": "/#bottle-store",
+        "button_style": "outline",
+        "desktop_background_enabled": true,
+        "desktop_background_position": 100,
+        "image_alt": "Vintage-style Bottle Shop storefront",
+        "caption": "Longmeadow, 1963",
+        "use_reference_images": true,
+        "image_position": "right",
+        "photo_height": 420,
+        "photo_angle": -3,
+        "height": 410,
+        "show_seal": true,
+        "seal_top": "Good drinks",
+        "seal_bottom": "Great people",
+        "background_color": "#eadfc9",
+        "text_color": "#15120e",
+        "accent_color": "",
+        "button_color": "",
+        "button_text_color": "",
+        "heading_size": 64,
+        "heading_size_mobile": 52,
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "gathering": {
+      "type": "bottle-gathering",
+      "settings": {
+        "image_x": 50,
+        "eyebrow": "",
+        "heading": "Good drinks\nbring people\ntogether.",
+        "description": "<p>From quiet nights to big celebrations, we're here to help you find the perfect bottle for life's best moments.</p>",
+        "button_label": "Explore our collection",
+        "button_link": "shopify://collections/all",
+        "button_style": "solid",
+        "image_alt": "Friends sharing a wine toast at dinner",
+        "use_reference_image": true,
+        "alignment": "left",
+        "copy_width": 43,
+        "overlay": 55,
+        "height": 470,
+        "height_mobile": 450,
+        "background_color": "",
+        "text_color": "",
+        "accent_color": "",
+        "button_color": "",
+        "button_text_color": "",
+        "heading_size": 68,
+        "heading_size_mobile": 52,
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
+    },
+    "store": {
+      "type": "bottle-store",
+      "blocks": {
+        "block_1": {
+          "type": "detail",
+          "settings": {
+            "heading": "Location",
+            "body": "<p>Longmeadow, MA</p>",
+            "link": "",
+            "icon": "location"
+          }
+        },
+        "block_2": {
+          "type": "detail",
+          "settings": {
+            "heading": "Store hours",
+            "body": "<p>Mon – Sat &nbsp;9AM – 9PM<br>Sun &nbsp;10AM – 6PM</p>",
+            "link": "",
+            "icon": "clock"
+          }
+        },
+        "block_3": {
+          "type": "detail",
+          "settings": {
+            "heading": "Contact",
+            "body": "<p>(413) 555–0123</p>",
+            "link": "",
+            "icon": "phone"
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3"
+      ],
+      "settings": {
+        "anchor": "bottle-store",
+        "eyebrow": "Visit the store",
+        "heading": "Good\ndrinks.",
+        "accent_heading": "Great\npeople.",
+        "description": "<p>Come in and explore our curated selection of wines, spirits, beers and more. We're always here to help you find the right bottle for any occasion.</p>",
+        "button_label": "Get directions",
+        "button_link": "https://www.google.com/maps/search/?api=1&query=The+Bottle+Shop+Longmeadow+MA",
+        "button_new_tab": true,
+        "show_icons": true,
+        "image_alt": "Inside the Bottle Shop and Sipping Station",
+        "use_reference_images": true,
+        "image_position": "right",
+        "panel_width": 32,
+        "height": 780,
+        "photo_height_mobile": 340,
+        "panel_overlay": 20,
+        "show_badge": true,
+        "badge_opacity": 15,
+        "background_color": "",
+        "text_color": "",
+        "accent_color": "",
+        "button_color": "",
+        "button_text_color": "",
+        "heading_size": 62,
+        "heading_size_mobile": 62,
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 44,
+        "padding_bottom": 40
+      }
+    },
+    "newsletter": {
+      "type": "bottle-newsletter",
+      "settings": {
+        "anchor": "bottle-newsletter",
+        "heading": "Stay in the pour",
+        "description": "<p>Get the latest releases, special offers and local events.</p>",
+        "email_label": "Your email address",
+        "placeholder": "Your email address",
+        "button_label": "Subscribe",
+        "success_message": "Thanks for subscribing. You're in the pour!",
+        "privacy_note": "",
+        "use_reference_image": true,
+        "background_color": "",
+        "text_color": "",
+        "accent_color": "",
+        "button_color": "",
+        "button_text_color": "",
+        "heading_size": 34,
+        "heading_size_mobile": 32,
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "new_arrivals": {
+      "type": "bottle-new-arrivals",
+      "settings": {
+        "eyebrow": "Fresh Pours & Rare Finds",
+        "heading": "New Arrivals",
+        "show_button": true,
+        "button_label": "Explore All New",
+        "products_to_show": 4,
+        "columns": 4,
+        "show_badge": true,
+        "badge_text": "New",
+        "quick_add": true
+      }
+    },
+    "featured_product": {
+      "type": "bottle-featured-product",
+      "settings": {
+        "eyebrow": "Bottle of the Month",
+        "show_badge": true,
+        "badge_text": "Staff Pick",
+        "show_specs": true,
+        "spec_1_lbl": "Origin",
+        "spec_1_val": "Kentucky, USA",
+        "spec_2_lbl": "Proof",
+        "spec_2_val": "93 Proof",
+        "spec_3_lbl": "Type",
+        "spec_3_val": "Single Barrel",
+        "spec_4_lbl": "Volume",
+        "spec_4_val": "750 mL",
+        "show_quantity": true,
+        "show_dynamic_checkout": true,
+        "show_view_link": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "new_arrivals",
+    "collections",
+    "featured_product",
+    "story",
+    "gathering",
+    "store",
+    "newsletter"
+  ]
+}

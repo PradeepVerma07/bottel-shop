@@ -1,0 +1,189 @@
+{%- liquid
+  assign form_id = 'BottleNewsletter-' | append: section.id
+  assign fallback = ''
+  if section.settings.use_reference_image
+    assign fallback = 'bs-newsletter.png'
+  endif
+-%}
+<div class="bs bs-newsletter"{% if section.settings.anchor != blank %} data-bs-anchor="{{ section.settings.anchor | handleize }}"{% endif %} style="{% render 'bottle-vars', section: section %}">
+  {% render 'bottle-media', image: section.settings.image, fallback: fallback, class: 'bs-background', width: 2172, height: 724, decorative: true %}
+  <div class="bs-inner bs-newsletter__inner"><div><h2 class="bs-heading">{{ section.settings.heading | escape }}</h2><div class="bs-copy">{{ section.settings.description }}</div></div>
+    {% form 'customer', id: form_id, class: 'bs-newsletter__form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="bs-newsletter__fields"><label class="bs-sr-only" for="BottleEmail-{{ section.id }}">{{ section.settings.email_label | escape }}</label><input id="BottleEmail-{{ section.id }}" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="{{ section.settings.placeholder | escape }}" required autocomplete="email" autocorrect="off" autocapitalize="off"{% if form.errors %} aria-invalid="true" aria-describedby="BottleNewsletterError-{{ section.id }}"{% elsif form.posted_successfully? %} aria-describedby="BottleNewsletterSuccess-{{ section.id }}"{% endif %}>{% render 'bottle-button', label: section.settings.button_label, submit: true %}</div>
+      {% if form.errors %}<div class="bs-newsletter__message" id="BottleNewsletterError-{{ section.id }}" role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+      {% if form.posted_successfully? %}<p class="bs-newsletter__message" id="BottleNewsletterSuccess-{{ section.id }}" role="status">{{ section.settings.success_message | escape }}</p>{% endif %}
+      {% if section.settings.privacy_note != blank %}<div class="bs-copy">{{ section.settings.privacy_note }}</div>{% endif %}
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bottle Shop newsletter",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Optional unique anchor"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stay in the pour"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Get the latest releases, special offers and local events.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email accessibility label",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for subscribing. You're in the pour!"
+    },
+    {
+      "type": "richtext",
+      "id": "privacy_note",
+      "label": "Optional privacy note"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_reference_image",
+      "label": "Use included background when no image is selected",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background override"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text override"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size — desktop",
+      "min": 28,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size — mobile",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size (disable global size first)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop newsletter"
+    }
+  ]
+}
+{% endschema %}

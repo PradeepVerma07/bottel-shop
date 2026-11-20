@@ -1,0 +1,301 @@
+<div class="bs bs-collections"{% if section.settings.anchor != blank %} data-bs-anchor="{{ section.settings.anchor | handleize }}"{% endif %} style="{% render 'bottle-vars', section: section %} --bs-columns: {{ section.settings.columns }}; --bs-mobile-columns: {{ section.settings.columns_mobile }}; --bs-card-height: {{ section.settings.card_height }}px; --bs-card-mobile: {{ section.settings.card_height_mobile }}px;">
+  {% if section.settings.heading != blank %}<div class="bs-collections__heading"><h2 class="bs-eyebrow">{{ section.settings.heading | escape }}</h2></div>{% endif %}
+  <div class="bs-collection-grid bs-collection-grid--mobile-{{ section.settings.columns_mobile }}">
+    {% for block in section.blocks %}
+      {%- liquid
+        assign collection = block.settings.collection
+        assign card_title = block.settings.heading | default: collection.title
+        assign card_image = block.settings.image | default: collection.image
+        assign card_link = block.settings.link | default: collection.url | default: routes.all_products_collection_url
+        assign fallback = ''
+        unless block.settings.reference_image == 'none'
+          assign fallback = 'bs-collection-' | append: block.settings.reference_image | append: '.png'
+        endunless
+      -%}
+      <a class="bs-collection-card" href="{{ card_link }}" style="--bs-card-x: {{ block.settings.image_x }}%;" {{ block.shopify_attributes }}>
+        {% render 'bottle-media', image: card_image, fallback: fallback, class: 'bs-background', width: 1024, height: 1536, sizes: '(min-width: 801px) 20vw, 50vw', alt: block.settings.image_alt %}
+        <div class="bs-collection-card__content"><h3 class="bs-heading">{{ card_title | escape | newline_to_br }}</h3>{% if block.settings.browse_label != blank %}<span class="bs-browse">{{ block.settings.browse_label | escape }}{% if settings.bottle_show_arrows %}{% render 'bottle-icon', icon: 'arrow' %}{% endif %}</span>{% endif %}</div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bottle Shop collections",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Explore our collection"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Optional unique anchor"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "One"
+        },
+        {
+          "value": "2",
+          "label": "Two"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "label": "Card height — desktop",
+      "min": 280,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "label": "Card height — mobile",
+      "min": 220,
+      "max": 480,
+      "step": 10,
+      "unit": "px",
+      "default": 310
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size — desktop",
+      "min": 28,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size — mobile",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size (disable global size first)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Collection card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Shopify collection"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Title override",
+          "default": "Wine"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image override"
+        },
+        {
+          "type": "select",
+          "id": "reference_image",
+          "label": "Included reference image",
+          "options": [
+            {
+              "value": "wine",
+              "label": "Wine"
+            },
+            {
+              "value": "spirits",
+              "label": "Spirits"
+            },
+            {
+              "value": "beer",
+              "label": "Beer"
+            },
+            {
+              "value": "ready-to-drink",
+              "label": "Ready to drink"
+            },
+            {
+              "value": "gifts",
+              "label": "Gifts"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ],
+          "default": "wine"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Alternative text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link override"
+        },
+        {
+          "type": "text",
+          "id": "browse_label",
+          "label": "Browse label",
+          "default": "Browse"
+        },
+        {
+          "type": "range",
+          "id": "image_x",
+          "label": "Horizontal image position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop collections",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "heading": "Wine",
+            "reference_image": "wine"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "heading": "Spirits",
+            "reference_image": "spirits"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "heading": "Beer",
+            "reference_image": "beer"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "heading": "Ready\nto drink",
+            "reference_image": "ready-to-drink"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "heading": "Gifts",
+            "reference_image": "gifts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

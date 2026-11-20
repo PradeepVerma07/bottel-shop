@@ -1,0 +1,317 @@
+{%- liquid
+  assign photo_fallback = ''
+  assign paper_fallback = ''
+  if section.settings.use_reference_images
+    assign photo_fallback = 'bs-heritage.png'
+    assign paper_fallback = 'bs-parchment.png'
+  endif
+  assign desktop_background_class = 'bs-background bs-story__desktop-background'
+  if section.settings.desktop_background_image == blank
+    assign desktop_background_class = desktop_background_class | append: ' bs-story__desktop-background--included'
+  endif
+-%}
+<div class="bs bs-story{% if section.settings.image_position == 'left' %} bs-story--reverse{% endif %}{% if section.settings.desktop_background_enabled %} bs-story--desktop-background{% endif %}"{% if section.settings.anchor != blank %} data-bs-anchor="{{ section.settings.anchor | handleize }}"{% endif %} style="{% render 'bottle-vars', section: section %} --bs-story-height: {{ section.settings.height }}px; --bs-photo-angle: {{ section.settings.photo_angle }}deg; --bs-story-photo-height: {{ section.settings.photo_height }}px; --bs-story-background-x: {{ section.settings.desktop_background_position }}%;">
+  {% render 'bottle-media', image: section.settings.background_image, fallback: paper_fallback, class: 'bs-background', decorative: true %}
+  {% if section.settings.desktop_background_enabled %}{% render 'bottle-media', image: section.settings.desktop_background_image, fallback: 'bs-story-desktop.png', class: desktop_background_class, width: 1600, height: 533, decorative: true %}{% endif %}
+  {% if section.settings.show_seal %}<div class="bs-seal" aria-hidden="true"><span>{{ section.settings.seal_top | escape }}</span>{% render 'bottle-icon', icon: 'star' %}<span>{{ section.settings.seal_bottom | escape }}</span></div>{% endif %}
+  <div class="bs-inner bs-story__inner">
+    <div class="bs-story__copy">{% if section.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2 class="bs-heading">{{ section.settings.heading | escape | newline_to_br }}</h2>{% if section.settings.description != blank %}<div class="bs-copy">{{ section.settings.description }}</div>{% endif %}<div class="bs-actions">{% render 'bottle-button', label: section.settings.button_label, link: section.settings.button_link, style: section.settings.button_style %}</div></div>
+    <figure class="bs-story__figure">{% render 'bottle-media', image: section.settings.image, fallback: photo_fallback, width: 1536, height: 1024, sizes: '(min-width: 801px) 55vw, 100vw', alt: section.settings.image_alt %}{% if section.settings.caption != blank %}<figcaption class="bs-story__caption">{{ section.settings.caption | escape }}</figcaption>{% endif %}</figure>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bottle Shop story",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Optional unique anchor"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "A local story. A lasting legacy."
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Rooted in\nLongmeadow\nsince 1963."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>For over 60 years, The Bottle Shop has been more than a store \u2014 it's part of the Longmeadow community. We're proud to bring people together through great wines, spirits and beers from around the world.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Our story"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "text",
+          "label": "Text link"
+        }
+      ],
+      "default": "outline"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_background_enabled",
+      "label": "Use desktop background banner",
+      "info": "For screens 1200px and wider. The banner includes the photo and seal; smaller screens keep the separate photo layout.",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_background_image",
+      "label": "Desktop background image",
+      "info": "Uses the supplied background when no image is selected."
+    },
+    {
+      "type": "range",
+      "id": "desktop_background_position",
+      "label": "Desktop background horizontal position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Story photograph"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Photo alternative text",
+      "default": "Vintage-style Bottle Shop storefront"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Photo caption",
+      "default": "Longmeadow, 1963"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Paper / mobile background"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_reference_images",
+      "label": "Use included images when pickers are empty",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Photo position",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "photo_height",
+      "label": "Desktop photo height",
+      "min": 220,
+      "max": 480,
+      "step": 10,
+      "default": 320,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "photo_angle",
+      "label": "Photo rotation",
+      "min": -8,
+      "max": 8,
+      "step": 1,
+      "unit": "deg",
+      "default": -3
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Minimum desktop height",
+      "min": 380,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "header",
+      "content": "Decorative seal"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_seal",
+      "label": "Show seal",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "seal_top",
+      "label": "Seal top text",
+      "default": "Good drinks"
+    },
+    {
+      "type": "text",
+      "id": "seal_bottom",
+      "label": "Seal bottom text",
+      "default": "Great people"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#eadfc9"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#15120e"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background override"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text override"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size \u2014 desktop",
+      "min": 28,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size \u2014 mobile",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size (disable global size first)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop story",
+      "settings": {
+        "desktop_background_enabled": true,
+        "button_link": "/#bottle-store"
+      }
+    }
+  ]
+}
+{% endschema %}

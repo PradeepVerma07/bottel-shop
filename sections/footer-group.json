@@ -1,0 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "bottle_footer": {
+      "type": "bottle-footer",
+      "blocks": {
+        "block_1": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "",
+            "fallback_links": "<p><a href=\"/collections/all\">Wine</a></p><p><a href=\"/collections/all\">Spirits</a></p><p><a href=\"/collections/all\">Beer</a></p><p><a href=\"/collections/all\">Ready to drink</a></p><p><a href=\"/collections/all\">Gifts</a></p>"
+          }
+        },
+        "block_2": {
+          "type": "menu",
+          "settings": {
+            "heading": "About",
+            "menu": "",
+            "fallback_links": "<p><a href=\"/#bottle-story\">Our story</a></p><p><a href=\"/#bottle-store\">Visit us</a></p><p><a href=\"/#bottle-newsletter\">Events</a></p><p><a href=\"/#bottle-store\">Contact</a></p>"
+          }
+        },
+        "block_3": {
+          "type": "contact",
+          "settings": {
+            "heading": "Store",
+            "location": "Longmeadow, MA",
+            "location_link": "/#bottle-store",
+            "hours_label": "Store hours",
+            "hours_link": "/#bottle-store",
+            "phone": "(413) 555–0123",
+            "phone_link": "",
+            "show_icons": true
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/ChatGPT_Image_Sep_28_2026_03_28_33_PM.png",
+        "use_default_logo": true,
+        "brand_name": "The Bottle Shop",
+        "logo_width": 140,
+        "brand_message": "Support Local.\nDrink Better.",
+        "instagram": "",
+        "facebook": "",
+        "copyright": "The Bottle Shop. All rights reserved.",
+        "show_year": true,
+        "responsibility": "Drink responsibly.",
+        "age_note": "21+ only.",
+        "tagline": "Good drinks. Great people.",
+        "use_reference_background": true,
+        "background_color": "",
+        "text_color": "",
+        "accent_color": "",
+        "inherit_body_size": true,
+        "body_size": 16,
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "bottle_footer"
+  ]
+}

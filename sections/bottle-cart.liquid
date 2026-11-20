@@ -1,0 +1,238 @@
+<section class="bs bs-cart" style="{% render 'bottle-vars', section: section %}">
+  <div class="bs-inner">
+    <div class="bs-cart__heading"><h1 class="bs-heading">{{ section.settings.heading | escape }}</h1>{% render 'bottle-button', label: section.settings.continue_label, link: routes.all_products_collection_url, style: 'text' %}</div>
+    {% if cart.item_count > 0 %}
+      <form action="{{ routes.cart_url }}" method="post" id="BottleCart-{{ section.id }}">
+        <div class="bs-cart-layout"><div class="bs-cart-items">
+          {% for item in cart.items %}<article class="bs-cart-line">
+            <a class="bs-cart-line__image" href="{{ item.url }}">{% if item.image %}{{ item.image | image_url: width: 400 | image_tag: loading: 'lazy', alt: item.image.alt }}{% endif %}</a>
+            <div class="bs-cart-line__info"><h2><a href="{{ item.url }}">{{ item.product.title | escape }}</a></h2>{% unless item.product.has_only_default_variant %}<p>{{ item.variant.title | escape }}</p>{% endunless %}{% if item.selling_plan_allocation %}<p>{{ item.selling_plan_allocation.selling_plan.name | escape }}</p>{% endif %}{% for property in item.properties %}{% assign property_first = property.first | slice: 0 %}{% assign property_url_prefix = property.last | slice: 0, 8 %}{% if property.last != blank and property_first != '_' %}<p>{{ property.first | escape }}: {% if property.last contains '/uploads/' and property_url_prefix == 'https://' %}<a href="{{ property.last | escape }}">{{ property.last | split: '/' | last | escape }}</a>{% else %}{{ property.last | escape }}{% endif %}</p>{% endif %}{% endfor %}
+              <p class="bs-cart-line__unit">{{ item.final_price | money }}{% if item.original_price > item.final_price %} <s>{{ item.original_price | money }}</s>{% endif %}</p>{% for allocation in item.line_level_discount_allocations %}<p class="bs-cart-discount">{{ allocation.discount_application.title | escape }} (−{{ allocation.amount | money }})</p>{% endfor %}
+              <a class="bs-cart-remove" href="{{ item.url_to_remove }}" aria-label="{{ section.settings.remove_label | escape }}: {{ item.product.title | escape }}">{{ section.settings.remove_label | escape }}</a>
+            </div>
+            <div class="bs-cart-line__quantity"><label for="BottleQuantity-{{ section.id }}-{{ forloop.index }}">{{ section.settings.quantity_label | escape }}</label><bottle-quantity><button type="button" data-bs-step="-1" aria-label="{{ section.settings.decrease_label | escape }}: {{ item.product.title | escape }}">−</button><input id="BottleQuantity-{{ section.id }}-{{ forloop.index }}" name="updates[]" type="number" min="{{ item.variant.quantity_rule.min | default: 1 }}" step="{{ item.variant.quantity_rule.increment | default: 1 }}"{% if item.variant.quantity_rule.max != nil %} max="{{ item.variant.quantity_rule.max }}"{% endif %} value="{{ item.quantity }}" aria-label="{{ section.settings.quantity_label | escape }}: {{ item.product.title | escape }}"><button type="button" data-bs-step="1" aria-label="{{ section.settings.increase_label | escape }}: {{ item.product.title | escape }}">+</button></bottle-quantity></div>
+            <p class="bs-cart-line__total">{% if item.original_line_price > item.final_line_price %}<s>{{ item.original_line_price | money }}</s>{% endif %}<strong>{{ item.final_line_price | money }}</strong></p>
+          </article>{% endfor %}
+          <div class="bs-cart-update"><p>{{ section.settings.update_hint | escape }}</p><button type="submit" name="update" class="bs-button bs-button--outline">{{ section.settings.update_label | escape }}</button></div>
+          {% if section.settings.show_note %}<label class="bs-cart-note" for="BottleCartNote-{{ section.id }}">{{ section.settings.note_label | escape }}<textarea id="BottleCartNote-{{ section.id }}" name="note" rows="3">{{ cart.note | escape }}</textarea></label>{% endif %}
+        </div>
+        <aside class="bs-cart-summary"><h2>{{ section.settings.summary_heading | escape }}</h2><div class="bs-cart-summary__row"><span>{{ section.settings.items_label | escape }}</span><span>{{ cart.item_count }}</span></div>{% for discount in cart.cart_level_discount_applications %}<div class="bs-cart-summary__row"><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money }}</span></div>{% endfor %}<div class="bs-cart-summary__row bs-cart-summary__total"><span>{{ section.settings.total_label | escape }}</span><strong>{{ cart.total_price | money_with_currency }}</strong></div><div class="bs-copy">{{ section.settings.checkout_note }}</div><button type="submit" name="checkout" class="bs-button bs-button--solid"><span>{{ section.settings.checkout_label | escape }}</span>{% if settings.bottle_show_arrows %}{% render 'bottle-icon', icon: 'arrow-right' %}{% endif %}</button>{% if section.settings.trust_text != blank %}<p class="bs-cart-trust">{{ section.settings.trust_text | escape }}</p>{% endif %}</aside></div>
+      </form>
+      {% if section.settings.show_express_checkout and additional_checkout_buttons %}<div class="bs-cart-express">{{ content_for_additional_checkout_buttons }}</div>{% endif %}
+    {% else %}<div class="bs-cart-empty"><h2 class="bs-heading">{{ section.settings.empty_heading | escape }}</h2><div class="bs-copy">{{ section.settings.empty_description }}</div>{% render 'bottle-button', label: section.settings.continue_label, link: routes.all_products_collection_url %}</div>{% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bottle Shop cart",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your bag"
+    },
+    {
+      "type": "text",
+      "id": "continue_label",
+      "label": "Continue shopping label",
+      "default": "Continue shopping"
+    },
+    {
+      "type": "text",
+      "id": "summary_heading",
+      "label": "Summary heading",
+      "default": "Order summary"
+    },
+    {
+      "type": "text",
+      "id": "items_label",
+      "label": "Items label",
+      "default": "Items"
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total label",
+      "default": "Estimated total"
+    },
+    {
+      "type": "richtext",
+      "id": "checkout_note",
+      "label": "Checkout note",
+      "default": "<p>Shipping, taxes and any applicable discounts are calculated at checkout.</p>"
+    },
+    {
+      "type": "text",
+      "id": "checkout_label",
+      "label": "Checkout button label",
+      "default": "Checkout"
+    },
+    {
+      "type": "text",
+      "id": "trust_text",
+      "label": "Checkout reassurance",
+      "default": "Secure checkout powered by Shopify"
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty cart heading",
+      "default": "Your next great pour awaits."
+    },
+    {
+      "type": "richtext",
+      "id": "empty_description",
+      "label": "Empty cart description",
+      "default": "<p>Your bag is empty. Explore the collection and find a bottle for your next occasion.</p>"
+    },
+    {
+      "type": "text",
+      "id": "remove_label",
+      "label": "Remove label",
+      "default": "Remove"
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity label",
+      "default": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "decrease_label",
+      "label": "Decrease quantity label",
+      "default": "Decrease quantity"
+    },
+    {
+      "type": "text",
+      "id": "increase_label",
+      "label": "Increase quantity label",
+      "default": "Increase quantity"
+    },
+    {
+      "type": "text",
+      "id": "update_hint",
+      "label": "Quantity update hint",
+      "default": "After changing quantities, select Update cart to refresh your totals."
+    },
+    {
+      "type": "text",
+      "id": "update_label",
+      "label": "Update button label",
+      "default": "Update cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_note",
+      "label": "Show order note",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "note_label",
+      "label": "Order note label",
+      "default": "Order note"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_express_checkout",
+      "label": "Show available express checkout buttons",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size \u2014 desktop",
+      "min": 28,
+      "max": 100,
+      "step": 2,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size \u2014 mobile",
+      "min": 28,
+      "max": 72,
+      "step": 2,
+      "default": 44,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background override"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text override"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop cart"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "cart"
+    ]
+  }
+}
+{% endschema %}

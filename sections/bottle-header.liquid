@@ -1,0 +1,338 @@
+{%- liquid
+  assign overlay = false
+  assign compact = false
+  if template.name != 'index' and section.settings.compact_inner_pages
+    assign compact = true
+  endif
+  if template.name == 'index' and section.settings.overlay_home
+    assign overlay = true
+  endif
+  assign logo_fallback = ''
+  if section.settings.use_default_logo
+    assign logo_fallback = 'bs-logo.png'
+  endif
+-%}
+<header class="bs bs-header{% if overlay %} bs-header--overlay{% endif %}{% if compact %} bs-header--compact{% endif %}" style="{% render 'bottle-vars', section: section %} --bs-logo-width: {{ section.settings.logo_width }}px; --bs-mobile-logo: {{ section.settings.logo_width_mobile }}px; --bs-nav-size: {{ section.settings.menu_size }}px;">
+  <div class="bs-inner bs-header__inner">
+    <a class="bs-logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }}">
+      {% if section.settings.logo != blank or logo_fallback != blank %}
+        {% render 'bottle-media', image: section.settings.logo, fallback: logo_fallback, width: 1254, height: 1254, alt: section.settings.brand_name, loading: 'eager', sizes: '160px' %}
+      {% else %}<span class="bs-logo-text">{{ section.settings.brand_name | escape }}</span>{% endif %}
+    </a>
+    <div class="bs-header__content">
+      <nav class="bs-desktop-nav" aria-label="{{ section.settings.menu_label | escape }}">
+        <ul class="bs-navigation">
+          {% if section.settings.menu != blank %}
+            {% for link in section.settings.menu.links %}
+              <li>{% if link.links != blank %}<details><summary>{{ link.title | escape }}</summary><ul class="bs-nav-dropdown">{% for child in link.links %}<li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>{% endfor %}</ul></details>{% else %}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{% endif %}</li>
+            {% endfor %}
+          {% else %}
+            {% for block in section.blocks %}<li {{ block.shopify_attributes }}><a href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.label | escape }}</a></li>{% endfor %}
+          {% endif %}
+        </ul>
+      </nav>
+      {% if section.settings.show_search %}
+        <form class="bs-search" action="{{ routes.search_url }}" method="get" role="search">
+          <button class="bs-icon-link" type="submit" aria-label="{{ section.settings.search_label | escape }}">{% render 'bottle-icon', icon: 'search' %}</button>
+          <label class="bs-sr-only" for="BottleSearch-{{ section.id }}">{{ section.settings.search_label | escape }}</label>
+          <input id="BottleSearch-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder | escape }}">
+          <input type="hidden" name="options[prefix]" value="last">
+        </form>
+      {% endif %}
+      <div class="bs-header__actions">
+        {% if section.settings.show_account and shop.customer_accounts_enabled %}<a class="bs-icon-link bs-header__account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">{% render 'bottle-icon', icon: 'user' %}</a>{% endif %}
+        {% if section.settings.show_cart %}<a id="cart-icon-bubble" class="bs-icon-link bs-cart-link" href="{{ routes.cart_url }}" aria-label="{{ section.settings.cart_label | escape }} ({{ cart.item_count }})">{% render 'bottle-icon', icon: 'bag' %}<span class="bs-cart-count" aria-hidden="true">{{ cart.item_count }}</span></a>{% endif %}
+        <details class="bs-mobile-menu">
+          <summary class="bs-icon-link" aria-label="{{ section.settings.menu_label | escape }}">{% render 'bottle-icon', icon: 'menu' %}</summary>
+          <nav class="bs-mobile-menu__panel" aria-label="{{ section.settings.menu_label | escape }}"><ul>
+            {% if section.settings.menu != blank %}{% for link in section.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a>{% if link.links != blank %}<ul>{% for child in link.links %}<li><a href="{{ child.url }}">{{ child.title | escape }}</a></li>{% endfor %}</ul>{% endif %}</li>{% endfor %}
+            {% else %}{% for block in section.blocks %}<li><a href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.label | escape }}</a></li>{% endfor %}{% endif %}
+          </ul></nav>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+{% if settings.cart_type == 'notification' %}
+  {{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+  {% render 'cart-notification', color_scheme: section.settings.cart_color_scheme, desktop_menu_type: 'dropdown' %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Bottle Shop header",
+  "tag": "div",
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "compact_inner_pages",
+      "label": "Compact header on inner pages",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "cart_color_scheme",
+      "label": "Native cart notification colors",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_default_logo",
+      "label": "Use included logo when no image is selected",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name / logo alternative text",
+      "default": "The Bottle Shop"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width — desktop",
+      "min": 60,
+      "max": 220,
+      "step": 2,
+      "unit": "px",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "label": "Logo width — mobile",
+      "min": 50,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 84
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_home",
+      "label": "Overlay the homepage hero",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Shopify menu",
+      "info": "Choose a menu, or leave empty to use the editable link blocks."
+    },
+    {
+      "type": "text",
+      "id": "menu_label",
+      "label": "Navigation label",
+      "default": "Main navigation"
+    },
+    {
+      "type": "range",
+      "id": "menu_size",
+      "label": "Menu text size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Search accessibility label",
+      "default": "Search products"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search products..."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account link when accounts are enabled",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Account label",
+      "default": "Your account"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show cart",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_label",
+      "label": "Cart label",
+      "default": "Your shopping bag"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size (disable global size first)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Navigation link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shop"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop header",
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "label": "Wine",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Spirits",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Beer",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Ready to drink",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Gifts",
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Deals",
+            "link": "/#bottle-newsletter"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "About",
+            "link": "/#bottle-story"
+          }
+        }
+      ]
+    }
+  ],
+  "limit": 1
+}
+{% endschema %}

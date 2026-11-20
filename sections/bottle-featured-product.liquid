@@ -1,0 +1,440 @@
+{%- liquid
+  assign featured_product = section.settings.product
+  if featured_product == blank
+    assign featured_product = collections.all.products.first
+  endif
+
+  assign current_variant = featured_product.selected_or_first_available_variant
+  assign badge_value = ''
+  if section.settings.show_badge and section.settings.badge_text != blank
+    assign badge_value = section.settings.badge_text
+  endif
+
+  assign featured_image = section.settings.custom_image | default: featured_product.featured_image
+  assign product_title = section.settings.heading | default: featured_product.title
+  assign product_eyebrow = section.settings.eyebrow
+  if product_eyebrow == blank and featured_product != blank
+    assign product_eyebrow = featured_product.type | default: featured_product.vendor
+  endif
+
+  assign product_desc = section.settings.description
+  if product_desc == blank and featured_product != blank
+    assign product_desc = featured_product.description | strip_html | truncatewords: 40
+  endif
+-%}
+
+<section
+  id="BottleFeaturedProduct-{{ section.id }}"
+  class="bs bs-featured-product{% if section.settings.show_wood_texture %} bs-featured-product--wood{% endif %}"
+  style="
+    {% render 'bottle-vars', section: section %}
+  "
+>
+  <div class="bs-inner">
+    <div class="bs-featured-product__layout{% if section.settings.image_position == 'right' %} bs-featured-product__layout--reversed{% endif %}">
+      
+      {% comment %} Product Media Column {% endcomment %}
+      <div class="bs-featured-product__media">
+        {% if badge_value != blank %}
+          <span class="bs-product-badge">{{ badge_value | escape }}</span>
+        {% endif %}
+        {% if featured_image != blank %}
+          <a href="{{ featured_product.url | default: '#' }}" aria-label="{{ product_title | escape }}">
+            {{ featured_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: product_title, widths: '320, 500, 750, 1000' }}
+          </a>
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'bs-product-card__placeholder' }}
+        {% endif %}
+      </div>
+
+      {% comment %} Product Details Column {% endcomment %}
+      <div class="bs-featured-product__info">
+        {% if product_eyebrow != blank %}
+          <p class="bs-eyebrow">{{ product_eyebrow | escape }}</p>
+        {% endif %}
+
+        <h2 class="bs-featured-product__title">
+          {% if featured_product != blank %}
+            <a href="{{ featured_product.url }}">{{ product_title | escape }}</a>
+          {% else %}
+            {{ product_title | escape }}
+          {% endif %}
+        </h2>
+
+        {% if featured_product != blank %}
+          <div class="bs-featured-product__price">
+            {% if current_variant.compare_at_price > current_variant.price %}
+              <s>{{ current_variant.compare_at_price | money }}</s>
+            {% endif %}
+            <span>{{ current_variant.price | money }}</span>
+          </div>
+        {% else %}
+          <div class="bs-featured-product__price">
+            <span>{{ 8500 | money }}</span>
+          </div>
+        {% endif %}
+
+        {% comment %} Specifications / Quick Facts {% endcomment %}
+        {% if section.settings.show_specs %}
+          <div class="bs-featured-product__specs">
+            {% if section.settings.spec_1_val != blank %}
+              <div class="bs-featured-product__spec">
+                <span class="bs-featured-product__spec-label">{{ section.settings.spec_1_lbl | escape }}:</span>
+                <span class="bs-featured-product__spec-value">{{ section.settings.spec_1_val | escape }}</span>
+              </div>
+            {% endif %}
+            {% if section.settings.spec_2_val != blank %}
+              <div class="bs-featured-product__spec">
+                <span class="bs-featured-product__spec-label">{{ section.settings.spec_2_lbl | escape }}:</span>
+                <span class="bs-featured-product__spec-value">{{ section.settings.spec_2_val | escape }}</span>
+              </div>
+            {% endif %}
+            {% if section.settings.spec_3_val != blank %}
+              <div class="bs-featured-product__spec">
+                <span class="bs-featured-product__spec-label">{{ section.settings.spec_3_lbl | escape }}:</span>
+                <span class="bs-featured-product__spec-value">{{ section.settings.spec_3_val | escape }}</span>
+              </div>
+            {% endif %}
+            {% if section.settings.spec_4_val != blank %}
+              <div class="bs-featured-product__spec">
+                <span class="bs-featured-product__spec-label">{{ section.settings.spec_4_lbl | escape }}:</span>
+                <span class="bs-featured-product__spec-value">{{ section.settings.spec_4_val | escape }}</span>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if product_desc != blank %}
+          <div class="bs-copy bs-featured-product__desc">
+            {{ product_desc }}
+          </div>
+        {% endif %}
+
+        {% comment %} Commerce Buy Form {% endcomment %}
+        {% if featured_product != blank %}
+          {% form 'product', featured_product, class: 'bs-featured-product__form' %}
+            {% if featured_product.variants.size > 1 %}
+              <div class="bs-featured-product__variants">
+                <label for="FeaturedVariant-{{ section.id }}">{{ 'products.product.product_variants' | default: 'Select Option' | escape }}</label>
+                <select id="FeaturedVariant-{{ section.id }}" name="id">
+                  {% for variant in featured_product.variants %}
+                    <option
+                      value="{{ variant.id }}"
+                      {% if variant == current_variant %}selected="selected"{% endif %}
+                      {% unless variant.available %}disabled="disabled"{% endunless %}
+                    >
+                      {{ variant.title }} - {{ variant.price | money }} {% unless variant.available %}({{ 'products.product.sold_out' | default: 'Sold out' }}){% endunless %}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% else %}
+              <input type="hidden" name="id" value="{{ current_variant.id }}">
+            {% endif %}
+
+            <div class="bs-featured-product__actions">
+              {% if section.settings.show_quantity %}
+                <div class="quantity" style="min-width: 130px; max-width: 140px; margin-bottom: 0;">
+                  <button type="button" class="quantity__button" onclick="const input = this.parentNode.querySelector('input'); input.stepDown(); input.dispatchEvent(new Event('change'));">−</button>
+                  <input
+                    class="quantity__input"
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    value="1"
+                    aria-label="Quantity"
+                  >
+                  <button type="button" class="quantity__button" onclick="const input = this.parentNode.querySelector('input'); input.stepUp(); input.dispatchEvent(new Event('change'));">+</button>
+                </div>
+              {% endif %}
+
+              <button
+                type="submit"
+                name="add"
+                class="bs-featured-product__submit"
+                {% unless current_variant.available %}disabled="disabled"{% endunless %}
+              >
+                <span>
+                  {% if current_variant.available %}
+                    {{ section.settings.add_label | default: 'Add to cart' | escape }}
+                  {% else %}
+                    {{ 'products.product.sold_out' | default: 'Sold out' | escape }}
+                  {% endif %}
+                </span>
+                {% if settings.bottle_show_arrows %}
+                  {% render 'bottle-icon', icon: 'arrow-right' %}
+                {% endif %}
+              </button>
+            </div>
+
+            {% if section.settings.show_dynamic_checkout and current_variant.available %}
+              <div class="bs-featured-product__dynamic">
+                {{ form | payment_button }}
+              </div>
+            {% endif %}
+          {% endform %}
+
+          {% if section.settings.show_view_link %}
+            <a href="{{ featured_product.url }}" class="bs-featured-product__more">
+              <span>{{ section.settings.view_link_text | default: 'View full bottle details' | escape }}</span>
+              {% render 'bottle-icon', icon: 'arrow-right' %}
+            </a>
+          {% endif %}
+        {% elsif request.design_mode %}
+          <div class="bs-empty-state">
+            <p class="bs-copy">Select a product in the section settings to display it here.</p>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured bottle",
+  "tag": "section",
+  "class": "bottle-section-featured-product",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product Selection"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Choose the product to feature. If left empty, the first store product is shown."
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Custom image override",
+      "info": "Optional custom promotional photo for this featured spot."
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Content & Typography"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Bottle of the Month"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Title override",
+      "info": "Leave blank to use the product's actual title."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description / Tasting notes",
+      "info": "Leave blank to use a snippet of the product's description."
+    },
+    {
+      "type": "header",
+      "content": "Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge on image",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge label",
+      "default": "Staff Pick"
+    },
+    {
+      "type": "header",
+      "content": "Quick Specs / Facts"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_specs",
+      "label": "Show specification pills",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "spec_1_lbl",
+      "label": "Spec 1 label",
+      "default": "Origin"
+    },
+    {
+      "type": "text",
+      "id": "spec_1_val",
+      "label": "Spec 1 value",
+      "default": "Kentucky, USA"
+    },
+    {
+      "type": "text",
+      "id": "spec_2_lbl",
+      "label": "Spec 2 label",
+      "default": "Proof / ABV"
+    },
+    {
+      "type": "text",
+      "id": "spec_2_val",
+      "label": "Spec 2 value",
+      "default": "93 Proof (46.5%)"
+    },
+    {
+      "type": "text",
+      "id": "spec_3_lbl",
+      "label": "Spec 3 label",
+      "default": "Type"
+    },
+    {
+      "type": "text",
+      "id": "spec_3_val",
+      "label": "Spec 3 value",
+      "default": "Single Barrel"
+    },
+    {
+      "type": "text",
+      "id": "spec_4_lbl",
+      "label": "Spec 4 label",
+      "default": "Volume"
+    },
+    {
+      "type": "text",
+      "id": "spec_4_val",
+      "label": "Spec 4 value",
+      "default": "750 mL"
+    },
+    {
+      "type": "header",
+      "content": "Commerce Controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show dynamic checkout button (Buy it now)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "add_label",
+      "label": "Add to cart button label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_link",
+      "label": "Show link to full product page",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_link_text",
+      "label": "View details link text",
+      "default": "View full bottle details"
+    },
+    {
+      "type": "header",
+      "content": "Appearance & Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wood_texture",
+      "label": "Show subtle wood texture background",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background color",
+      "default": "#15120e"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Section text color",
+      "default": "#f4ebd9"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / Gold color",
+      "default": "#d6ad74"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured bottle",
+      "settings": {
+        "eyebrow": "Bottle of the Month",
+        "show_badge": true,
+        "badge_text": "Staff Pick",
+        "show_specs": true,
+        "spec_1_lbl": "Origin",
+        "spec_1_val": "Kentucky, USA",
+        "spec_2_lbl": "Proof",
+        "spec_2_val": "93 Proof",
+        "spec_3_lbl": "Type",
+        "spec_3_val": "Single Barrel",
+        "spec_4_lbl": "Volume",
+        "spec_4_val": "750 mL",
+        "show_quantity": true,
+        "show_dynamic_checkout": true,
+        "show_view_link": true
+      }
+    }
+  ]
+}
+{% endschema %}

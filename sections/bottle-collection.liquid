@@ -1,0 +1,390 @@
+{%- assign filter_form = 'BottleFilters-' | append: section.id -%}
+<section class="bs bs-shop" style="{% render 'bottle-vars', section: section %} --bs-shop-columns: {{ section.settings.columns }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %}; --bs-sidebar-width: {{ section.settings.sidebar_width }}px;">
+  <div class="bs-inner">
+    {% if section.settings.show_categories %}<nav class="bs-shop-tabs" aria-label="{{ section.settings.category_label | escape }}"><a class="bs-shop-category{% if collection.handle == 'all' %} is-active{% endif %}" href="{{ routes.all_products_collection_url }}"{% if collection.handle == 'all' %} aria-current="page"{% endif %}>{{ section.settings.all_label | escape }}{% if section.settings.show_counts %}<span>{{ collections.all.all_products_count }}</span>{% endif %}</a>{% for block in section.blocks %}<div {{ block.shopify_attributes }}>{% render 'bottle-collection-link', block: block, collection: collection, show_count: section.settings.show_counts %}</div>{% endfor %}</nav>{% endif %}
+    {% paginate collection.products by section.settings.products_per_page %}
+    <div class="bs-shop-layout{% unless section.settings.show_sidebar %} bs-shop-layout--full{% endunless %}">
+      {% if section.settings.show_sidebar %}<aside class="bs-shop-sidebar"><details open class="bs-shop-filters"><summary><h2>{{ section.settings.sidebar_heading | escape }}</h2>{% render 'bottle-icon', icon: 'right' %}</summary><div class="bs-shop-filters__body">
+        {% if section.settings.show_search %}<form class="bs-shop-search" action="{{ routes.search_url }}" method="get" role="search"><label for="BottleShopSearch-{{ section.id }}">{{ section.settings.search_label | escape }}</label><div><input id="BottleShopSearch-{{ section.id }}" name="q" type="search" placeholder="{{ section.settings.search_placeholder | escape }}"><input type="hidden" name="type" value="product"><input type="hidden" name="options[prefix]" value="last"><button type="submit">{{ section.settings.search_button | escape }}</button></div></form>{% endif %}
+        {% if section.blocks.size > 0 %}<div class="bs-shop-sidebar__categories"><h3>{{ section.settings.category_label | escape }}</h3>{% for block in section.blocks %}{% render 'bottle-collection-link', block: block, collection: collection, show_count: section.settings.show_counts %}{% endfor %}</div>{% endif %}
+        <form id="{{ filter_form }}" action="{{ collection.url }}" method="get">
+          {% if section.settings.enable_filtering %}{% for filter in collection.filters %}<fieldset class="bs-filter"><legend>{{ filter.label | escape }}</legend>{% case filter.type %}{% when 'list', 'boolean' %}{% for value in filter.values %}<label class="bs-filter-option"><input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}"{% if value.active %} checked{% elsif value.count == 0 %} disabled{% endif %}><span>{{ value.label | escape }}</span><small>{{ value.count }}</small></label>{% endfor %}{% when 'price_range' %}<div class="bs-price-filter"><label>{{ settings.bottle_collection_min_label | escape }}<input type="number" inputmode="decimal" min="0" step="any" name="{{ filter.min_value.param_name }}"{% if filter.min_value.value != nil %} value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %} placeholder="0"></label><label>{{ settings.bottle_collection_max_label | escape }}<input type="number" inputmode="decimal" min="0" step="any" max="{{ filter.range_max | divided_by: 100.0 }}" name="{{ filter.max_value.param_name }}"{% if filter.max_value.value != nil %} value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %} placeholder="{{ filter.range_max | divided_by: 100.0 }}"></label></div>{% endcase %}</fieldset>{% endfor %}{% endif %}
+          {% if section.settings.enable_filtering and collection.filters.size > 0 %}<button class="bs-button" type="submit">{{ section.settings.apply_label | escape }}</button><a class="bs-filter-reset" href="{{ collection.url }}">{{ section.settings.reset_label | escape }}</a>{% endif %}
+        </form>
+      </div></details></aside>{% endif %}
+      <div class="bs-shop-results">
+        <div class="bs-shop-toolbar"><p role="status">{% if paginate.items > 0 %}{{ settings.bottle_collection_showing_label | escape }} {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: collection.products.size }} {{ settings.bottle_collection_of_label | escape }} {{ paginate.items }} {{ settings.bottle_collection_results_label | escape }}{% else %}0 {{ settings.bottle_collection_results_label | escape }}{% endif %}</p>
+          {% if section.settings.enable_sorting %}<div class="bs-shop-sort"><label class="bs-sr-only" for="BottleSort-{{ section.id }}">{{ settings.bottle_collection_sort_label | escape }}</label><select id="BottleSort-{{ section.id }}" name="sort_by" form="{{ filter_form }}" data-bs-sort data-bs-form="{{ filter_form }}">{% assign current_sort = collection.sort_by | default: collection.default_sort_by %}{% for option in collection.sort_options %}<option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select>{% unless section.settings.show_sidebar %}<form id="{{ filter_form }}" action="{{ collection.url }}" method="get">{% for filter in collection.filters %}{% for value in filter.active_values %}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value | escape }}">{% endfor %}{% if filter.type == 'price_range' %}{% if filter.min_value.value != nil %}<input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | divided_by: 100.0 }}">{% endif %}{% if filter.max_value.value != nil %}<input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | divided_by: 100.0 }}">{% endif %}{% endif %}{% endfor %}<noscript><button type="submit">{{ section.settings.apply_label | escape }}</button></noscript></form>{% else %}<noscript><button type="submit" form="{{ filter_form }}">{{ section.settings.apply_label | escape }}</button></noscript>{% endunless %}</div>{% endif %}
+        </div>
+        <div class="bs-active-filters">{% for filter in collection.filters %}{% for value in filter.active_values %}<a href="{{ value.url_to_remove }}">{{ filter.label | escape }}: {{ value.label | escape }} <span aria-hidden="true">×</span></a>{% endfor %}{% endfor %}</div>
+        {% if collection.products.size > 0 %}<div class="bs-product-grid">{% for item in collection.products %}{% render 'bottle-product-card', card_product: item, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}{% endfor %}</div>{% else %}<div class="bs-shop-empty"><h2 class="bs-heading">{{ section.settings.empty_heading | escape }}</h2><div class="bs-copy">{{ section.settings.empty_description }}</div>{% render 'bottle-button', label: section.settings.reset_label, link: collection.url %}</div>{% endif %}
+        {% if paginate.pages > 1 %}<nav class="bs-pagination" aria-label="{{ settings.bottle_collection_pagination_label | escape }}">{% if paginate.previous %}<a href="{{ paginate.previous.url }}" aria-label="{{ settings.bottle_collection_previous_label | escape }}">{% render 'bottle-icon', icon: 'arrow-left' %}</a>{% endif %}{% for part in paginate.parts %}{% if part.is_link %}<a href="{{ part.url }}">{{ part.title }}</a>{% else %}<span{% if part.title == paginate.current_page %} aria-current="page"{% endif %}>{{ part.title }}</span>{% endif %}{% endfor %}{% if paginate.next %}<a href="{{ paginate.next.url }}" aria-label="{{ settings.bottle_collection_next_label | escape }}">{% render 'bottle-icon', icon: 'arrow-right' %}</a>{% endif %}</nav>{% endif %}
+      </div>
+    </div>
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bottle Shop collection",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_categories",
+      "label": "Show category tabs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "category_label",
+      "label": "Categories label",
+      "default": "Categories"
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "All products label",
+      "default": "All products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_counts",
+      "label": "Show collection counts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show sidebar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sidebar_heading",
+      "label": "Sidebar heading",
+      "default": "Filter collections"
+    },
+    {
+      "type": "range",
+      "id": "sidebar_width",
+      "label": "Desktop sidebar width",
+      "min": 220,
+      "max": 320,
+      "step": 10,
+      "default": 260,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show product search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Search label",
+      "default": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search products\u2026"
+    },
+    {
+      "type": "text",
+      "id": "search_button",
+      "label": "Search button label",
+      "default": "Search"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Show Shopify collection filters",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Show sorting",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "apply_label",
+      "label": "Apply filters label",
+      "default": "Apply filters"
+    },
+    {
+      "type": "text",
+      "id": "reset_label",
+      "label": "Reset label",
+      "default": "Clear filters"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 6,
+      "max": 48,
+      "step": 3,
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Wide desktop product columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Product title size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 26,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Product image fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Fill image area"
+        },
+        {
+          "value": "contain",
+          "label": "Show entire image"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_category",
+      "label": "Show product category",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show short description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "label": "Enable add to cart on single-variant products",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "add_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "options_label",
+      "label": "Choose options label",
+      "default": "Choose options"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_label",
+      "label": "Sold out label",
+      "default": "Sold out"
+    },
+    {
+      "type": "text",
+      "id": "from_label",
+      "label": "Price from label",
+      "default": "From"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Product card background",
+      "default": "#eddfc5"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Product card text",
+      "default": "#15120e"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_texture",
+      "label": "Use parchment card texture",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty heading",
+      "default": "No bottles found"
+    },
+    {
+      "type": "richtext",
+      "id": "empty_description",
+      "label": "Empty description",
+      "default": "<p>Try clearing your filters or explore another collection.</p>"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background override"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text override"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop collection",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "label": "Wine",
+            "handle": "wine"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Spirits",
+            "handle": "spirits"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Beer",
+            "handle": "beer"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Ready to drink",
+            "handle": "ready-to-drink"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Gifts",
+            "handle": "gifts"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Deals",
+            "handle": "deals"
+          }
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  },
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Collection link",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label override"
+        },
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Fallback collection handle",
+          "info": "Used when no collection is selected. A missing collection appears as an inactive label."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link override"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}

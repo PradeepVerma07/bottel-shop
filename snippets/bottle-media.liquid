@@ -1,0 +1,15 @@
+{%- comment -%}Picker images are responsive; included theme assets provide editable starting imagery.{%- endcomment -%}
+{%- liquid
+  assign media_alt = alt | default: image.alt
+  assign media_loading = loading | default: 'lazy'
+  assign media_priority = priority | default: 'auto'
+  assign media_sizes = sizes | default: '100vw'
+  if decorative
+    assign media_alt = ''
+  endif
+-%}
+{%- if image != blank -%}
+  {{- image | image_url: width: 2400 | image_tag: widths: '360, 540, 750, 1100, 1500, 1800, 2400', sizes: media_sizes, loading: media_loading, fetchpriority: media_priority, class: class, alt: media_alt -}}
+{%- elsif fallback != blank -%}
+  <img class="{{ class }}" src="{{ fallback | asset_url }}" width="{{ width | default: 1733 }}" height="{{ height | default: 908 }}" alt="{{ media_alt | escape }}" loading="{{ media_loading }}" fetchpriority="{{ media_priority }}">
+{%- endif -%}

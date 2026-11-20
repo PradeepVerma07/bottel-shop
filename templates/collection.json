@@ -1,0 +1,77 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "bottle-shop-banner",
+      "settings": {}
+    },
+    "catalog": {
+      "type": "bottle-collection",
+      "settings": {},
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "label": "Wine",
+            "handle": "wine"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "label": "Spirits",
+            "handle": "spirits"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "label": "Beer",
+            "handle": "beer"
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "label": "Ready to drink",
+            "handle": "ready-to-drink"
+          }
+        },
+        "category_5": {
+          "type": "category",
+          "settings": {
+            "label": "Gifts",
+            "handle": "gifts"
+          }
+        },
+        "category_6": {
+          "type": "category",
+          "settings": {
+            "label": "Deals",
+            "handle": "deals"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4",
+        "category_5",
+        "category_6"
+      ]
+    }
+  },
+  "order": [
+    "banner",
+    "catalog"
+  ]
+}

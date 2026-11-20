@@ -1,0 +1,560 @@
+<bottle-slideshow class="bs bs-hero bs-hero--{{ section.settings.alignment }}" aria-roledescription="carousel" aria-label="{{ section.settings.accessibility_label | escape }}" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.interval }}" style="{% render 'bottle-vars', section: section %} --bs-hero-height: {{ section.settings.height }}px; --bs-hero-mobile: {{ section.settings.height_mobile }}px; --bs-copy-width: {{ section.settings.copy_width }}%; --bs-hero-top: {{ section.settings.copy_top }}px; --bs-hero-title: {{ section.settings.title_size }}px; --bs-hero-subtitle: {{ section.settings.subtitle_size }}px; --bs-hero-title-mobile: {{ section.settings.title_size_mobile }}px; --bs-hero-subtitle-mobile: {{ section.settings.subtitle_size_mobile }}px; --bs-control-size: {{ section.settings.control_size }}px; --bs-control-size-mobile: {{ section.settings.control_size_mobile }}px; --bs-arrow-size: {{ section.settings.arrow_size }}px; --bs-arrow-size-mobile: {{ section.settings.arrow_size_mobile }}px;">
+  {% for block in section.blocks %}
+    {%- liquid
+      assign fallback_image = ''
+      case block.settings.reference_image
+        when 'hero'
+          assign fallback_image = 'bs-hero.png'
+        when 'wine'
+          assign fallback_image = 'bs-collection-wine.png'
+        when 'beer'
+          assign fallback_image = 'bs-collection-beer.png'
+      endcase
+      assign button_link = block.settings.button_link
+      if button_link == blank and block.settings.product != blank
+        assign button_link = block.settings.product.url
+      endif
+      assign portrait_fallback = false
+      if block.settings.image == blank
+        if block.settings.reference_image == 'wine' or block.settings.reference_image == 'beer'
+          assign portrait_fallback = true
+        endif
+      endif
+      assign image_loading = 'lazy'
+      assign image_priority = 'auto'
+      if forloop.first
+        assign image_loading = 'eager'
+        assign image_priority = 'high'
+      endif
+    -%}
+    <article class="bs-hero__slide{% if portrait_fallback %} bs-hero__slide--portrait{% endif %}" data-bs-slide data-block-id="{{ block.id }}" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ forloop.length }}"{% unless forloop.first %} hidden{% endunless %} style="--bs-image-x: {{ block.settings.image_x }}%; --bs-image-x-mobile: {{ block.settings.image_x_mobile }}%; --bs-overlay-mobile: {{ block.settings.overlay_mobile | divided_by: 100.0 }}; --bs-overlay: {{ block.settings.overlay | divided_by: 100.0 }}; --bs-tagline-size: {{ block.settings.signature_size }}px; --bs-text: {{ block.settings.text_color | default: section.settings.text_color | default: settings.bottle_text }}; --bs-accent: {{ block.settings.accent_color | default: section.settings.accent_color | default: settings.bottle_accent }};" {{ block.shopify_attributes }}>
+      <div class="bs-background-wrap bs-hero__desktop{% if block.settings.mobile_image != blank %} bs-hero__desktop--has-mobile{% endif %}">{% render 'bottle-media', image: block.settings.image, fallback: fallback_image, class: 'bs-background bs-hero__background', alt: block.settings.image_alt, loading: image_loading, priority: image_priority %}</div>
+      {% if block.settings.mobile_image != blank %}<div class="bs-background-wrap bs-hero__mobile">{% render 'bottle-media', image: block.settings.mobile_image, class: 'bs-background bs-hero__background', alt: block.settings.image_alt, loading: image_loading %}</div>{% endif %}
+      <div class="bs-overlay"></div>
+      <div class="bs-inner bs-hero__content" aria-live="{% if section.settings.autoplay %}off{% else %}polite{% endif %}">
+        {% if block.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ block.settings.eyebrow | escape }}</p>{% endif %}
+        {% if block.settings.heading != blank %}<{{ section.settings.heading_tag }} class="bs-heading bs-hero__heading">{{ block.settings.heading | escape | newline_to_br }}</{{ section.settings.heading_tag }}>{% endif %}
+        {% if block.settings.subheading != blank %}<p class="bs-heading bs-hero__subheading">{{ block.settings.subheading | escape | newline_to_br }}</p>{% endif %}
+        {% if block.settings.description != blank %}<div class="bs-copy bs-hero__description">{{ block.settings.description }}</div>{% endif %}
+        <div class="bs-actions">{% render 'bottle-button', label: block.settings.button_label, link: button_link %}{% render 'bottle-button', label: block.settings.secondary_label, link: block.settings.secondary_link, style: 'text' %}</div>
+      </div>
+      {% if block.settings.signature != blank or block.settings.origin != blank %}<div class="bs-hero__signature"><p>{{ block.settings.signature | escape | newline_to_br }}</p>{% if block.settings.origin != blank %}<small>{{ block.settings.origin | escape }}</small>{% endif %}</div>{% endif %}
+    </article>
+  {% endfor %}
+  {% if section.blocks.size > 1 and section.settings.show_controls %}
+    <div class="bs-hero__controls" aria-label="{{ section.settings.controls_label | escape }}">
+      {% if section.settings.show_counter %}<span class="bs-counter"><strong data-bs-current>01</strong><span>/ {{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span></span><span class="bs-track" aria-hidden="true"><span class="bs-progress" data-bs-progress></span></span>{% endif %}
+      <button class="bs-circle" data-bs-previous type="button" aria-label="{{ section.settings.previous_label | escape }}">{% render 'bottle-icon', icon: 'arrow-left' %}</button>
+      <button class="bs-circle" data-bs-next type="button" aria-label="{{ section.settings.next_label | escape }}">{% render 'bottle-icon', icon: 'arrow-right' %}</button>
+      {% if section.settings.autoplay %}<button class="bs-pause" data-bs-pause type="button" aria-pressed="false">{{ section.settings.pause_label | escape }}</button>{% endif %}
+    </div>
+  {% endif %}
+</bottle-slideshow>
+
+{% schema %}
+{
+  "name": "Bottle Shop hero",
+  "tag": "section",
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Desktop height",
+      "min": 600,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Mobile height",
+      "min": 600,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "default": 760
+    },
+    {
+      "type": "range",
+      "id": "copy_width",
+      "label": "Content width",
+      "min": 35,
+      "max": 80,
+      "step": 1,
+      "unit": "%",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "copy_top",
+      "label": "Desktop text top offset",
+      "min": 120,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "default": 205
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1 — main page title"
+        },
+        {
+          "value": "h2",
+          "label": "H2 — additional hero"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "header",
+      "content": "Heading sizes"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Main heading — desktop",
+      "min": 48,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 108
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Accent heading — desktop",
+      "min": 28,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Main heading — mobile",
+      "min": 44,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Accent heading — mobile",
+      "min": 28,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Slideshow"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show arrow controls",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_counter",
+      "label": "Show slide counter",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "control_size",
+      "label": "Desktop circle diameter",
+      "min": 40,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Desktop arrow icon size",
+      "info": "The icon is capped to fit inside its circle.",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "control_size_mobile",
+      "label": "Mobile circle diameter",
+      "min": 44,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "arrow_size_mobile",
+      "label": "Mobile arrow icon size",
+      "info": "The icon is capped to fit inside its circle.",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Automatically rotate slides",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Seconds between slides",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "accessibility_label",
+      "label": "Slideshow accessibility label",
+      "default": "Featured collections"
+    },
+    {
+      "type": "text",
+      "id": "controls_label",
+      "label": "Controls accessibility label",
+      "default": "Featured collection controls"
+    },
+    {
+      "type": "text",
+      "id": "previous_label",
+      "label": "Previous button label",
+      "default": "Previous featured collection"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next button label",
+      "default": "Next featured collection"
+    },
+    {
+      "type": "text",
+      "id": "pause_label",
+      "label": "Pause button label",
+      "default": "Pause / resume"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background override"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text override"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent override"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background override"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text override"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_body_size",
+      "label": "Use global body text size",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Custom body size (disable global size first)",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "This month's featured bottle"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Blanton's"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Accent heading",
+          "default": "Single Barrel\nBourbon"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>A true icon. Rich character, unmatched craftsmanship, and a favorite among collectors for a reason.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop background"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile background"
+        },
+        {
+          "type": "select",
+          "id": "reference_image",
+          "label": "Included reference image",
+          "options": [
+            {
+              "value": "hero",
+              "label": "Bourbon hero"
+            },
+            {
+              "value": "wine",
+              "label": "Wine"
+            },
+            {
+              "value": "beer",
+              "label": "Beer"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ],
+          "default": "hero"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alternative text",
+          "default": "Bourbon and a crystal glass on an oak barrel"
+        },
+        {
+          "type": "range",
+          "id": "image_x",
+          "label": "Horizontal image position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "image_x_mobile",
+          "label": "Mobile horizontal image position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 60,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "overlay",
+          "label": "Dark overlay opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 35
+        },
+        {
+          "type": "range",
+          "id": "overlay_mobile",
+          "label": "Mobile dark overlay opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 70,
+          "unit": "%"
+        },
+        {
+          "type": "header",
+          "content": "Buttons"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Featured product",
+          "info": "When the primary link is empty, the primary button links to this product."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Primary button label",
+          "default": "Shop Blanton's"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Primary button link"
+        },
+        {
+          "type": "text",
+          "id": "secondary_label",
+          "label": "Secondary button label",
+          "default": "Explore our bourbon selection"
+        },
+        {
+          "type": "url",
+          "id": "secondary_link",
+          "label": "Secondary button link",
+          "default": "/collections/all"
+        },
+        {
+          "type": "header",
+          "content": "Editable right-side signature"
+        },
+        {
+          "type": "textarea",
+          "id": "signature",
+          "label": "Signature text",
+          "default": "Bold Heritage.\nExceptional Taste."
+        },
+        {
+          "type": "text",
+          "id": "origin",
+          "label": "Origin / small caption",
+          "default": "Kentucky, USA"
+        },
+        {
+          "type": "range",
+          "id": "signature_size",
+          "label": "Signature font size",
+          "min": 20,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "default": 34
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Slide text color"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Slide accent color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Shop hero",
+      "blocks": [
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

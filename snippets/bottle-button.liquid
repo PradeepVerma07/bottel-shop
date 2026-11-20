@@ -1,0 +1,21 @@
+{%- if label != blank -%}
+  {%- liquid
+    assign button_style = style | default: 'solid'
+    assign button_url = link | default: routes.all_products_collection_url
+    assign arrows = show_arrow
+    if arrows == nil
+      assign arrows = settings.bottle_show_arrows
+    endif
+  -%}
+  {%- if submit -%}
+    <button type="submit" class="bs-button bs-button--{{ button_style }}">
+      <span>{{ label | escape | newline_to_br }}</span>
+      {% if arrows %}{% render 'bottle-icon', icon: 'arrow' %}{% endif %}
+    </button>
+  {%- else -%}
+    <a class="bs-button bs-button--{{ button_style }}" href="{{ button_url }}"{% if new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+      <span>{{ label | escape | newline_to_br }}</span>
+      {% if arrows %}{% render 'bottle-icon', icon: 'arrow' %}{% endif %}
+    </a>
+  {%- endif -%}
+{%- endif -%}
