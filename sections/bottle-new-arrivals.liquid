@@ -99,7 +99,9 @@
         {% endif %}
       </div>
       {% if section.settings.show_button and section.settings.button_label != blank %}
-        {% render 'bottle-button', label: section.settings.button_label, link: shop_url, style: 'text' %}
+        <div class="bs-new-arrivals__action">
+          {% render 'bottle-button', label: section.settings.button_label, link: shop_url, style: 'text' %}
+        </div>
       {% endif %}
     </div>
 

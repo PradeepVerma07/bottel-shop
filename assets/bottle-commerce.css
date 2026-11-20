@@ -677,6 +677,20 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   margin: 0 auto;
 }
 @media (max-width: 800px) {
+  /* Remove extra top & bottom space on phone */
+  .bs-new-arrivals {
+    padding-top: clamp(14px, 3.5vw, 22px) !important;
+    padding-bottom: clamp(16px, 4vw, 24px) !important;
+  }
+  .bs-new-arrivals .bs-related-heading {
+    margin-bottom: 12px !important;
+    gap: 8px !important;
+  }
+  /* Remove extra top button on phone */
+  .bs-new-arrivals__action,
+  .bs-new-arrivals .bs-related-heading > .bs-button {
+    display: none !important;
+  }
   .bs-new-arrivals:not(.bs-new-arrivals--mobile-carousel) .bs-product-grid {
     grid-template-columns: repeat(var(--bs-mobile-columns, 2), minmax(0, 1fr)) !important;
     gap: 12px !important;
