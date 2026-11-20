@@ -1315,21 +1315,21 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   :where(body:not(:has(#MainContent[data-template="index"]))) .bs-store .bs-heading {
     display: flex !important;
     flex-direction: column !important;
-    gap: 0 !important;
+    gap: 4px !important;
     font-size: 36px !important;
-    line-height: 0.92 !important;
+    line-height: 1.08 !important;
   }
   .bs-store .bs-heading {
     display: flex !important;
     flex-direction: column !important;
-    gap: 0 !important;
-    line-height: 0.92 !important;
+    gap: 4px !important;
+    line-height: 1.08 !important;
   }
   .bs-store__heading-main,
   .bs-store__heading-accent {
     display: block !important;
     white-space: nowrap !important;
-    line-height: 0.92 !important;
+    line-height: 1.08 !important;
     margin: 0 !important;
     padding: 0 !important;
   }
