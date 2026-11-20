@@ -75,11 +75,11 @@
 
 <section
   id="BottleNewArrivals-{{ section.id }}"
-  class="bs bs-new-arrivals bs-new-arrivals--mobile-{{ section.settings.columns_mobile | default: '2' }}{% if section.settings.show_wood_texture %} bs-new-arrivals--wood{% endif %}"
+  class="bs bs-new-arrivals bs-new-arrivals--mobile-{{ section.settings.columns_mobile | default: 'carousel' }}{% if section.settings.show_wood_texture %} bs-new-arrivals--wood{% endif %}"
   style="
     {% render 'bottle-vars', section: section %}
     --bs-shop-columns: {{ section.settings.columns }};
-    --bs-mobile-columns: {{ section.settings.columns_mobile | default: '2' }};
+    --bs-mobile-columns: {{ section.settings.columns_mobile | default: 'carousel' }};
     --bs-card-title-size: {{ section.settings.card_title_size }}px;
     --bs-card-image-fit: {{ section.settings.image_fit }};
     --bs-card-bg: {{ section.settings.card_color }};
@@ -209,18 +209,22 @@
     {
       "type": "select",
       "id": "columns_mobile",
-      "label": "Mobile columns",
+      "label": "Mobile layout",
       "options": [
         {
-          "value": "1",
-          "label": "1 column"
+          "value": "carousel",
+          "label": "Carousel / slider"
         },
         {
           "value": "2",
-          "label": "2 columns"
+          "label": "2 columns grid"
+        },
+        {
+          "value": "1",
+          "label": "1 column grid"
         }
       ],
-      "default": "2"
+      "default": "carousel"
     },
     {
       "type": "checkbox",
@@ -423,7 +427,7 @@
         "button_label": "Explore All New",
         "products_to_show": 4,
         "columns": 4,
-        "columns_mobile": "2",
+        "columns_mobile": "carousel",
         "show_badge": true,
         "badge_text": "New",
         "quick_add": true

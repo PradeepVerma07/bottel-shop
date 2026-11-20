@@ -311,7 +311,7 @@
         "sort_by_newest": true,
         "products_to_show": 4,
         "columns": 4,
-        "columns_mobile": "2",
+        "columns_mobile": "carousel",
         "show_sold_out": true,
         "show_badge": true,
         "badge_text": "New",
