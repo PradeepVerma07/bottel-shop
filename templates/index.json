@@ -190,6 +190,18 @@
             "browse_label": "Browse",
             "image_x": 50
           }
+        },
+        "block_6": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "heading": "Deals",
+            "reference_image": "deals",
+            "image_alt": "",
+            "link": "shopify://collections/all",
+            "browse_label": "Browse",
+            "image_x": 50
+          }
         }
       },
       "block_order": [
@@ -197,13 +209,14 @@
         "block_2",
         "block_3",
         "block_4",
-        "block_5"
+        "block_5",
+        "block_6"
       ],
       "settings": {
         "heading": "Explore our collection",
         "anchor": "bottle-collections",
-        "columns": 5,
-        "columns_mobile": "2",
+        "columns": 6,
+        "columns_mobile": "3",
         "card_height": 420,
         "card_height_mobile": 310,
         "background_color": "",
