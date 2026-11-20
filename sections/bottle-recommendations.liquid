@@ -90,7 +90,7 @@
     {% endfor %}
   {% endif %}
 {% endcapture %}
-<div class="bs bs-recommendations" style="{% render 'bottle-vars', section: section %} --bs-shop-columns: {{ section.settings.columns }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %};">
+<div class="bs bs-recommendations bs-recommendations--mobile-{{ section.settings.columns_mobile | default: 'carousel' }}" style="{% render 'bottle-vars', section: section %} --bs-shop-columns: {{ section.settings.columns }}; --bs-mobile-columns: {{ section.settings.columns_mobile | default: 'carousel' }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %};">
   <bottle-recommendations{% if section.settings.automatic and seed_product != blank %} data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&amp;product_id={{ seed_product.id }}&amp;limit=10&amp;intent=related"{% endif %}>
     <div data-bs-related-content>{% if rendered_count > 0 %}<div class="bs-inner"><div class="bs-related-heading"><div>{% if section.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2 class="bs-heading">{{ section.settings.heading | escape }}</h2></div>{% if section.settings.show_shop_link %}{% render 'bottle-button', label: section.settings.shop_label, link: routes.all_products_collection_url, style: 'text' %}{% endif %}</div><div class="bs-product-grid">{{ related_cards }}</div></div>{% elsif request.design_mode %}<div class="bs-inner bs-copy">{{ section.settings.editor_empty_message | escape }}</div>{% endif %}</div>
   </bottle-recommendations>
@@ -147,6 +147,26 @@
       "max": 4,
       "step": 1,
       "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile layout",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carousel / slider"
+        },
+        {
+          "value": "2",
+          "label": "2 columns grid"
+        },
+        {
+          "value": "1",
+          "label": "1 column grid"
+        }
+      ],
+      "default": "carousel"
     },
     {
       "type": "checkbox",
@@ -342,7 +362,10 @@
   ],
   "presets": [
     {
-      "name": "Bottle Shop related"
+      "name": "Bottle Shop related",
+      "settings": {
+        "columns_mobile": "carousel"
+      }
     }
   ]
 }

@@ -698,11 +698,13 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .bs-new-arrivals .bs-related-heading > .bs-button {
     display: none !important;
   }
-  .bs-new-arrivals:not(.bs-new-arrivals--mobile-carousel) .bs-product-grid {
+  .bs-new-arrivals:not(.bs-new-arrivals--mobile-carousel) .bs-product-grid,
+  .bs-recommendations:not(.bs-recommendations--mobile-carousel) .bs-product-grid {
     grid-template-columns: repeat(var(--bs-mobile-columns, 2), minmax(0, 1fr)) !important;
     gap: 12px !important;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-grid {
+  .bs-new-arrivals--mobile-carousel .bs-product-grid,
+  .bs-recommendations--mobile-carousel .bs-product-grid {
     display: flex !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
@@ -716,7 +718,8 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
     scrollbar-width: thin;
     scrollbar-color: rgba(214, 173, 116, 0.4) transparent;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-card {
+  .bs-new-arrivals--mobile-carousel .bs-product-card,
+  .bs-recommendations--mobile-carousel .bs-product-card {
     flex: 0 0 clamp(165px, 46vw, 220px) !important;
     width: clamp(165px, 46vw, 220px) !important;
     min-width: clamp(165px, 46vw, 220px) !important;
@@ -725,83 +728,101 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
     flex-direction: column !important;
     padding: 10px !important;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-card__image {
+  .bs-new-arrivals--mobile-carousel .bs-product-card__image,
+  .bs-recommendations--mobile-carousel .bs-product-card__image {
     width: 100% !important;
     height: 150px !important;
     min-height: 150px !important;
     border-radius: 8px 8px 0 0 !important;
   }
   .bs-new-arrivals--mobile-carousel .bs-product-card__image img,
-  .bs-new-arrivals--mobile-carousel .bs-product-card__image svg {
+  .bs-new-arrivals--mobile-carousel .bs-product-card__image svg,
+  .bs-recommendations--mobile-carousel .bs-product-card__image img,
+  .bs-recommendations--mobile-carousel .bs-product-card__image svg {
     height: 150px !important;
     min-height: 150px !important;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-card__info {
+  .bs-new-arrivals--mobile-carousel .bs-product-card__info,
+  .bs-recommendations--mobile-carousel .bs-product-card__info {
     padding: 8px 4px 4px !important;
     width: 100% !important;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-card h3 {
+  .bs-new-arrivals--mobile-carousel .bs-product-card h3,
+  .bs-recommendations--mobile-carousel .bs-product-card h3 {
     font-size: 15px !important;
     line-height: 1.15 !important;
     margin: 4px 0 !important;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-card__price {
+  .bs-new-arrivals--mobile-carousel .bs-product-card__price,
+  .bs-recommendations--mobile-carousel .bs-product-card__price {
     font-size: 13px !important;
     margin: 4px 0 !important;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-card .bs-button {
+  .bs-new-arrivals--mobile-carousel .bs-product-card .bs-button,
+  .bs-recommendations--mobile-carousel .bs-product-card .bs-button {
     padding: 8px 10px !important;
     font-size: 10px !important;
     min-height: 34px !important;
     width: 100% !important;
     justify-content: center !important;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-grid::-webkit-scrollbar {
+  .bs-new-arrivals--mobile-carousel .bs-product-grid::-webkit-scrollbar,
+  .bs-recommendations--mobile-carousel .bs-product-grid::-webkit-scrollbar {
     height: 4px;
   }
-  .bs-new-arrivals--mobile-carousel .bs-product-grid::-webkit-scrollbar-thumb {
+  .bs-new-arrivals--mobile-carousel .bs-product-grid::-webkit-scrollbar-thumb,
+  .bs-recommendations--mobile-carousel .bs-product-grid::-webkit-scrollbar-thumb {
     background: rgba(214, 173, 116, 0.4);
     border-radius: 4px;
   }
 }
 @media (max-width: 600px) {
-  .bs-new-arrivals--mobile-2 .bs-product-card {
+  .bs-new-arrivals--mobile-2 .bs-product-card,
+  .bs-recommendations--mobile-2 .bs-product-card {
     display: flex !important;
     flex-direction: column !important;
     padding: 10px !important;
   }
-  .bs-new-arrivals--mobile-2 .bs-product-card__image {
+  .bs-new-arrivals--mobile-2 .bs-product-card__image,
+  .bs-recommendations--mobile-2 .bs-product-card__image {
     width: 100% !important;
     min-height: 140px !important;
     height: 140px !important;
     border-radius: 8px 8px 0 0 !important;
   }
   .bs-new-arrivals--mobile-2 .bs-product-card__image img,
-  .bs-new-arrivals--mobile-2 .bs-product-card__image svg {
+  .bs-new-arrivals--mobile-2 .bs-product-card__image svg,
+  .bs-recommendations--mobile-2 .bs-product-card__image img,
+  .bs-recommendations--mobile-2 .bs-product-card__image svg {
     min-height: 140px !important;
     height: 140px !important;
   }
-  .bs-new-arrivals--mobile-2 .bs-product-card__info {
+  .bs-new-arrivals--mobile-2 .bs-product-card__info,
+  .bs-recommendations--mobile-2 .bs-product-card__info {
     padding: 8px 4px 4px !important;
     width: 100% !important;
   }
-  .bs-new-arrivals--mobile-2 .bs-product-card h3 {
+  .bs-new-arrivals--mobile-2 .bs-product-card h3,
+  .bs-recommendations--mobile-2 .bs-product-card h3 {
     font-size: 15px !important;
     line-height: 1.15 !important;
     margin: 4px 0 !important;
   }
-  .bs-new-arrivals--mobile-2 .bs-product-card__price {
+  .bs-new-arrivals--mobile-2 .bs-product-card__price,
+  .bs-recommendations--mobile-2 .bs-product-card__price {
     font-size: 13px !important;
     margin: 4px 0 !important;
   }
-  .bs-new-arrivals--mobile-2 .bs-product-card .bs-button {
+  .bs-new-arrivals--mobile-2 .bs-product-card .bs-button,
+  .bs-recommendations--mobile-2 .bs-product-card .bs-button {
     padding: 8px 10px !important;
     font-size: 10px !important;
     min-height: 34px !important;
     width: 100% !important;
     justify-content: center !important;
   }
-  .bs-new-arrivals--mobile-1 .bs-product-grid {
+  .bs-new-arrivals--mobile-1 .bs-product-grid,
+  .bs-recommendations--mobile-1 .bs-product-grid {
     grid-template-columns: 1fr !important;
     gap: 14px !important;
   }
