@@ -229,7 +229,11 @@ bottle-slideshow { display: block; }
   .bs { --bs-gutter: var(--bs-gutter-mobile); }
   .bs-heading { font-size: var(--bs-title-mobile,48px); }
   .bs-inner { padding-left: var(--bs-gutter-mobile); padding-right: var(--bs-gutter-mobile); }
-  .bs-header__inner { gap: 15px; }
+  .bs-header__inner {
+    gap: 15px;
+    padding-top: var(--bs-padding-top-mobile, 10px);
+    padding-bottom: var(--bs-padding-bottom-mobile, 10px);
+  }
   .bs-logo { width: var(--bs-mobile-logo,85px); flex-basis: var(--bs-mobile-logo,85px); }
   .bs-header__content { gap: 10px; }
   .bs-search { max-width: 260px; }
@@ -273,7 +277,7 @@ bottle-slideshow { display: block; }
   .bs-footer__bottom { align-items: flex-start; flex-direction: column; }
 }
 @media (max-width: 500px) {
-  .bs-header__inner { gap: 10px; padding-top: 16px; }
+  .bs-header__inner { gap: 10px; }
   .bs-header__content { gap: 5px; }
   .bs-logo { width: min(var(--bs-mobile-logo),75px); flex-basis: min(var(--bs-mobile-logo),75px); }
   .bs-search { min-width: 80px; }
