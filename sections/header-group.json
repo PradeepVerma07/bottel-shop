@@ -98,7 +98,9 @@
         "inherit_body_size": true,
         "body_size": 16,
         "padding_top": 22,
-        "padding_bottom": 22
+        "padding_bottom": 22,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
       }
     }
   },

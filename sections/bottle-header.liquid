@@ -8,7 +8,7 @@
     assign logo_fallback = 'bs-logo.png'
   endif
 -%}
-<header class="bs bs-header bs-header--home{% if overlay %} bs-header--overlay{% endif %}" style="{% render 'bottle-vars', section: section %} --bs-logo-width: {{ section.settings.logo_width }}px; --bs-mobile-logo: {{ section.settings.logo_width_mobile }}px; --bs-nav-size: {{ section.settings.menu_size }}px;">
+<header class="bs bs-header bs-header--home{% if overlay %} bs-header--overlay{% endif %}" style="{% render 'bottle-vars', section: section %} --bs-logo-width: {{ section.settings.logo_width }}px; --bs-mobile-logo: {{ section.settings.logo_width_mobile }}px; --bs-nav-size: {{ section.settings.menu_size }}px; --bs-padding-top-mobile: {{ section.settings.padding_top_mobile | default: 0 }}px; --bs-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile | default: 0 }}px;">
   <div class="bs-inner bs-header__inner">
     <a class="bs-logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }}">
       {% if section.settings.logo != blank or logo_fallback != blank %}
@@ -231,7 +231,7 @@
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "Spacing (Desktop)"
     },
     {
       "type": "range",
@@ -252,6 +252,30 @@
       "step": 2,
       "unit": "px",
       "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Spacing (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     }
   ],
   "blocks": [

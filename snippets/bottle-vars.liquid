@@ -8,3 +8,5 @@
 --bs-body-size: {% if section.settings.inherit_body_size %}{{ settings.bottle_body_size | default: 16 }}{% else %}{{ section.settings.body_size | default: 16 }}{% endif %}px;
 --bs-padding-top: {{ section.settings.padding_top | default: 0 }}px;
 --bs-padding-bottom: {{ section.settings.padding_bottom | default: 0 }}px;
+--bs-padding-top-mobile: {{ section.settings.padding_top_mobile | default: 0 }}px;
+--bs-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile | default: 0 }}px;
