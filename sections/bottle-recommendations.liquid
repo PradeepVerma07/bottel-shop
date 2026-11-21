@@ -38,15 +38,22 @@
     endfor
   endif
   assign related_products = related_collection.products
-  if recommendations.performed and recommendations.products_count > 0
+  if section.settings.show_all_products
+    assign related_products = collections.all.products
+  elsif recommendations.performed and recommendations.products_count > 0
     assign related_products = recommendations.products
   endif
-  assign max_products = section.settings.products_to_show | default: 4
+  assign max_products = section.settings.products_to_show | default: 24
+  if section.settings.show_all_products
+    assign max_products = 50
+  endif
   assign rendered_count = 0
   assign rendered_ids = ''
-  if product != blank
-    assign rendered_ids = product.id | append: ','
-  endif
+  unless section.settings.include_current_product
+    if product != blank
+      assign rendered_ids = product.id | append: ','
+    endif
+  endunless
 -%}
 {% capture related_cards %}
   {% for recommendation in related_products limit: 50 %}
@@ -91,7 +98,7 @@
   {% endif %}
 {% endcapture %}
 <div class="bs bs-recommendations bs-recommendations--mobile-{{ section.settings.columns_mobile | default: 'carousel' }}" style="{% render 'bottle-vars', section: section %} --bs-shop-columns: {{ section.settings.columns }}; --bs-mobile-columns: {{ section.settings.columns_mobile | default: 'carousel' }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %};">
-  <bottle-recommendations{% if section.settings.automatic and seed_product != blank %} data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&amp;product_id={{ seed_product.id }}&amp;limit=10&amp;intent=related"{% endif %}>
+  <bottle-recommendations{% if section.settings.automatic and section.settings.show_all_products != true and seed_product != blank %} data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&amp;product_id={{ seed_product.id }}&amp;limit=10&amp;intent=related"{% endif %}>
     <div data-bs-related-content>{% if rendered_count > 0 %}<div class="bs-inner"><div class="bs-related-heading"><div>{% if section.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2 class="bs-heading">{{ section.settings.heading | escape }}</h2></div>{% if section.settings.show_shop_link %}{% render 'bottle-button', label: section.settings.shop_label, link: routes.all_products_collection_url, style: 'text' %}{% endif %}</div><div class="bs-product-grid">{{ related_cards }}</div></div>{% elsif request.design_mode %}<div class="bs-inner bs-copy">{{ section.settings.editor_empty_message | escape }}</div>{% endif %}</div>
   </bottle-recommendations>
 </div>
@@ -121,9 +128,21 @@
     },
     {
       "type": "checkbox",
+      "id": "show_all_products",
+      "label": "Show all store products automatically",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "include_current_product",
+      "label": "Include current product in list",
+      "default": true
+    },
+    {
+      "type": "checkbox",
       "id": "automatic",
       "label": "Use Shopify related recommendations",
-      "default": true
+      "default": false
     },
     {
       "type": "collection",
@@ -135,9 +154,9 @@
       "id": "products_to_show",
       "label": "Products to show",
       "min": 2,
-      "max": 8,
+      "max": 50,
       "step": 1,
-      "default": 4
+      "default": 24
     },
     {
       "type": "range",

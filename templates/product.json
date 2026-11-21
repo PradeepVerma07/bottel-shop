@@ -103,7 +103,10 @@
       "settings": {
         "heading": "You may also like",
         "eyebrow": "One more good pour",
-        "products_to_show": 4,
+        "show_all_products": true,
+        "include_current_product": true,
+        "automatic": false,
+        "products_to_show": 24,
         "columns": 4,
         "columns_mobile": "carousel",
         "show_shop_link": true,
