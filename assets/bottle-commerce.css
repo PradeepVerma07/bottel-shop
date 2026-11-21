@@ -111,6 +111,27 @@
 .bs-product-card:hover .bs-product-card__image img {
   transform: scale(1.03);
 }
+/* 1:1 Square Image for Product Page (recommendations) and New Arrivals Section */
+.bs-recommendations .bs-product-card__image,
+.bs-new-arrivals .bs-product-card__image {
+  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: unset !important;
+  max-height: unset !important;
+}
+.bs-recommendations .bs-product-card__image img,
+.bs-recommendations .bs-product-card__image svg,
+.bs-new-arrivals .bs-product-card__image img,
+.bs-new-arrivals .bs-product-card__image svg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  object-fit: var(--bs-card-image-fit, cover) !important;
+  object-position: center !important;
+}
 .bs-product-card__placeholder { color: #b99c72; background: #2b2318; }
 .bs-product-badge {
   position: absolute;
@@ -168,6 +189,11 @@
   color: #15110d !important;
   margin: 0 0 10px !important;
   text-align: center !important;
+  min-height: 2.3em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .bs-product-card h3 a {
   color: inherit !important;
@@ -184,6 +210,11 @@
   margin: 0 0 16px !important;
   text-align: center !important;
   max-width: 95% !important;
+  min-height: 2.9em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .bs-product-card__price {
   display: flex !important;
@@ -646,13 +677,16 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .bs-cart-line__total { grid-column: 2/-1; text-align: left; }
   .bs-cart-line__quantity { grid-column: 3; grid-row: 1; }
   .bs-recommendations .bs-product-card { grid-template-columns: 1fr; }
-  .bs-recommendations .bs-product-card__image { height: 240px; }
+  .bs-recommendations .bs-product-card__image,
+  .bs-new-arrivals .bs-product-card__image { aspect-ratio: 1 / 1 !important; height: auto !important; min-height: unset !important; }
 }
 @media (max-width: 1000px) {
   .bs-shop-layout { grid-template-columns: minmax(0,220px) minmax(0,1fr); gap: 20px; }
   .bs-shop-sidebar { padding: 16px; }
   .bs-product-card { padding: 0 !important; }
-  .bs-product-card__image { height: 250px; }
+  .bs-shop .bs-product-card__image { height: 250px; }
+  .bs-recommendations .bs-product-card__image,
+  .bs-new-arrivals .bs-product-card__image { aspect-ratio: 1 / 1 !important; height: auto !important; min-height: unset !important; }
   .bs-product-card__info { padding: 18px 16px 22px !important; }
   .bs-cart-layout { grid-template-columns: 1fr; }
   .bs-cart-summary { max-width: 600px; width: 100%; margin-left: auto; }
@@ -925,16 +959,20 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .bs-new-arrivals--mobile-carousel .bs-product-card__image,
   .bs-recommendations--mobile-carousel .bs-product-card__image {
     width: 100% !important;
-    height: 190px !important;
-    min-height: 190px !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    min-height: unset !important;
     border-radius: 18px 18px 0 0 !important;
   }
   .bs-new-arrivals--mobile-carousel .bs-product-card__image img,
   .bs-new-arrivals--mobile-carousel .bs-product-card__image svg,
   .bs-recommendations--mobile-carousel .bs-product-card__image img,
   .bs-recommendations--mobile-carousel .bs-product-card__image svg {
-    height: 190px !important;
-    min-height: 190px !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
   }
   .bs-new-arrivals--mobile-carousel .bs-product-card__info,
   .bs-recommendations--mobile-carousel .bs-product-card__info {
@@ -988,16 +1026,20 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .bs-new-arrivals--mobile-2 .bs-product-card__image,
   .bs-recommendations--mobile-2 .bs-product-card__image {
     width: 100% !important;
-    min-height: 150px !important;
-    height: 160px !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    min-height: unset !important;
     border-radius: 16px 16px 0 0 !important;
   }
   .bs-new-arrivals--mobile-2 .bs-product-card__image img,
   .bs-new-arrivals--mobile-2 .bs-product-card__image svg,
   .bs-recommendations--mobile-2 .bs-product-card__image img,
   .bs-recommendations--mobile-2 .bs-product-card__image svg {
-    min-height: 150px !important;
-    height: 160px !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
   }
   .bs-new-arrivals--mobile-2 .bs-product-card__info,
   .bs-recommendations--mobile-2 .bs-product-card__info {

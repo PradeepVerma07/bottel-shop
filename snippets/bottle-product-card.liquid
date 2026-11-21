@@ -17,6 +17,18 @@
   if card_product.available and card_product.has_only_default_variant and card_product.requires_selling_plan == false
     assign can_quick_add = true
   endif
+  assign raw_title = card_product.title | strip
+  if raw_title.size > 18
+    assign display_title = raw_title | slice: 0, 18 | strip | append: '...'
+  else
+    assign display_title = raw_title
+  endif
+  assign raw_desc = card_product.description | strip_html | strip_newlines | strip
+  if raw_desc.size > 48
+    assign display_desc = raw_desc | slice: 0, 48 | strip | append: '...'
+  else
+    assign display_desc = raw_desc
+  endif
 -%}
 <article class="bs-product-card" data-bs-product-id="{{ card_product.id }}">
   <a class="bs-product-card__image" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
@@ -25,8 +37,8 @@
   </a>
   <div class="bs-product-card__info">
     {% if show_category != false and category != blank %}<p class="bs-product-card__category">{{ category | escape }}</p>{% endif %}
-    <h3><a href="{{ card_product.url }}">{{ card_product.title | escape }}</a></h3>
-    {% if show_description != false and card_product.description != blank %}<p class="bs-product-card__description">{{ card_product.description | strip_html | truncatewords: 16 | escape }}</p>{% endif %}
+    <h3><a href="{{ card_product.url }}" title="{{ raw_title | escape }}">{{ display_title | escape }}</a></h3>
+    {% if show_description != false and raw_desc != blank %}<p class="bs-product-card__description">{{ display_desc | escape }}</p>{% endif %}
     <div class="bs-product-card__price">{% if card_product.compare_at_price > card_product.price %}<s>{{ card_product.compare_at_price | money }}</s>{% endif %}{% if card_product.price_varies %}<span>{{ from_label | default: 'From' | escape }} </span>{% endif %}<strong>{{ card_product.price | money }}</strong></div>
     {% if card_product.available %}
       {% if quick_add and can_quick_add %}
