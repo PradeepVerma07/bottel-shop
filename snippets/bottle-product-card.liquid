@@ -1,7 +1,18 @@
 {%- liquid
   assign variant = card_product.selected_or_first_available_variant
   assign card_id = 'BottleProduct-' | append: section_id | append: '-' | append: card_product.id
-  assign category = card_product.type | default: card_product.vendor
+  assign category = card_product.type
+  if category == blank
+    assign category = card_product.vendor
+  endif
+  if category == blank
+    for c in card_product.collections
+      unless c.handle == 'all' or c.handle == 'frontpage'
+        assign category = c.title
+        break
+      endunless
+    endfor
+  endif
   assign can_quick_add = false
   if card_product.available and card_product.has_only_default_variant and card_product.requires_selling_plan == false
     assign can_quick_add = true
@@ -10,24 +21,26 @@
 <article class="bs-product-card" data-bs-product-id="{{ card_product.id }}">
   <a class="bs-product-card__image" href="{{ card_product.url }}" aria-label="{{ card_product.title | escape }}">
     {% if badge != blank %}<span class="bs-product-badge">{{ badge | escape }}</span>{% endif %}
-    {% if card_product.featured_image != blank %}{{ card_product.featured_image | image_url: width: 900 | image_tag: widths: '240, 360, 540, 750, 900', sizes: '(min-width: 1400px) 15vw, (min-width: 750px) 25vw, 45vw', loading: 'lazy', alt: card_product.featured_image.alt }}{% else %}{{ 'product-1' | placeholder_svg_tag: 'bs-product-card__placeholder' }}{% endif %}
+    {% if card_product.featured_image != blank %}{{ card_product.featured_image | image_url: width: 900 | image_tag: widths: '240, 360, 540, 750, 900', sizes: '(min-width: 1400px) 25vw, (min-width: 750px) 33vw, 85vw', loading: 'lazy', alt: card_product.featured_image.alt }}{% else %}{{ 'product-1' | placeholder_svg_tag: 'bs-product-card__placeholder' }}{% endif %}
   </a>
   <div class="bs-product-card__info">
-    {% if show_category and category != blank %}<p class="bs-product-card__category">{{ category | escape }}</p>{% endif %}
+    {% if show_category != false and category != blank %}<p class="bs-product-card__category">{{ category | escape }}</p>{% endif %}
     <h3><a href="{{ card_product.url }}">{{ card_product.title | escape }}</a></h3>
-    {% if show_description %}<p class="bs-product-card__description">{{ card_product.description | strip_html | truncatewords: 16 | escape }}</p>{% endif %}
+    {% if show_description != false and card_product.description != blank %}<p class="bs-product-card__description">{{ card_product.description | strip_html | truncatewords: 16 | escape }}</p>{% endif %}
     <div class="bs-product-card__price">{% if card_product.compare_at_price > card_product.price %}<s>{{ card_product.compare_at_price | money }}</s>{% endif %}{% if card_product.price_varies %}<span>{{ from_label | default: 'From' | escape }} </span>{% endif %}<strong>{{ card_product.price | money }}</strong></div>
-    {% if quick_add %}
-      {% if can_quick_add %}
+    {% if card_product.available %}
+      {% if quick_add and can_quick_add %}
         <form action="{{ routes.cart_add_url }}" method="post" id="{{ card_id }}" class="bs-product-card__form">
           <input type="hidden" name="id" value="{{ variant.id }}">
           <input type="hidden" name="quantity" value="{{ variant.quantity_rule.min | default: 1 }}">
           <input type="hidden" name="return_to" value="{{ routes.cart_url }}">
           <button class="bs-button bs-button--solid" type="submit" name="add" aria-label="{{ add_label | default: 'Add to cart' | escape }}: {{ card_product.title | escape }}"><span>{{ add_label | default: 'Add to cart' | escape }}</span>{% if settings.bottle_show_arrows %}{% render 'bottle-icon', icon: 'arrow-right' %}{% endif %}</button>
         </form>
-      {% elsif card_product.available %}
+      {% else %}
         {% render 'bottle-button', label: options_label, link: card_product.url %}
-      {% else %}<button class="bs-button bs-button--solid" type="button" disabled>{{ sold_out_label | default: 'Sold out' | escape }}</button>{% endif %}
-    {% else %}{% render 'bottle-button', label: options_label, link: card_product.url %}{% endif %}
+      {% endif %}
+    {% else %}
+      <button class="bs-button bs-button--sold-out" type="button" disabled>{{ sold_out_label | default: 'Sold out' | escape }}</button>
+    {% endif %}
   </div>
 </article>
