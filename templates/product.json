@@ -112,6 +112,8 @@
         "show_shop_link": true,
         "shop_label": "Explore the collection",
         "show_sold_out": true,
+        "title_max_chars": 22,
+        "description_max_chars": 90,
         "quick_add": true
       }
     }

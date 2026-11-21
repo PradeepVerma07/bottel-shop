@@ -187,13 +187,8 @@
   text-transform: uppercase !important;
   overflow-wrap: anywhere !important;
   color: #15110d !important;
-  margin: 0 0 10px !important;
+  margin: 0 0 5px !important;
   text-align: center !important;
-  min-height: 2.3em;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 .bs-product-card h3 a {
   color: inherit !important;
@@ -207,14 +202,9 @@
   font-size: 13.5px !important;
   line-height: 1.45 !important;
   color: #42382f !important;
-  margin: 0 0 16px !important;
+  margin: 0 0 14px !important;
   text-align: center !important;
   max-width: 95% !important;
-  min-height: 2.9em;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 .bs-product-card__price {
   display: flex !important;
@@ -306,6 +296,80 @@
 .bs-related-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
 .bs-related-heading .bs-eyebrow { margin-bottom: 12px; }
 .bs-related-heading .bs-button { flex-shrink: 0; }
+.bs-related-actions { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.bs-carousel-nav { display: inline-flex; align-items: center; gap: 8px; }
+.bs-carousel-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(214, 173, 116, 0.45);
+  background: #1e1811;
+  color: #f4ebd9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+.bs-carousel-arrow:hover {
+  background: #9c351b;
+  border-color: #9c351b;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+.bs-carousel-arrow svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+/* One Row & Carousel of 4 for You May Also Like */
+.bs-recommendations .bs-product-grid {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scroll-snap-type: x mandatory !important;
+  -webkit-overflow-scrolling: touch !important;
+  gap: 20px !important;
+  padding: 4px 2px 20px 2px !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(214, 173, 116, 0.45) transparent;
+}
+.bs-recommendations .bs-product-grid::-webkit-scrollbar {
+  height: 6px;
+}
+.bs-recommendations .bs-product-grid::-webkit-scrollbar-thumb {
+  background: rgba(214, 173, 116, 0.45);
+  border-radius: 6px;
+}
+.bs-recommendations .bs-product-grid::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+.bs-recommendations .bs-product-card {
+  flex: 0 0 calc((100% - (3 * 20px)) / 4) !important;
+  width: calc((100% - (3 * 20px)) / 4) !important;
+  min-width: calc((100% - (3 * 20px)) / 4) !important;
+  max-width: calc((100% - (3 * 20px)) / 4) !important;
+  scroll-snap-align: start !important;
+}
+@media (max-width: 1024px) {
+  .bs-recommendations .bs-product-card {
+    flex: 0 0 calc((100% - (2 * 16px)) / 3) !important;
+    width: calc((100% - (2 * 16px)) / 3) !important;
+    min-width: calc((100% - (2 * 16px)) / 3) !important;
+    max-width: calc((100% - (2 * 16px)) / 3) !important;
+  }
+}
+@media (max-width: 768px) {
+  .bs-recommendations .bs-product-card {
+    flex: 0 0 clamp(220px, 68vw, 290px) !important;
+    width: clamp(220px, 68vw, 290px) !important;
+    min-width: clamp(220px, 68vw, 290px) !important;
+    max-width: clamp(220px, 68vw, 290px) !important;
+  }
+}
 .bs-cart__heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; margin-bottom: 32px; }
 .bs-cart-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(280px,340px); align-items: start; gap: 36px; }
 .bs-cart-line { display: grid; grid-template-columns: 110px minmax(0,1fr) 124px 100px; gap: 22px; align-items: center; padding: 24px 0; border-block-start: 1px solid #d6ad7450; }
@@ -690,7 +754,6 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .bs-product-card__info { padding: 18px 16px 22px !important; }
   .bs-cart-layout { grid-template-columns: 1fr; }
   .bs-cart-summary { max-width: 600px; width: 100%; margin-left: auto; }
-  .bs-recommendations .bs-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 800px) {
   .bs-shop-banner { min-height: var(--bs-banner-mobile,250px); }
@@ -708,7 +771,8 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .bs-product-card__image, .bs-product-card__image img, .bs-product-card__image svg { min-height: 180px; height: 210px; }
   .bs-product-card h3 { font-size: clamp(16px, 4vw, 20px) !important; }
   .bs-product-card__description { font-size: 12.5px; }
-  .bs-related-heading { flex-direction: column; align-items: flex-start; }
+  .bs-related-heading { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .bs-related-actions { width: 100%; justify-content: space-between; }
   .bs-cart__heading .bs-button { max-width: 100%; }
   .bs-cart-update { align-items: flex-start; flex-direction: column; }
 }

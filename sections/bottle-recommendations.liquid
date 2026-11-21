@@ -60,7 +60,7 @@
     {% assign rec_id_token = recommendation.id | append: ',' %}
     {% unless rendered_ids contains rec_id_token %}
       {% if section.settings.show_sold_out or recommendation.available %}
-        {% render 'bottle-product-card', card_product: recommendation, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}
+        {% render 'bottle-product-card', card_product: recommendation, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, title_max_chars: section.settings.title_max_chars, description_max_chars: section.settings.description_max_chars, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}
         {% assign rendered_count = rendered_count | plus: 1 %}
         {% assign rendered_ids = rendered_ids | append: rec_id_token %}
         {% if rendered_count >= max_products %}{% break %}{% endif %}
@@ -72,7 +72,7 @@
       {% assign rec_id_token = recommendation.id | append: ',' %}
       {% unless rendered_ids contains rec_id_token %}
         {% if section.settings.show_sold_out or recommendation.available %}
-          {% render 'bottle-product-card', card_product: recommendation, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}
+          {% render 'bottle-product-card', card_product: recommendation, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, title_max_chars: section.settings.title_max_chars, description_max_chars: section.settings.description_max_chars, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}
           {% assign rendered_count = rendered_count | plus: 1 %}
           {% assign rendered_ids = rendered_ids | append: rec_id_token %}
           {% if rendered_count >= max_products %}{% break %}{% endif %}
@@ -86,7 +86,7 @@
         {% assign rec_id_token = recommendation.id | append: ',' %}
         {% unless rendered_ids contains rec_id_token %}
           {% if section.settings.show_sold_out or recommendation.available %}
-            {% render 'bottle-product-card', card_product: recommendation, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}
+            {% render 'bottle-product-card', card_product: recommendation, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, title_max_chars: section.settings.title_max_chars, description_max_chars: section.settings.description_max_chars, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}
             {% assign rendered_count = rendered_count | plus: 1 %}
             {% assign rendered_ids = rendered_ids | append: rec_id_token %}
             {% if rendered_count >= max_products %}{% break %}{% endif %}
@@ -99,7 +99,7 @@
 {% endcapture %}
 <div class="bs bs-recommendations bs-recommendations--mobile-{{ section.settings.columns_mobile | default: 'carousel' }}" style="{% render 'bottle-vars', section: section %} --bs-shop-columns: {{ section.settings.columns }}; --bs-mobile-columns: {{ section.settings.columns_mobile | default: 'carousel' }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %};">
   <bottle-recommendations{% if section.settings.automatic and section.settings.show_all_products != true and seed_product != blank %} data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&amp;product_id={{ seed_product.id }}&amp;limit=10&amp;intent=related"{% endif %}>
-    <div data-bs-related-content>{% if rendered_count > 0 %}<div class="bs-inner"><div class="bs-related-heading"><div>{% if section.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2 class="bs-heading">{{ section.settings.heading | escape }}</h2></div>{% if section.settings.show_shop_link %}{% render 'bottle-button', label: section.settings.shop_label, link: routes.all_products_collection_url, style: 'text' %}{% endif %}</div><div class="bs-product-grid">{{ related_cards }}</div></div>{% elsif request.design_mode %}<div class="bs-inner bs-copy">{{ section.settings.editor_empty_message | escape }}</div>{% endif %}</div>
+    <div data-bs-related-content>{% if rendered_count > 0 %}<div class="bs-inner"><div class="bs-related-heading"><div>{% if section.settings.eyebrow != blank %}<p class="bs-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2 class="bs-heading">{{ section.settings.heading | escape }}</h2></div><div class="bs-related-actions">{% if section.settings.show_shop_link %}{% render 'bottle-button', label: section.settings.shop_label, link: routes.all_products_collection_url, style: 'text' %}{% endif %}<div class="bs-carousel-nav" data-bs-carousel-controls><button type="button" class="bs-carousel-arrow" data-bs-carousel-prev aria-label="Previous products">{% render 'bottle-icon', icon: 'arrow-left' %}</button><button type="button" class="bs-carousel-arrow" data-bs-carousel-next aria-label="Next products">{% render 'bottle-icon', icon: 'arrow-right' %}</button></div></div></div><div class="bs-product-grid">{{ related_cards }}</div></div>{% elsif request.design_mode %}<div class="bs-inner bs-copy">{{ section.settings.editor_empty_message | escape }}</div>{% endif %}</div>
   </bottle-recommendations>
 </div>
 
@@ -248,6 +248,24 @@
       "id": "show_description",
       "label": "Show short description",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "title_max_chars",
+      "label": "Max title characters (letters)",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "description_max_chars",
+      "label": "Max description characters (letters)",
+      "min": 40,
+      "max": 200,
+      "step": 5,
+      "default": 90
     },
     {
       "type": "checkbox",

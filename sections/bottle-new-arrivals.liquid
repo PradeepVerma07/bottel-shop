@@ -39,6 +39,8 @@
         badge: badge_value,
         show_category: section.settings.show_product_category,
         show_description: section.settings.show_description,
+        title_max_chars: section.settings.title_max_chars,
+        description_max_chars: section.settings.description_max_chars,
         quick_add: section.settings.quick_add,
         add_label: section.settings.add_label,
         options_label: section.settings.options_label,
@@ -59,6 +61,8 @@
             badge: badge_value,
             show_category: section.settings.show_product_category,
             show_description: section.settings.show_description,
+            title_max_chars: section.settings.title_max_chars,
+            description_max_chars: section.settings.description_max_chars,
             quick_add: section.settings.quick_add,
             add_label: section.settings.add_label,
             options_label: section.settings.options_label,
@@ -264,7 +268,25 @@
       "type": "checkbox",
       "id": "show_description",
       "label": "Show description snippet",
-      "default": false
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "title_max_chars",
+      "label": "Max title characters (letters)",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "description_max_chars",
+      "label": "Max description characters (letters)",
+      "min": 40,
+      "max": 200,
+      "step": 5,
+      "default": 90
     },
     {
       "type": "checkbox",

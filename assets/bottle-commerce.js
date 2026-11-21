@@ -53,6 +53,17 @@ document.addEventListener('change', event => {
 
 document.addEventListener('click', event => {
   if (!(event.target instanceof Element)) return;
+  const carouselBtn = event.target.closest('[data-bs-carousel-prev], [data-bs-carousel-next]');
+  if (carouselBtn) {
+    const section = carouselBtn.closest('.bs-recommendations, .bs-new-arrivals');
+    const grid = section?.querySelector('.bs-product-grid');
+    if (grid) {
+      const card = grid.querySelector('.bs-product-card');
+      const step = card ? (card.offsetWidth + 20) : 280;
+      const direction = carouselBtn.hasAttribute('data-bs-carousel-prev') ? -1 : 1;
+      grid.scrollBy({ left: direction * step, behavior: 'smooth' });
+    }
+  }
   const minus = event.target.closest('.bs-qty-btn--minus');
   const plus = event.target.closest('.bs-qty-btn--plus');
   if (minus) {
