@@ -17,13 +17,8 @@
   if card_product.available and card_product.has_only_default_variant and card_product.requires_selling_plan == false
     assign can_quick_add = true
   endif
-  assign max_title_chars = title_max_chars | default: 22
   assign raw_title = card_product.title | strip
-  if raw_title.size > max_title_chars
-    assign display_title = raw_title | slice: 0, max_title_chars | strip | append: '...'
-  else
-    assign display_title = raw_title
-  endif
+  assign display_title = raw_title
   assign max_desc_chars = description_max_chars | default: 90
   assign raw_desc = card_product.description | strip_html | strip_newlines | strip
   if raw_desc.size > max_desc_chars
