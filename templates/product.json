@@ -114,7 +114,8 @@
         "show_sold_out": true,
         "title_max_chars": 22,
         "description_max_chars": 90,
-        "quick_add": true
+        "quick_add": true,
+        "image_fit": "contain"
       }
     }
   },

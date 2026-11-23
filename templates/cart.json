@@ -24,7 +24,8 @@
         "show_shop_link": true,
         "shop_label": "Explore the collection",
         "show_sold_out": true,
-        "quick_add": true
+        "quick_add": true,
+        "image_fit": "contain"
       }
     }
   },

@@ -328,7 +328,7 @@
         "card_text_color": "#15120e",
         "card_texture": true,
         "card_title_size": 24,
-        "image_fit": "cover",
+        "image_fit": "contain",
         "show_wood_texture": true,
         "background_color": "#15120e",
         "text_color": "#f4ebd9",

@@ -15,7 +15,9 @@
     },
     "catalog": {
       "type": "bottle-collection",
-      "settings": {},
+      "settings": {
+        "image_fit": "contain"
+      },
       "blocks": {
         "category_1": {
           "type": "category",
