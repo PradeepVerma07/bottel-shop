@@ -44,6 +44,7 @@
             "heading": "A great pour.",
             "subheading": "An even better\nevening.",
             "description": "<p>An old favorite or a new discovery. Find the wine that turns a simple evening into something worth sharing.</p>",
+            "image": "shopify://shop_images/ChatGPT_Image_Nov_19_2026_07_53_28_PM_d7f50404-8d7c-446f-9446-45abd0811f0f.png",
             "reference_image": "wine",
             "image_alt": "Ruby red wine in an elegant glass",
             "image_x": 75,
@@ -69,6 +70,7 @@
             "heading": "Cold beer.",
             "subheading": "Warm company.\nGood times.",
             "description": "<p>From crisp classics to something a little unexpected. Bring home a great beer and let the good times follow.</p>",
+            "image": "shopify://shop_images/ChatGPT_Image_Nov_19_2026_07_53_21_PM.png",
             "reference_image": "beer",
             "image_alt": "A golden beer with creamy foam",
             "image_x": 75,
@@ -136,6 +138,8 @@
           "settings": {
             "collection": "wine",
             "heading": "Wine",
+            "image": "shopify://shop_images/WhatsApp_Image_2026-11-19_at_12.00.45.jpg",
+            "mobile_image": "shopify://shop_images/ChatGPT_Image_Nov_20_2026_06_35_47_PM.png",
             "reference_image": "wine",
             "image_alt": "",
             "link": "shopify://collections/wine",
@@ -148,6 +152,8 @@
           "settings": {
             "collection": "spirits",
             "heading": "Spirits",
+            "image": "shopify://shop_images/WhatsApp_Image_2026-11-19_at_12.00.44.jpg",
+            "mobile_image": "shopify://shop_images/ChatGPT_Image_Nov_20_2026_06_36_25_PM-1.png",
             "reference_image": "spirits",
             "image_alt": "",
             "link": "shopify://collections/spirits",
@@ -160,6 +166,8 @@
           "settings": {
             "collection": "beer",
             "heading": "Beer",
+            "image": "shopify://shop_images/WhatsApp_Image_2026-11-19_at_12.00.45_1.jpg",
+            "mobile_image": "shopify://shop_images/89bffd03-1181-4e36-a225-f623840d0748.png",
             "reference_image": "beer",
             "image_alt": "",
             "link": "shopify://collections/beer",
@@ -172,6 +180,8 @@
           "settings": {
             "collection": "ready-to-drink",
             "heading": "Ready\nto drink",
+            "image": "shopify://shop_images/WhatsApp_Image_2026-11-19_at_12.00.44_1.jpg",
+            "mobile_image": "shopify://shop_images/74825788-a03b-4f7a-8c19-b8eb7ac5768d.png",
             "reference_image": "ready-to-drink",
             "image_alt": "",
             "link": "shopify://collections/ready-to-drink",
@@ -184,6 +194,7 @@
           "settings": {
             "collection": "gifts",
             "heading": "Gifts",
+            "image": "shopify://shop_images/gift.png",
             "reference_image": "gifts",
             "image_alt": "",
             "link": "shopify://collections/gifts",
