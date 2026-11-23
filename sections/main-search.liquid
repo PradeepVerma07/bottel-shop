@@ -64,7 +64,7 @@
 {%- endstyle -%}
 
 {% paginate search.results by 24 %}
-  <div class="template-search bs bs-shop bs-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
+  <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
     <div class="template-search__header page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       <h1 class="h2 center">
         {%- if search.performed -%}
@@ -270,11 +270,19 @@
                   >
                     {%- case item.object_type -%}
                       {%- when 'product' -%}
-                        {% render 'bottle-product-card',
+                        {%- capture product_settings -%}{%- if section.settings.product_show_vendor -%}vendor,{%- endif -%}title,price{%- endcapture -%}
+                        {% render 'card-product',
                           card_product: item,
-                          section_id: section.id,
-                          quick_add: true
+                          media_aspect_ratio: section.settings.image_ratio,
+                          image_shape: section.settings.image_shape,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          show_vendor: section.settings.show_vendor,
+                          show_rating: section.settings.show_rating,
+                          lazy_load: lazy_load,
+                          skip_styles: skip_card_product_styles,
+                          product_view_context: 'search'
                         %}
+                        {%- assign skip_card_product_styles = true -%}
                       {%- when 'article' -%}
                         {% render 'article-card',
                           article: item,

@@ -3,19 +3,9 @@
   if section.settings.use_collection_title and collection != blank and collection.handle != 'all'
     assign banner_title = collection.title
   endif
-  if template.name == 'search'
-    if search.performed and search.terms != blank
-      assign banner_title = 'Search: "' | append: search.terms | append: '"'
-    else
-      assign banner_title = 'Search Results'
-    endif
-  endif
   assign banner_description = section.settings.description
   if section.settings.use_collection_description and collection.description != blank
     assign banner_description = collection.description
-  endif
-  if template.name == 'search' and section.settings.description == blank
-    assign banner_description = 'Find your favorite wines, spirits, beers, and gifts.'
   endif
   assign fallback = ''
   if section.settings.reference_image != blank
