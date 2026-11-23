@@ -8,8 +8,22 @@
     assign banner_description = collection.description
   endif
   assign fallback = ''
-  if section.settings.use_reference_image
-    assign fallback = 'bs-shop-banner.png'
+  if section.settings.reference_image != blank
+    assign fallback = section.settings.reference_image
+  elsif section.settings.use_reference_image
+    if collection.handle == 'wine' or template.suffix == 'wine' or page.handle == 'wine'
+      assign fallback = 'bs-collection-wine.png'
+    elsif collection.handle == 'beer' or template.suffix == 'beer' or page.handle == 'beer'
+      assign fallback = 'bs-collection-beer.png'
+    elsif collection.handle == 'spirits' or template.suffix == 'spirits' or page.handle == 'spirits'
+      assign fallback = 'bs-collection-spirits.png'
+    elsif collection.handle == 'ready-to-drink' or template.suffix == 'ready-to-drink' or page.handle == 'ready-to-drink'
+      assign fallback = 'bs-collection-ready-to-drink.png'
+    elsif collection.handle == 'gifts' or template.suffix == 'gifts' or page.handle == 'gifts'
+      assign fallback = 'bs-collection-gifts.png'
+    else
+      assign fallback = 'bs-shop-banner.png'
+    endif
   endif
 -%}
 <div class="bs bs-shop-banner" style="{% render 'bottle-vars', section: section %} --bs-banner-height: {{ section.settings.height }}px; --bs-banner-mobile: {{ section.settings.height_mobile }}px; --bs-banner-image-x: {{ section.settings.image_x }}%; --bs-banner-overlay: {{ section.settings.overlay | divided_by: 100.0 }};">
@@ -82,6 +96,12 @@
       "id": "use_reference_image",
       "label": "Use included shop banner",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "reference_image",
+      "label": "Included banner image asset",
+      "info": "Asset filename (e.g. bs-collection-wine.png) to use as background."
     },
     {
       "type": "range",

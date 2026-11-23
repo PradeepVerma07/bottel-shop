@@ -134,11 +134,11 @@
         "block_1": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "wine",
             "heading": "Wine",
             "reference_image": "wine",
             "image_alt": "",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/wine",
             "browse_label": "Browse",
             "image_x": 50
           }
@@ -146,11 +146,11 @@
         "block_2": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "spirits",
             "heading": "Spirits",
             "reference_image": "spirits",
             "image_alt": "",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/spirits",
             "browse_label": "Browse",
             "image_x": 50
           }
@@ -158,11 +158,11 @@
         "block_3": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "beer",
             "heading": "Beer",
             "reference_image": "beer",
             "image_alt": "",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/beer",
             "browse_label": "Browse",
             "image_x": 50
           }
@@ -170,11 +170,11 @@
         "block_4": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "ready-to-drink",
             "heading": "Ready\nto drink",
             "reference_image": "ready-to-drink",
             "image_alt": "",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/ready-to-drink",
             "browse_label": "Browse",
             "image_x": 50
           }
@@ -182,11 +182,11 @@
         "block_5": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "gifts",
             "heading": "Gifts",
             "reference_image": "gifts",
             "image_alt": "",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/gifts",
             "browse_label": "Browse",
             "image_x": 50
           }
@@ -194,11 +194,11 @@
         "block_6": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "deals",
             "heading": "Deals",
             "reference_image": "deals",
             "image_alt": "",
-            "link": "shopify://collections/all",
+            "link": "shopify://collections/deals",
             "browse_label": "Browse",
             "image_x": 50
           }

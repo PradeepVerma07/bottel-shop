@@ -18,35 +18,35 @@
           "type": "link",
           "settings": {
             "label": "Wine",
-            "link": "/collections/all"
+            "link": "/collections/wine"
           }
         },
         "block_2": {
           "type": "link",
           "settings": {
             "label": "Spirits",
-            "link": "/collections/all"
+            "link": "/collections/spirits"
           }
         },
         "block_3": {
           "type": "link",
           "settings": {
             "label": "Beer",
-            "link": "/collections/all"
+            "link": "/collections/beer"
           }
         },
         "block_4": {
           "type": "link",
           "settings": {
             "label": "Ready to drink",
-            "link": "/collections/all"
+            "link": "/collections/ready-to-drink"
           }
         },
         "block_5": {
           "type": "link",
           "settings": {
             "label": "Gifts",
-            "link": "/collections/all"
+            "link": "/collections/gifts"
           }
         },
         "block_6": {

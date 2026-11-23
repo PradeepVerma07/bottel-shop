@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "banner": {
+      "type": "bottle-shop-banner",
+      "settings": {
+        "heading": "Wine",
+        "description": "<p>Discover our curated selection of fine red, white, rosé, and sparkling wines.</p>",
+        "use_collection_title": false,
+        "use_collection_description": false,
+        "show_breadcrumbs": true,
+        "use_reference_image": true,
+        "reference_image": "bs-collection-wine.png"
+      }
+    },
+    "catalog": {
+      "type": "bottle-collection",
+      "settings": {
+        "collection": "wine",
+        "image_fit": "contain",
+        "show_categories": true,
+        "show_sidebar": true,
+        "enable_filtering": true,
+        "enable_sorting": true
+      },
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "label": "Wine",
+            "handle": "wine"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "label": "Spirits",
+            "handle": "spirits"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "label": "Beer",
+            "handle": "beer"
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "label": "Ready to drink",
+            "handle": "ready-to-drink"
+          }
+        },
+        "category_5": {
+          "type": "category",
+          "settings": {
+            "label": "Gifts",
+            "handle": "gifts"
+          }
+        },
+        "category_6": {
+          "type": "category",
+          "settings": {
+            "label": "Deals",
+            "handle": "deals"
+          }
+        }
+      },
+      "block_order": [
+        "category_1",
+        "category_2",
+        "category_3",
+        "category_4",
+        "category_5",
+        "category_6"
+      ]
+    }
+  },
+  "order": [
+    "banner",
+    "catalog"
+  ]
+}
