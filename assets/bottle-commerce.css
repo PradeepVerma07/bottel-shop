@@ -1802,8 +1802,158 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
     font-weight: 700 !important;
     color: #15120e !important;
   }
+}
 
+/* Bottle Shop Search Styling */
+.bs-search-bar {
+  margin: 0 auto 36px;
+  max-width: 680px;
+  width: 100%;
+}
+.bs-search-form__field {
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  background: #1a150f !important;
+  border: 1px solid rgba(214, 173, 116, 0.45) !important;
+  border-radius: 8px !important;
+  padding: 4px 6px 4px 16px !important;
+  gap: 10px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+.bs-search-form__field:focus-within {
+  border-color: #d6ad74 !important;
+  box-shadow: 0 6px 20px rgba(214, 173, 116, 0.2) !important;
+}
+.bs-search-form__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #d6ad74 !important;
+  flex-shrink: 0 !important;
+}
+.bs-search-form__icon svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+.bs-search-form__input {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #f4ebd9 !important;
+  font-family: var(--bs-font-body, system-ui, sans-serif) !important;
+  font-size: 16px !important;
+  padding: 10px 0 !important;
+}
+.bs-search-form__input::placeholder {
+  color: rgba(244, 235, 217, 0.45) !important;
+}
+.bs-search-form__clear {
+  color: #d6ad74 !important;
+  text-decoration: none !important;
+  font-size: 16px !important;
+  padding: 4px 8px !important;
+  line-height: 1 !important;
+  opacity: 0.7 !important;
+  transition: opacity 0.2s ease !important;
+}
+.bs-search-form__clear:hover {
+  opacity: 1 !important;
+  color: #ffffff !important;
+}
+.bs-search-form__submit {
+  flex-shrink: 0 !important;
+  padding: 10px 22px !important;
+  font-size: 14px !important;
+  min-height: 40px !important;
+  border-radius: 6px !important;
+}
 
+/* Template Search Fallback Styles */
+.template-search {
+  background: var(--bs-bg, #15120e) !important;
+  color: var(--bs-text, #f4ebd9) !important;
+}
+.template-search .page-width {
+  color: var(--bs-text, #f4ebd9) !important;
+}
+.template-search h1,
+.template-search .h2,
+.template-search h2 {
+  color: #f4ebd9 !important;
+  font-family: var(--bs-font-heading, Impact, sans-serif) !important;
+  letter-spacing: 0.04em !important;
+}
+.template-search .search__input {
+  background: #1a150f !important;
+  color: #f4ebd9 !important;
+  border: 1px solid rgba(214, 173, 116, 0.5) !important;
+  border-radius: 8px !important;
+}
+.template-search .search__input:focus {
+  border-color: #d6ad74 !important;
+  box-shadow: 0 0 0 1px #d6ad74 !important;
+}
+.template-search .field__label {
+  color: rgba(244, 235, 217, 0.6) !important;
+}
+.template-search .search__button,
+.template-search .reset__button {
+  color: #d6ad74 !important;
+}
+.template-search .facets-wrapper,
+.template-search .facet-filters,
+.template-search .facets__heading,
+.template-search .product-count__text {
+  color: #f4ebd9 !important;
+}
+.template-search .facets__summary {
+  color: #d6ad74 !important;
+  border-color: rgba(214, 173, 116, 0.4) !important;
+}
+.template-search .facets__display {
+  background: #1a150f !important;
+  border: 1px solid rgba(214, 173, 116, 0.4) !important;
+  color: #f4ebd9 !important;
+}
+.template-search .facets__item label {
+  color: #f4ebd9 !important;
+}
+.template-search .grid.product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(var(--bs-shop-columns, 4), minmax(0, 1fr)) !important;
+  gap: 24px !important;
+}
+.template-search .grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+@media (max-width: 900px) {
+  .template-search .grid.product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+}
+@media (max-width: 600px) {
+  .bs-search-bar {
+    margin-bottom: 24px;
+  }
+  .bs-search-form__field {
+    padding: 3px 4px 3px 12px !important;
+  }
+  .bs-search-form__input {
+    font-size: 14px !important;
+    padding: 8px 0 !important;
+  }
+  .bs-search-form__submit {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+    min-height: 36px !important;
+  }
 }
 
 

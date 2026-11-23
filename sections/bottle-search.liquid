@@ -1,0 +1,542 @@
+{%- liquid
+  assign filter_form = 'BottleSearchFilters-' | append: section.id
+-%}
+<section class="bs bs-shop bs-search" style="{% render 'bottle-vars', section: section %} --bs-shop-columns: {{ section.settings.columns }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %}; --bs-sidebar-width: {{ section.settings.sidebar_width }}px;">
+  <div class="bs-inner">
+    {% if section.settings.show_search_bar %}
+      <div class="bs-search-bar">
+        <form class="bs-search-form" action="{{ routes.search_url }}" method="get" role="search">
+          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="options[prefix]" value="last">
+          <div class="bs-search-form__field">
+            <span class="bs-search-form__icon">{% render 'bottle-icon', icon: 'search' %}</span>
+            <input
+              id="BottleSearchField-{{ section.id }}"
+              class="bs-search-form__input"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              placeholder="{{ section.settings.search_placeholder | default: 'Search wine, beer, spirits, brands...' | escape }}"
+              aria-label="{{ 'general.search.search' | t }}"
+            >
+            {% if search.terms != blank %}
+              <a href="{{ routes.search_url }}?type=product" class="bs-search-form__clear" aria-label="Clear search">✕</a>
+            {% endif %}
+            <button type="submit" class="bs-button bs-button--solid bs-search-form__submit">
+              <span>{{ section.settings.search_button | default: 'Search' | escape }}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_categories and section.blocks.size > 0 %}
+      <nav class="bs-shop-tabs" aria-label="{{ section.settings.category_label | escape }}">
+        <a class="bs-shop-category" href="{{ routes.all_products_collection_url }}">
+          {{ section.settings.all_label | default: 'All products' | escape }}
+          {% if section.settings.show_counts %}<span>{{ collections.all.all_products_count }}</span>{% endif %}
+        </a>
+        {% for block in section.blocks %}
+          <div {{ block.shopify_attributes }}>
+            {% render 'bottle-collection-link', block: block, collection: nil, show_count: section.settings.show_counts %}
+          </div>
+        {% endfor %}
+      </nav>
+    {% endif %}
+
+    {% paginate search.results by section.settings.products_per_page %}
+      <div class="bs-shop-layout{% unless section.settings.show_sidebar and search.filters.size > 0 %} bs-shop-layout--full{% endunless %}">
+        {% if section.settings.show_sidebar and search.filters.size > 0 %}
+          <aside class="bs-shop-sidebar">
+            <details open class="bs-shop-filters">
+              <summary>
+                <h2>{{ section.settings.sidebar_heading | default: 'Filters' | escape }}</h2>
+                {% render 'bottle-icon', icon: 'right' %}
+              </summary>
+              <div class="bs-shop-filters__body">
+                {% if section.blocks.size > 0 %}
+                  <div class="bs-shop-sidebar__categories">
+                    <h3>{{ section.settings.category_label | default: 'Categories' | escape }}</h3>
+                    {% for block in section.blocks %}
+                      {% render 'bottle-collection-link', block: block, collection: nil, show_count: section.settings.show_counts %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <form id="{{ filter_form }}" action="{{ routes.search_url }}" method="get">
+                  <input type="hidden" name="q" value="{{ search.terms | escape }}">
+                  <input type="hidden" name="type" value="product">
+                  <input type="hidden" name="options[prefix]" value="last">
+                  {% if section.settings.enable_filtering %}
+                    {% for filter in search.filters %}
+                      <fieldset class="bs-filter">
+                        <legend>{{ filter.label | escape }}</legend>
+                        {% case filter.type %}
+                          {% when 'list', 'boolean' %}
+                            {% for value in filter.values %}
+                              <label class="bs-filter-option">
+                                <input
+                                  type="checkbox"
+                                  name="{{ value.param_name }}"
+                                  value="{{ value.value | escape }}"
+                                  {% if value.active %}checked{% elsif value.count == 0 %}disabled{% endif %}
+                                >
+                                <span>{{ value.label | escape }}</span>
+                                <small>{{ value.count }}</small>
+                              </label>
+                            {% endfor %}
+                          {% when 'price_range' %}
+                            <div class="bs-price-filter">
+                              <label>
+                                {{ settings.bottle_collection_min_label | default: 'Min' | escape }}
+                                <input
+                                  type="number"
+                                  inputmode="decimal"
+                                  min="0"
+                                  step="any"
+                                  name="{{ filter.min_value.param_name }}"
+                                  {% if filter.min_value.value != nil %}
+                                    value="{{ filter.min_value.value | divided_by: 100.0 }}"
+                                  {% endif %}
+                                  placeholder="0"
+                                >
+                              </label>
+                              <label>
+                                {{ settings.bottle_collection_max_label | default: 'Max' | escape }}
+                                <input
+                                  type="number"
+                                  inputmode="decimal"
+                                  min="0"
+                                  step="any"
+                                  max="{{ filter.range_max | divided_by: 100.0 }}"
+                                  name="{{ filter.max_value.param_name }}"
+                                  {% if filter.max_value.value != nil %}
+                                    value="{{ filter.max_value.value | divided_by: 100.0 }}"
+                                  {% endif %}
+                                  placeholder="{{ filter.range_max | divided_by: 100.0 }}"
+                                >
+                              </label>
+                            </div>
+                        {% endcase %}
+                      </fieldset>
+                    {% endfor %}
+                  {% endif %}
+                  {% if section.settings.enable_filtering and search.filters.size > 0 %}
+                    <button class="bs-button" type="submit">{{ section.settings.apply_label | default: 'Apply filters' | escape }}</button>
+                    <a class="bs-filter-reset" href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=product">{{ section.settings.reset_label | default: 'Clear filters' | escape }}</a>
+                  {% endif %}
+                </form>
+              </div>
+            </details>
+          </aside>
+        {% endif %}
+
+        <div class="bs-shop-results">
+          <div class="bs-shop-toolbar">
+            <p role="status">
+              {% if search.performed %}
+                {% if search.results_count > 0 %}
+                  {{ settings.bottle_collection_showing_label | default: 'Showing' | escape }}
+                  {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: search.results.size }}
+                  {{ settings.bottle_collection_of_label | default: 'of' | escape }}
+                  {{ search.results_count }}
+                  {{ settings.bottle_collection_results_label | default: 'results' | escape }}
+                  {% if search.terms != blank %}
+                    for &ldquo;<strong>{{ search.terms | escape }}</strong>&rdquo;
+                  {% endif %}
+                {% else %}
+                  0 {{ settings.bottle_collection_results_label | default: 'results' | escape }}
+                  {% if search.terms != blank %}
+                    for &ldquo;<strong>{{ search.terms | escape }}</strong>&rdquo;
+                  {% endif %}
+                {% endif %}
+              {% else %}
+                {{ section.settings.search_prompt | default: 'Search our cellar by entering keywords above.' | escape }}
+              {% endif %}
+            </p>
+
+            {% if section.settings.enable_sorting and search.results_count > 0 %}
+              <div class="bs-shop-sort">
+                <label class="bs-sr-only" for="BottleSearchSort-{{ section.id }}">{{ settings.bottle_collection_sort_label | default: 'Sort by' | escape }}</label>
+                <select id="BottleSearchSort-{{ section.id }}" name="sort_by" form="{{ filter_form }}" data-bs-sort data-bs-form="{{ filter_form }}">
+                  {% assign current_sort = search.sort_by | default: search.default_sort_by %}
+                  {% for option in search.sort_options %}
+                    <option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>
+                      {{ option.name | escape }}
+                    </option>
+                  {% endfor %}
+                </select>
+                {% unless section.settings.show_sidebar and search.filters.size > 0 %}
+                  <form id="{{ filter_form }}" action="{{ routes.search_url }}" method="get">
+                    <input type="hidden" name="q" value="{{ search.terms | escape }}">
+                    <input type="hidden" name="type" value="product">
+                    {% for filter in search.filters %}
+                      {% for value in filter.active_values %}
+                        <input type="hidden" name="{{ value.param_name }}" value="{{ value.value | escape }}">
+                      {% endfor %}
+                    {% endfor %}
+                    <noscript><button type="submit">{{ section.settings.apply_label | default: 'Apply' | escape }}</button></noscript>
+                  </form>
+                {% else %}
+                  <noscript><button type="submit" form="{{ filter_form }}">{{ section.settings.apply_label | default: 'Apply' | escape }}</button></noscript>
+                {% endunless %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="bs-active-filters">
+            {% for filter in search.filters %}
+              {% for value in filter.active_values %}
+                <a href="{{ value.url_to_remove }}">
+                  {{ filter.label | escape }}: {{ value.label | escape }} <span aria-hidden="true">&times;</span>
+                </a>
+              {% endfor %}
+            {% endfor %}
+          </div>
+
+          {% if search.performed and search.results_count > 0 %}
+            <div class="bs-product-grid">
+              {% for item in search.results %}
+                {% if item.object_type == 'product' or item.price != blank %}
+                  {% render 'bottle-product-card',
+                    card_product: item,
+                    section_id: section.id,
+                    show_category: section.settings.show_product_category,
+                    show_description: section.settings.show_description,
+                    title_max_chars: section.settings.title_max_chars,
+                    description_max_chars: section.settings.description_max_chars,
+                    quick_add: section.settings.quick_add,
+                    add_label: section.settings.add_label,
+                    options_label: section.settings.options_label,
+                    sold_out_label: section.settings.sold_out_label,
+                    from_label: section.settings.from_label
+                  %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% elsif search.performed and search.results_count == 0 %}
+            <div class="bs-shop-empty">
+              <h2 class="bs-heading">{{ section.settings.empty_heading | default: 'No products found' | escape }}</h2>
+              <div class="bs-copy">{{ section.settings.empty_description | default: 'We could not find anything matching your search. Try checking your spelling or searching for a different beverage.' }}</div>
+              {% assign empty_reset_label = section.settings.reset_label | default: 'Explore All Products' %}
+              {% render 'bottle-button', label: empty_reset_label, link: routes.all_products_collection_url %}
+            </div>
+          {% endif %}
+
+          {% if paginate.pages > 1 %}
+            <nav class="bs-pagination" aria-label="{{ settings.bottle_collection_pagination_label | default: 'Pagination' | escape }}">
+              {% if paginate.previous %}
+                <a href="{{ paginate.previous.url }}" aria-label="{{ settings.bottle_collection_previous_label | default: 'Previous' | escape }}">
+                  {% render 'bottle-icon', icon: 'arrow-left' %}
+                </a>
+              {% endif %}
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <a href="{{ part.url }}">{{ part.title }}</a>
+                {% else %}
+                  <span{% if part.title == paginate.current_page %} aria-current="page"{% endif %}>{{ part.title }}</span>
+                {% endif %}
+              {% endfor %}
+              {% if paginate.next %}
+                <a href="{{ paginate.next.url }}" aria-label="{{ settings.bottle_collection_next_label | default: 'Next' | escape }}">
+                  {% render 'bottle-icon', icon: 'arrow-right' %}
+                </a>
+              {% endif %}
+            </nav>
+          {% endif %}
+        </div>
+      </div>
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bottle Search",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_search_bar",
+      "label": "Show top search bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search wine, beer, spirits, brands…"
+    },
+    {
+      "type": "text",
+      "id": "search_button",
+      "label": "Search button text",
+      "default": "Search"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_categories",
+      "label": "Show category tabs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "category_label",
+      "label": "Categories label",
+      "default": "Categories"
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "All products label",
+      "default": "All products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_counts",
+      "label": "Show collection counts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show filters sidebar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sidebar_heading",
+      "label": "Sidebar heading",
+      "default": "Filter results"
+    },
+    {
+      "type": "range",
+      "id": "sidebar_width",
+      "label": "Desktop sidebar width",
+      "min": 220,
+      "max": 320,
+      "step": 10,
+      "default": 260,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Show Shopify filters",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Show sorting",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "apply_label",
+      "label": "Apply filters label",
+      "default": "Apply filters"
+    },
+    {
+      "type": "text",
+      "id": "reset_label",
+      "label": "Reset label",
+      "default": "Clear filters"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Product title size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Product image fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain (Full bottle visible)"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_category",
+      "label": "Show product category eyebrow",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show product description",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "description_max_chars",
+      "label": "Description maximum characters",
+      "min": 40,
+      "max": 180,
+      "step": 10,
+      "default": 90
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "label": "Enable quick add to cart",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "add_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "options_label",
+      "label": "View options label",
+      "default": "View details"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_label",
+      "label": "Sold out label",
+      "default": "Sold out"
+    },
+    {
+      "type": "text",
+      "id": "from_label",
+      "label": "From price label",
+      "default": "From"
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Empty results heading",
+      "default": "No products found"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_description",
+      "label": "Empty results description",
+      "default": "We could not find anything matching your search. Try checking your spelling or search for a different beverage."
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Card background color",
+      "default": "#f6ecd9"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#15110d"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_texture",
+      "label": "Use parchment texture on card",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Collection handle"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottle Search",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "label": "Wine",
+            "handle": "wine"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Spirits",
+            "handle": "spirits"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Beer",
+            "handle": "beer"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Ready to drink",
+            "handle": "ready-to-drink"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "label": "Gifts",
+            "handle": "gifts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
