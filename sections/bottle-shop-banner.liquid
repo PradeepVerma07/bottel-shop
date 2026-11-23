@@ -12,15 +12,15 @@
     assign fallback = section.settings.reference_image
   elsif section.settings.use_reference_image
     if collection.handle == 'wine' or template.suffix == 'wine' or page.handle == 'wine'
-      assign fallback = 'bs-collection-wine.png'
+      assign fallback = 'bs-collection-wine.jpg'
     elsif collection.handle == 'beer' or template.suffix == 'beer' or page.handle == 'beer'
-      assign fallback = 'bs-collection-beer.png'
+      assign fallback = 'bs-collection-beer.jpg'
     elsif collection.handle == 'spirits' or template.suffix == 'spirits' or page.handle == 'spirits'
-      assign fallback = 'bs-collection-spirits.png'
+      assign fallback = 'bs-collection-spirits.jpg'
     elsif collection.handle == 'ready-to-drink' or template.suffix == 'ready-to-drink' or page.handle == 'ready-to-drink'
-      assign fallback = 'bs-collection-ready-to-drink.png'
+      assign fallback = 'bs-collection-ready-to-drink.jpg'
     elsif collection.handle == 'gifts' or template.suffix == 'gifts' or page.handle == 'gifts'
-      assign fallback = 'bs-collection-gifts.png'
+      assign fallback = 'bs-collection-gifts.jpg'
     else
       assign fallback = 'bs-shop-banner.png'
     endif
