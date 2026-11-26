@@ -74,15 +74,20 @@ bottle-catalog { display: block; }
   bottle-catalog[data-bs-mobile-layout='list'] .bs-product-card__image { height: 100% !important; width: 100% !important; aspect-ratio: auto !important; border-radius: 12px 0 0 12px !important; overflow: hidden !important; }
   bottle-catalog[data-bs-mobile-layout='list'] .bs-product-card__image img,
   bottle-catalog[data-bs-mobile-layout='list'] .bs-product-card__image svg { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; min-height: 100% !important; max-height: 100% !important; object-fit: cover !important; object-position: center !important; }
-  bottle-catalog .bs-product-card__info { padding: 12px !important; }
-  bottle-catalog .bs-product-card h3 { font-size: clamp(14px,4vw,18px) !important; line-height: 1.15 !important; }
+  bottle-catalog .bs-product-card__info { padding: 10px 8px 12px !important; }
+  bottle-catalog .bs-product-card h3 { font-size: clamp(13px,3.8vw,17px) !important; line-height: 1.15 !important; }
   bottle-catalog .bs-product-card__category::before,
   bottle-catalog .bs-product-card__category::after { display: none !important; content: none !important; }
   bottle-catalog .bs-product-card__category { gap: 0 !important; margin: 0 0 4px !important; }
   bottle-catalog .bs-product-card__description { font-size: 11px !important; line-height: 1.35 !important; display: -webkit-box !important; -webkit-line-clamp: 3 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; text-overflow: ellipsis !important; max-height: calc(1.35em * 3) !important; margin: 0 0 8px !important; text-align: center !important; }
-  bottle-catalog .bs-product-card__price strong { font-size: 16px; }
-  bottle-catalog .bs-product-card .bs-button { min-height: 34px; max-width: 100%; gap: 6px; padding: 7px 12px; font-size: 11px !important; white-space: nowrap !important; }
-  bottle-catalog .bs-product-card__footer { align-items: center !important; justify-content: space-between !important; flex-wrap: nowrap !important; gap: 8px !important; }
+  bottle-catalog .bs-product-card__footer { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; flex-wrap: nowrap !important; gap: 4px !important; width: 100% !important; margin-top: auto !important; padding-top: 6px !important; box-sizing: border-box !important; }
+  bottle-catalog .bs-product-card__price { flex: 0 0 auto !important; min-width: max-content !important; max-width: 50% !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; font-size: 15px !important; line-height: 1.1 !important; margin: 0 !important; padding: 0 !important; }
+  bottle-catalog .bs-product-card__price strong { font-size: clamp(13px, 3.6vw, 15px) !important; font-weight: 700 !important; white-space: nowrap !important; }
+  bottle-catalog .bs-product-card__price s { font-size: 11px !important; }
+  bottle-catalog .bs-product-card__cta { flex: 0 1 auto !important; min-width: 0 !important; margin: 0 !important; }
+  bottle-catalog .bs-product-card__form { width: auto !important; margin: 0 !important; }
+  bottle-catalog .bs-product-card .bs-button { min-width: unset !important; width: auto !important; min-height: 30px !important; height: 30px !important; padding: 5px 8px !important; font-size: 10px !important; font-weight: 700 !important; white-space: nowrap !important; gap: 4px !important; border-radius: 6px !important; }
+  bottle-catalog .bs-product-card .bs-button svg { width: 11px !important; height: 11px !important; flex-basis: 11px !important; flex-shrink: 0 !important; }
   .bs-product-card__media .bs-image-tools { inset: 7px 7px auto; }
   .bs-product-card__media .bs-wishlist-heart { width: 34px; height: 34px; padding: 7px; }
   .bs-product-card__media .bs-product-rating--image { min-width: 29px; padding: 5px; font-size: 11px; }
