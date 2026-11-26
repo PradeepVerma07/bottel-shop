@@ -11,7 +11,6 @@
       <button class="bs-wishlist-heart" type="button" data-bs-wishlist-toggle aria-pressed="false" aria-label="{{ settings.bottle_wishlist_add_label | default: 'Add to wishlist' | escape }}: {{ product.title | escape }}" hidden>
         <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.5a5.5 5.5 0 0 0 0-7.8Z"/></svg>
       </button>
-      <button class="bs-wishlist-view" type="button" data-bs-wishlist-open aria-label="{{ settings.bottle_wishlist_view_label | default: 'View wishlist' | escape }}" hidden><span data-bs-wishlist-count>0</span><span class="bs-sr-only"> {{ settings.bottle_wishlist_view_label | default: 'View wishlist' | escape }}</span></button>
     </div>{% endif %}
   </bottle-image-tools>
 {%- endif -%}

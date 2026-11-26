@@ -48,8 +48,18 @@
     notice.textContent = message;
     noticeTimer = setTimeout(() => { notice.hidden = true; }, 3500);
   };
+  const updateCounts = () => {
+    const count = items.length;
+    document.querySelectorAll('[data-bs-wishlist-count]').forEach(el => {
+      el.textContent = String(count);
+      if (el.classList.contains('bs-wishlist-count')) {
+        el.hidden = count === 0;
+      }
+    });
+  };
   const commit = () => {
     try { localStorage.setItem(key, JSON.stringify(items)); persistent = true; } catch { persistent = false; }
+    updateCounts();
     window.dispatchEvent(new CustomEvent('bottle:wishlist-update'));
     if (wishlistDialog?.open) renderWishlist();
   };
@@ -111,9 +121,23 @@
   };
   window.addEventListener('storage', event => {
     if (event.key !== key) return;
-    items = load(); window.dispatchEvent(new CustomEvent('bottle:wishlist-update'));
+    items = load();
+    updateCounts();
+    window.dispatchEvent(new CustomEvent('bottle:wishlist-update'));
     if (wishlistDialog?.open) renderWishlist();
   });
+  document.addEventListener('click', event => {
+    if (event.target.closest('[data-bs-wishlist-open]')) {
+      event.preventDefault();
+      openWishlist();
+    }
+  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateCounts);
+  } else {
+    updateCounts();
+  }
+  window.addEventListener('bottle:wishlist-update', updateCounts);
   customElements.define('bottle-image-tools', class extends HTMLElement {
     connectedCallback() {
       if (this.abort) return;

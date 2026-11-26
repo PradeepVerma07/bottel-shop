@@ -36,6 +36,14 @@
         </form>
       {% endif %}
       <div class="bs-header__actions">
+        {% if section.settings.show_wishlist != false and settings.bottle_show_wishlist != false %}
+          <button type="button" class="bs-icon-link bs-wishlist-header-link" data-bs-wishlist-open aria-label="{{ settings.bottle_wishlist_view_label | default: 'Wishlist' | escape }}">
+            <svg class="bs-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.5a5.5 5.5 0 0 0 0-7.8Z"/>
+            </svg>
+            <span class="bs-wishlist-count" data-bs-wishlist-count hidden>0</span>
+          </button>
+        {% endif %}
         {% if section.settings.show_search %}<details class="bs-mobile-search"><summary class="bs-icon-link" aria-label="{{ section.settings.search_label | escape }}">{% render 'bottle-icon', icon: 'search' %}</summary><form class="bs-mobile-search__form" action="{{ routes.search_url }}" method="get" role="search"><label class="bs-sr-only" for="BottleMobileSearch-{{ section.id }}">{{ section.settings.search_label | escape }}</label><input id="BottleMobileSearch-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder | escape }}"><input type="hidden" name="options[prefix]" value="last"><button class="bs-icon-link" type="submit" aria-label="{{ section.settings.search_label | escape }}">{% render 'bottle-icon', icon: 'search' %}</button></form></details>{% endif %}
         {% if section.settings.show_account and shop.customer_accounts_enabled %}<a class="bs-icon-link bs-header__account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">{% render 'bottle-icon', icon: 'user' %}</a>{% endif %}
         {% if section.settings.show_cart %}<a id="cart-icon-bubble" class="bs-icon-link bs-cart-link" href="{{ routes.cart_url }}" aria-label="{{ section.settings.cart_label | escape }} ({{ cart.item_count }})">{% render 'bottle-icon', icon: 'bag' %}<svg class="bs-icon bs-cart-phone" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 3h3l3 13h11l3-10H6M8 19h11"/><circle cx="9" cy="22" r=".7"/><circle cx="18" cy="22" r=".7"/></svg><span class="bs-cart-count" aria-hidden="true">{{ cart.item_count }}</span></a>{% endif %}
@@ -156,6 +164,12 @@
       "type": "checkbox",
       "id": "show_search",
       "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show wishlist",
       "default": true
     },
     {
