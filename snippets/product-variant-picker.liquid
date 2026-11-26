@@ -9,6 +9,15 @@
   @example
   {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
 {%- enddoc -%}
+{%- liquid
+  assign has_size_option = false
+  for product_option in product.options_with_values
+    assign option_key = product_option.name | downcase | strip
+    if option_key == 'size' or option_key == 'bottle size' or option_key == 'volume'
+      assign has_size_option = true
+    endif
+  endfor
+-%}
 {%- unless product.has_only_default_variant -%}
   <variant-selects
     id="variant-selects-{{ section.id }}"
@@ -24,6 +33,11 @@
       {%- liquid
         assign swatch_count = option.values | map: 'swatch' | compact | size
         assign picker_type = block.settings.picker_type
+        assign option_key = option.name | downcase | strip
+        assign is_bottle_size = false
+        if option_key == 'size' or option_key == 'bottle size' or option_key == 'volume'
+          assign is_bottle_size = true
+        endif
 
         if swatch_count > 0 and block.settings.swatch_shape != 'none'
           if block.settings.picker_type == 'dropdown'
@@ -48,8 +62,8 @@
           %}
         </fieldset>
       {%- elsif picker_type == 'button' -%}
-        <fieldset class="js product-form__input product-form__input--pill">
-          <legend class="form__label">{{ option.name | escape }}</legend>
+        <fieldset class="js product-form__input product-form__input--pill{% if is_bottle_size %} bs-product-size-options{% endif %}">
+          <legend class="form__label">{{ option.name | escape }}{% if is_bottle_size %}: <span data-selected-value>{{ option.selected_value | escape }}</span>{% endif %}</legend>
           {% render 'product-variant-options',
             option: option,
             block: block,
@@ -95,3 +109,4 @@
     </script>
   </variant-selects>
 {%- endunless -%}
+{%- render 'bottle-size-options', product: product, block: block, has_size_option: has_size_option -%}

@@ -1,0 +1,24 @@
+{%- doc -%}
+  Renders the merchant's custom.rating metafield without app review data or invented counts.
+  @param {product} product - Rated product.
+  @param {string} [presentation] - image or inline.
+{%- enddoc -%}
+{%- liquid
+  assign rating_field = product.metafields.custom.rating
+  assign rating_score = nil
+  assign rating_max = 5
+  if rating_field.value != blank
+    if rating_field.type == 'rating'
+      assign rating_score = rating_field.value.rating | plus: 0
+      assign rating_max = rating_field.value.scale_max | plus: 0
+    elsif rating_field.type == 'number_decimal' or rating_field.type == 'number_integer'
+      assign rating_score = rating_field.value | plus: 0
+    endif
+  endif
+-%}
+{%- if rating_score != nil and rating_max > 0 and rating_score >= 0 and rating_score <= rating_max -%}
+  <span class="bs-product-rating bs-product-rating--{{ presentation | default: 'image' }}" role="img" aria-label="{{ settings.bottle_rating_label | default: 'Rating' | escape }}: {{ rating_score | round: 1 }} / {{ rating_max }}">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m12 2.5 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.3l6.5-.9Z"/></svg>
+    <span aria-hidden="true">{{ rating_score | round: 1 }}{% if presentation == 'inline' %} / {{ rating_max }}{% endif %}</span>
+  </span>
+{%- endif -%}

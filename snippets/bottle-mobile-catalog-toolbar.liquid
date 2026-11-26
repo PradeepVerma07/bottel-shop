@@ -1,0 +1,22 @@
+{%- doc -%}
+  Compact phone search, breadcrumb, grid/list and filter controls.
+  @param {collection} collection - Active collection.
+  @param {section} section - Catalog section.
+  @param {number} active_filter_count - Applied filter count.
+{%- enddoc -%}
+<div class="bs-mobile-catalog-bar">
+  {% if section.settings.show_search %}<form class="bs-mobile-shop-search" action="{{ routes.search_url }}" method="get" role="search">
+    <button type="submit" aria-label="{{ section.settings.search_button | escape }}">{% render 'bottle-icon', icon: 'search' %}</button>
+    <label class="bs-sr-only" for="BottleMobileCatalogSearch-{{ section.id }}">{{ section.settings.search_label | escape }}</label>
+    <input id="BottleMobileCatalogSearch-{{ section.id }}" name="q" type="search" placeholder="{{ section.settings.search_placeholder | escape }}">
+    <input type="hidden" name="type" value="product"><input type="hidden" name="options[prefix]" value="last">
+    <button type="button" data-bs-clear-search aria-label="{{ settings.bottle_catalog_mobile_clear_search_label | escape }}" hidden><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+  </form>{% endif %}
+  <div class="bs-mobile-catalog-row">
+    <nav aria-label="{{ settings.bottle_catalog_mobile_breadcrumb_label | escape }}"><a href="{{ routes.all_products_collection_url }}">{{ settings.bottle_catalog_mobile_shop_label | escape }}</a><span aria-hidden="true">›</span><span aria-current="page">{{ collection.title | default: section.settings.all_label | escape }}</span></nav>
+    <div class="bs-mobile-catalog-actions">
+      {% if settings.bottle_catalog_mobile_view_toggle %}<button class="bs-catalog-icon" type="button" data-bs-catalog-layout="grid" aria-label="{{ settings.bottle_catalog_mobile_grid_label | escape }}" aria-pressed="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M12 3v18M3 12h18"/></svg></button><button class="bs-catalog-icon" type="button" data-bs-catalog-layout="list" aria-label="{{ settings.bottle_catalog_mobile_list_label | escape }}" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M8 3v18M3 9h18M3 15h18"/></svg></button>{% endif %}
+      {% if section.settings.show_sidebar %}<button class="bs-catalog-icon bs-catalog-filter" type="button" data-bs-open-filters aria-haspopup="dialog" aria-controls="BottleFilterDialog-{{ section.id }}" aria-label="{{ settings.bottle_catalog_mobile_filter_label | escape }}{% if active_filter_count > 0 %} ({{ active_filter_count }}){% endif %}"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M3 4a1 1 0 0 0-.8 1.6L9 14.2V20a1 1 0 0 0 1.5.9l3-1.8a1 1 0 0 0 .5-.9v-4L21.8 5.6A1 1 0 0 0 21 4Z"/></svg>{% if active_filter_count > 0 %}<small aria-hidden="true">{{ active_filter_count }}</small>{% endif %}</button>{% endif %}
+    </div>
+  </div>
+</div>

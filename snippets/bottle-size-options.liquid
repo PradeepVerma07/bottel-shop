@@ -1,0 +1,50 @@
+{%- doc -%}
+  Displays optional bottle-size product metafields alongside Shopify's native variant picker.
+
+  @param {product} product - The current product.
+  @param {block} block - The variant-picker block with editable labels.
+  @param {boolean} has_size_option - Whether a native size/volume option is present.
+{%- enddoc -%}
+{%- liquid
+  assign bottle_size = product.metafields.custom.bottle_size.value
+  assign other_sizes = product.metafields.custom.other_bottle_sizes.value
+  assign demo_pricing = product.metafields.custom.demo_size_pricing.value
+  assign size_label = block.settings.bottle_size_label | default: 'Bottle size'
+  assign show_linked = true
+  if block.settings.show_linked_bottle_sizes == false
+    assign show_linked = false
+  endif
+-%}
+{%- if has_size_option or bottle_size != blank or other_sizes != blank or demo_pricing == true -%}
+  {{ 'bottle-size-options.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+{%- unless has_size_option -%}
+  {%- if other_sizes != blank and show_linked -%}
+    <div class="bs-linked-bottle-sizes" role="group" aria-label="{{ size_label | escape }}">
+      <p class="form__label">{{ size_label | escape }}</p>
+      <div class="bs-linked-bottle-sizes__values">
+        <span class="bs-size-link is-current" aria-current="page">{{ bottle_size | default: product.title | escape }}</span>
+        {%- for size_product in other_sizes -%}
+          {%- if size_product.id != product.id and size_product.url != blank -%}
+            {%- liquid
+              assign linked_label = size_product.metafields.custom.bottle_size.value
+              if linked_label == blank and size_product.has_only_default_variant == false
+                assign linked_label = size_product.selected_or_first_available_variant.title
+              endif
+              assign linked_label = linked_label | default: size_product.title
+            -%}
+            <a class="bs-size-link{% unless size_product.available %} bs-size-link--sold-out{% endunless %}" href="{{ size_product.url }}">
+              {{- linked_label | escape -}}
+              {%- unless size_product.available %}<span class="visually-hidden"> — {{ 'products.product.sold_out' | t }}</span>{% endunless -%}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- elsif bottle_size != blank -%}
+    <p class="bs-bottle-size-label"><span>{{ size_label | escape }}:</span> {{ bottle_size | escape }}</p>
+  {%- endif -%}
+{%- endunless -%}
+{%- if demo_pricing == true -%}
+  <p class="bs-size-demo-note" role="note">{{ block.settings.demo_size_note | default: 'Demo prices shown for additional sizes. Confirm final prices and stock before ordering.' | escape }}</p>
+{%- endif -%}

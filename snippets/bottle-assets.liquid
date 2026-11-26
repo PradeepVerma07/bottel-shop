@@ -23,3 +23,18 @@
 {{ 'bottle-commerce.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'bottle-commerce.js' | asset_url }}" defer="defer"></script>
 {{ 'bottle-mobile-home.css' | asset_url | stylesheet_tag }}
+
+{{ 'bottle-product-ui.css' | asset_url | stylesheet_tag }}
+<script id="BottleProductUIStrings" type="application/json">
+{
+  "title": {{ settings.bottle_wishlist_title | json | replace: '<', '\u003c' }},
+  "empty": {{ settings.bottle_wishlist_empty | json | replace: '<', '\u003c' }},
+  "close": {{ settings.bottle_wishlist_close_label | json | replace: '<', '\u003c' }},
+  "saved": {{ settings.bottle_wishlist_saved_label | json | replace: '<', '\u003c' }},
+  "removed": {{ settings.bottle_wishlist_removed_label | json | replace: '<', '\u003c' }},
+  "remove": {{ settings.bottle_wishlist_remove_item_label | json | replace: '<', '\u003c' }},
+  "note": {{ settings.bottle_wishlist_note | json | replace: '<', '\u003c' }},
+  "session": {{ settings.bottle_wishlist_session_label | json | replace: '<', '\u003c' }}
+}
+</script>
+<script src="{{ 'bottle-product-ui.js' | asset_url }}" defer="defer"></script>

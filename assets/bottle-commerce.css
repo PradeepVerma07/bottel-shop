@@ -494,6 +494,9 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+  text-align: right;
 }
 #MainContent[data-template='product'] .bs-price-review-card__stars {
   color: var(--bs-accent, #d6ad74);
@@ -743,6 +746,10 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
 }
 
 @media (max-width: 480px) {
+  #MainContent[data-template='product'] .bs-price-review-card {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
   #MainContent[data-template='product'] .bs-buy-box__row {
     flex-direction: row;
     gap: 8px;
@@ -757,11 +764,35 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
     padding: 0 10px !important;
   }
   #MainContent[data-template='product'] .bs-trust-badges {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 8px;
+  }
+  #MainContent[data-template='product'] .bs-trust-badge {
+    min-width: 0;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+  #MainContent[data-template='product'] .bs-trust-badge__text strong {
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+  #MainContent[data-template='product'] .bs-trust-badge__text small {
+    font-size: clamp(9px, 2.55vw, 11px);
   }
   #MainContent[data-template='product'] .bs-trust-badge__divider {
     display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  #MainContent[data-template='product'] .bs-price-review-card__reviews .bs-product-rating {
+    font-size: 12px;
+    gap: 4px;
+  }
+  #MainContent[data-template='product'] .bs-price-review-card__reviews .bs-product-rating svg {
+    width: 18px;
+    height: 18px;
   }
 }
 

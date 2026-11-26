@@ -2,6 +2,7 @@
   Renders a product media thumbnail with a modal opener and deferred media playback.
 
   @param {media} media - The product media to render.
+  @param {product} [product] - The product for image rating and wishlist controls.
   @param {number} media_count - The number of media items in the gallery.
   @param {number} position - The media's one-based position, used in accessible labels.
   @param {string} desktop_layout - The desktop gallery layout: `stacked`, `columns`, `thumbnail`, or `thumbnail_slider`.
@@ -48,6 +49,7 @@
   class="product-media-container media-type-{{ media.media_type }} media-fit-{{ media_fit }} global-media-settings gradient{% if constrain_to_viewport %} constrain-height{% endif %}"
   style="--ratio: {{ media.aspect_ratio | default: 1.0 }}; --preview-ratio: {{ media.preview_image.aspect_ratio | default: 1.0 }};"
 >
+  {% if media.media_type == 'image' and product != blank %}{% render 'bottle-product-image-tools', product: product, show_rating: section.settings.show_image_rating_badge, show_wishlist: section.settings.show_image_wishlist %}{% endif %}
   <modal-opener
     class="product__modal-opener product__modal-opener--{{ media.media_type }}"
     data-modal="#ProductModal-{{ modal_id }}"

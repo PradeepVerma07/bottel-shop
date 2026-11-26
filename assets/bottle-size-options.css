@@ -1,0 +1,40 @@
+/* Bottle size controls use native Shopify variant IDs, pricing and inventory. */
+.bs-product-size-options { max-width: 100%; }
+.bs-product-size-options .form__label,
+.bs-linked-bottle-sizes .form__label { font-size: 1.3rem; margin-bottom: 1rem; }
+.bs-product-size-options input[type='radio'] + label,
+.bs-size-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.8rem;
+  min-height: 4.4rem;
+  max-width: 100%;
+  padding: 1rem 1.2rem;
+  margin: .4rem .6rem .4rem 0;
+  border: 1px solid var(--bs-global-accent, #d6ad74);
+  border-radius: .5rem;
+  color: inherit;
+  background: transparent;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  letter-spacing: .02em;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.bs-product-size-options input[type='radio']:checked + label,
+.bs-size-link.is-current {
+  background: var(--bs-global-accent, #d6ad74);
+  border-color: var(--bs-global-accent, #d6ad74);
+  color: var(--bs-global-bg, #15120e);
+}
+.bs-product-size-options input[type='radio'].disabled + label,
+.bs-size-link--sold-out { opacity: .7; }
+.bs-product-size-options input[type='radio'].disabled:checked + label { opacity: 1; color: var(--bs-global-bg, #15120e); }
+.bs-linked-bottle-sizes__values { display: flex; flex-wrap: wrap; gap: .6rem; }
+.bs-linked-bottle-sizes .bs-size-link { margin: 0; }
+.bs-size-link:hover { border-color: currentColor; }
+.bs-size-link:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.bs-bottle-size-label { font-size: 1.4rem; }
+.bs-bottle-size-label > span { font-weight: 600; }
+.bs-size-demo-note { max-width: 52rem; margin: 1.2rem 0; font-size: 1.2rem; line-height: 1.5; }

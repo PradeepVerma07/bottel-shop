@@ -1,0 +1,17 @@
+{%- doc -%}
+  Shared image rating and device-local wishlist controls. Buttons remain outside image links.
+  @param {product} product - Product to rate/save.
+  @param {boolean} [show_rating] - Optional section override.
+  @param {boolean} [show_wishlist] - Optional section override.
+{%- enddoc -%}
+{%- if product != blank -%}
+  <bottle-image-tools class="bs-image-tools" data-product-id="{{ product.id }}" data-product-title="{{ product.title | escape }}" data-product-url="{{ product.url }}"{% if product.featured_image %} data-product-image="{{ product.featured_image | image_url: width: 240 }}"{% endif %} data-add-label="{{ settings.bottle_wishlist_add_label | default: 'Add to wishlist' | escape }}" data-remove-label="{{ settings.bottle_wishlist_remove_label | default: 'Remove from wishlist' | escape }}">
+    {% if settings.bottle_show_rating_badges != false and show_rating != false %}{% render 'bottle-rating', product: product, presentation: 'image' %}{% endif %}
+    {% if settings.bottle_show_wishlist != false and show_wishlist != false %}<div class="bs-wishlist-stack">
+      <button class="bs-wishlist-heart" type="button" data-bs-wishlist-toggle aria-pressed="false" aria-label="{{ settings.bottle_wishlist_add_label | default: 'Add to wishlist' | escape }}: {{ product.title | escape }}" hidden>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.5a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+      </button>
+      <button class="bs-wishlist-view" type="button" data-bs-wishlist-open aria-label="{{ settings.bottle_wishlist_view_label | default: 'View wishlist' | escape }}" hidden><span data-bs-wishlist-count>0</span><span class="bs-sr-only"> {{ settings.bottle_wishlist_view_label | default: 'View wishlist' | escape }}</span></button>
+    </div>{% endif %}
+  </bottle-image-tools>
+{%- endif -%}

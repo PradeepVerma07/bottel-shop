@@ -1,5 +1,6 @@
 {%- liquid
   assign filter_form = 'BottleFilters-' | append: section.id
+  assign active_filter_count = 0
   assign target_collection = collection
   if target_collection == blank and section.settings.collection != blank
     assign target_collection = section.settings.collection
@@ -13,10 +14,19 @@
   if target_collection == blank
     assign target_collection = collections.all
   endif
+  for filter in target_collection.filters
+    assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_filter_count = active_filter_count | plus: 1
+      endif
+    endif
+  endfor
 -%}
-<section class="bs bs-shop" style="{% render 'bottle-vars', section: section %} --bs-shop-columns: {{ section.settings.columns }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %}; --bs-sidebar-width: {{ section.settings.sidebar_width }}px;">
+<bottle-catalog data-bs-mobile-toolbar="{{ settings.bottle_catalog_mobile_toolbar }}" data-bs-mobile-layout="grid" class="bs bs-shop" style="{% render 'bottle-vars', section: section %} --bs-mobile-grid-columns: {{ settings.bottle_catalog_mobile_grid_columns | default: '2' }}; --bs-shop-columns: {{ section.settings.columns }}; --bs-card-title-size: {{ section.settings.card_title_size }}px; --bs-card-image-fit: {{ section.settings.image_fit }}; --bs-card-bg: {{ section.settings.card_color }}; --bs-card-ink: {{ section.settings.card_text_color }}; --bs-card-texture: {% if section.settings.card_texture %}url('{{ 'bs-parchment.png' | asset_url }}'){% else %}none{% endif %}; --bs-sidebar-width: {{ section.settings.sidebar_width }}px;">
   <div class="bs-inner">
     {% if section.settings.show_categories %}<nav class="bs-shop-tabs" aria-label="{{ section.settings.category_label | escape }}"><a class="bs-shop-category{% if target_collection.handle == 'all' %} is-active{% endif %}" href="{{ routes.all_products_collection_url }}"{% if target_collection.handle == 'all' %} aria-current="page"{% endif %}>{{ section.settings.all_label | escape }}{% if section.settings.show_counts %}<span>{{ collections.all.all_products_count }}</span>{% endif %}</a>{% for block in section.blocks %}<div {{ block.shopify_attributes }}>{% render 'bottle-collection-link', block: block, collection: target_collection, show_count: section.settings.show_counts %}</div>{% endfor %}</nav>{% endif %}
+    {% if settings.bottle_catalog_mobile_toolbar %}{% render 'bottle-mobile-catalog-toolbar', collection: target_collection, section: section, active_filter_count: active_filter_count %}{% endif %}
     {% paginate target_collection.products by section.settings.products_per_page %}
     <div class="bs-shop-layout{% unless section.settings.show_sidebar %} bs-shop-layout--full{% endunless %}">
       {% if section.settings.show_sidebar %}<aside class="bs-shop-sidebar"><details open class="bs-shop-filters"><summary><h2>{{ section.settings.sidebar_heading | escape }}</h2>{% render 'bottle-icon', icon: 'right' %}</summary><div class="bs-shop-filters__body">
@@ -28,18 +38,19 @@
         </form>
       </div></details></aside>{% endif %}
       <div class="bs-shop-results">
-        <div class="bs-shop-toolbar"><p role="status">{% if paginate.items > 0 %}{{ settings.bottle_collection_showing_label | escape }} {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: target_collection.products.size }} {{ settings.bottle_collection_of_label | escape }} {{ paginate.items }} {{ settings.bottle_collection_results_label | escape }}{% elsif collections.all.products.size > 0 %}{{ settings.bottle_collection_showing_label | escape }} 1–{{ collections.all.products.size }} {{ settings.bottle_collection_of_label | escape }} {{ collections.all.products.size }} {{ settings.bottle_collection_results_label | escape }}{% else %}0 {{ settings.bottle_collection_results_label | escape }}{% endif %}</p>
+        <div class="bs-shop-toolbar"><p role="status">{% if paginate.items > 0 %}{{ settings.bottle_collection_showing_label | escape }} {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: target_collection.products.size }} {{ settings.bottle_collection_of_label | escape }} {{ paginate.items }} {{ settings.bottle_collection_results_label | escape }}{% else %}0 {{ settings.bottle_collection_results_label | escape }}{% endif %}</p>
           {% if section.settings.enable_sorting %}<div class="bs-shop-sort"><label class="bs-sr-only" for="BottleSort-{{ section.id }}">{{ settings.bottle_collection_sort_label | escape }}</label><select id="BottleSort-{{ section.id }}" name="sort_by" form="{{ filter_form }}" data-bs-sort data-bs-form="{{ filter_form }}">{% assign current_sort = target_collection.sort_by | default: target_collection.default_sort_by %}{% for option in target_collection.sort_options %}<option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select>{% unless section.settings.show_sidebar %}<form id="{{ filter_form }}" action="{{ target_collection.url | default: request.path }}" method="get">{% for filter in target_collection.filters %}{% for value in filter.active_values %}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value | escape }}">{% endfor %}{% if filter.type == 'price_range' %}{% if filter.min_value.value != nil %}<input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | divided_by: 100.0 }}">{% endif %}{% if filter.max_value.value != nil %}<input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | divided_by: 100.0 }}">{% endif %}{% endif %}{% endfor %}<noscript><button type="submit">{{ section.settings.apply_label | escape }}</button></noscript></form>{% else %}<noscript><button type="submit" form="{{ filter_form }}">{{ section.settings.apply_label | escape }}</button></noscript>{% endunless %}</div>{% endif %}
         </div>
         <div class="bs-active-filters">{% for filter in target_collection.filters %}{% for value in filter.active_values %}<a href="{{ value.url_to_remove }}">{{ filter.label | escape }}: {{ value.label | escape }} <span aria-hidden="true">×</span></a>{% endfor %}{% endfor %}</div>
         {% assign reset_link = target_collection.url | default: routes.all_products_collection_url %}
-        {% if target_collection.products.size > 0 %}<div class="bs-product-grid">{% for item in target_collection.products %}{% render 'bottle-product-card', card_product: item, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, title_max_chars: section.settings.title_max_chars, description_max_chars: section.settings.description_max_chars, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}{% endfor %}</div>{% elsif collections.all.products.size > 0 %}<div class="bs-product-grid">{% for item in collections.all.products limit: section.settings.products_per_page %}{% render 'bottle-product-card', card_product: item, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, title_max_chars: section.settings.title_max_chars, description_max_chars: section.settings.description_max_chars, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}{% endfor %}</div>{% else %}<div class="bs-shop-empty"><h2 class="bs-heading">{{ section.settings.empty_heading | escape }}</h2><div class="bs-copy">{{ section.settings.empty_description }}</div>{% render 'bottle-button', label: section.settings.reset_label, link: reset_link %}</div>{% endif %}
+        {% if target_collection.products.size > 0 %}<div class="bs-product-grid">{% for item in target_collection.products %}{% render 'bottle-product-card', card_product: item, section_id: section.id, show_category: section.settings.show_product_category, show_description: section.settings.show_description, title_max_chars: section.settings.title_max_chars, description_max_chars: section.settings.description_max_chars, quick_add: section.settings.quick_add, add_label: section.settings.add_label, options_label: section.settings.options_label, sold_out_label: section.settings.sold_out_label, from_label: section.settings.from_label %}{% endfor %}</div>{% else %}<div class="bs-shop-empty"><h2 class="bs-heading">{% if active_filter_count > 0 %}{{ settings.bottle_catalog_no_matches_heading | escape }}{% else %}{{ section.settings.empty_heading | escape }}{% endif %}</h2><div class="bs-copy">{% if active_filter_count > 0 %}{{ settings.bottle_catalog_no_matches_description }}{% else %}{{ section.settings.empty_description }}{% endif %}</div>{% render 'bottle-button', label: section.settings.reset_label, link: reset_link %}</div>{% endif %}
         {% if paginate.pages > 1 %}<nav class="bs-pagination" aria-label="{{ settings.bottle_collection_pagination_label | escape }}">{% if paginate.previous %}<a href="{{ paginate.previous.url }}" aria-label="{{ settings.bottle_collection_previous_label | escape }}">{% render 'bottle-icon', icon: 'arrow-left' %}</a>{% endif %}{% for part in paginate.parts %}{% if part.is_link %}<a href="{{ part.url }}">{{ part.title }}</a>{% else %}<span{% if part.title == paginate.current_page %} aria-current="page"{% endif %}>{{ part.title }}</span>{% endif %}{% endfor %}{% if paginate.next %}<a href="{{ paginate.next.url }}" aria-label="{{ settings.bottle_collection_next_label | escape }}">{% render 'bottle-icon', icon: 'arrow-right' %}</a>{% endif %}</nav>{% endif %}
       </div>
     </div>
     {% endpaginate %}
   </div>
-</section>
+  {% if settings.bottle_catalog_mobile_toolbar and section.settings.show_sidebar %}<dialog id="BottleFilterDialog-{{ section.id }}" class="bs-ui-dialog bs-filter-dialog" aria-labelledby="BottleFilterTitle-{{ section.id }}"><div class="bs-ui-dialog__header"><h2 id="BottleFilterTitle-{{ section.id }}">{{ section.settings.sidebar_heading | escape }}</h2><button class="bs-ui-close" type="button" data-bs-close-filters aria-label="{{ settings.bottle_catalog_mobile_close_filters_label | escape }}">×</button></div><div class="bs-ui-dialog__body" data-bs-filter-body></div></dialog>{% endif %}
+</bottle-catalog>
 
 {% schema %}
 {
@@ -114,7 +125,7 @@
       "type": "text",
       "id": "search_placeholder",
       "label": "Search placeholder",
-      "default": "Search products\u2026"
+      "default": "Search products…"
     },
     {
       "type": "text",

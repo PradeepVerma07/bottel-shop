@@ -1,3 +1,4 @@
+
 [
   {
     "name": "theme_info",
@@ -1614,6 +1615,183 @@
         "id": "bottle_collection_next_label",
         "label": "Next page label",
         "default": "Next page"
+      }
+    ]
+  },
+  {
+    "name": "Bottle Shop product images",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "bottle_show_rating_badges",
+        "label": "Show custom rating badges",
+        "default": true,
+        "info": "Only displays a valid custom.rating product metafield."
+      },
+      {
+        "type": "checkbox",
+        "id": "bottle_show_wishlist",
+        "label": "Show product wishlist controls",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "bottle_rating_label",
+        "label": "Rating label",
+        "default": "Rating"
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_add_label",
+        "label": "Add to wishlist label",
+        "default": "Add to wishlist"
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_remove_label",
+        "label": "Remove from wishlist label",
+        "default": "Remove from wishlist"
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_view_label",
+        "label": "View wishlist label",
+        "default": "View wishlist"
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_title",
+        "label": "Wishlist heading",
+        "default": "Your wishlist"
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_empty",
+        "label": "Empty wishlist message",
+        "default": "Your wishlist is empty."
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_saved_label",
+        "label": "Saved message",
+        "default": "Saved to wishlist."
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_removed_label",
+        "label": "Removed message",
+        "default": "Removed from wishlist."
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_note",
+        "label": "Device storage note",
+        "default": "Saved on this device."
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_session_label",
+        "label": "Session storage note",
+        "default": "Saved for this visit."
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_remove_item_label",
+        "label": "Remove item label",
+        "default": "Remove"
+      },
+      {
+        "type": "text",
+        "id": "bottle_wishlist_close_label",
+        "label": "Close wishlist label",
+        "default": "Close wishlist"
+      }
+    ]
+  },
+  {
+    "name": "Bottle Shop mobile catalog",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "bottle_catalog_mobile_toolbar",
+        "label": "Show compact phone toolbar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "bottle_catalog_mobile_view_toggle",
+        "label": "Show grid and list buttons",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "bottle_catalog_mobile_grid_columns",
+        "label": "Phone grid columns",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ],
+        "default": "2"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_mobile_filter_label",
+        "label": "Filter button label",
+        "default": "Filters"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_mobile_clear_search_label",
+        "label": "Clear search label",
+        "default": "Clear search"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_mobile_grid_label",
+        "label": "Grid view label",
+        "default": "Grid view"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_mobile_list_label",
+        "label": "List view label",
+        "default": "List view"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_mobile_close_filters_label",
+        "label": "Close filters label",
+        "default": "Close filters"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_mobile_shop_label",
+        "label": "Shop breadcrumb label",
+        "default": "Shop"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_mobile_breadcrumb_label",
+        "label": "Breadcrumb accessibility label",
+        "default": "Breadcrumb"
+      },
+      {
+        "type": "text",
+        "id": "bottle_catalog_no_matches_heading",
+        "label": "No filter matches heading",
+        "default": "No products match these filters"
+      },
+      {
+        "type": "richtext",
+        "id": "bottle_catalog_no_matches_description",
+        "label": "No filter matches description",
+        "default": "<p>Try changing or clearing your filters.</p>"
       }
     ]
   }

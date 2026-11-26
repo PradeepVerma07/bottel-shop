@@ -116,22 +116,8 @@
                         price_class: 'price--large'
                       -%}
                     </div>
-                    {%- if product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count != blank and product.metafields.reviews.rating_count > 0 -%}
-                      <div class="bs-price-review-card__divider" aria-hidden="true"></div>
-                      <div class="bs-price-review-card__reviews">
-                        {% liquid
-                          assign rating_val = product.metafields.reviews.rating.value.rating | round
-                        %}
-                        <span class="bs-price-review-card__stars" aria-label="{{ product.metafields.reviews.rating.value }} out of 5 stars">
-                          {%- for i in (1..5) -%}
-                            {%- if i <= rating_val -%}★{%- else -%}☆{%- endif -%}
-                          {%- endfor -%}
-                        </span>
-                        <span class="bs-price-review-card__count">
-                          ({{ product.metafields.reviews.rating_count }} {% if product.metafields.reviews.rating_count == 1 %}review{% else %}reviews{% endif %})
-                        </span>
-                      </div>
-                    {%- endif -%}
+                    {%- capture custom_rating_badge -%}{% render 'bottle-rating', product: product, presentation: 'inline' %}{%- endcapture -%}
+                    {% if custom_rating_badge != blank %}<div class="bs-price-review-card__divider" aria-hidden="true"></div><div class="bs-price-review-card__reviews">{{ custom_rating_badge }}</div>{% endif %}
                   </div>
                   {%- if product.quantity_price_breaks_configured? -%}
                     <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
@@ -515,43 +501,7 @@
                     show_pickup_availability: true
                   -%}
                 {%- when 'rating' -%}
-                  {%- if product.metafields.reviews.rating.value != blank -%}
-                    <div class="rating-wrapper">
-                      {% liquid
-                        assign rating_decimal = 0
-                        assign decimal = product.metafields.reviews.rating.value.rating | modulo: 1
-                        if decimal >= 0.3 and decimal <= 0.7
-                          assign rating_decimal = 0.5
-                        elsif decimal > 0.7
-                          assign rating_decimal = 1
-                        endif
-                      %}
-                      <div
-                        class="rating"
-                        role="img"
-                        aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max }}"
-                      >
-                        <span
-                          aria-hidden="true"
-                          class="rating-star"
-                          style="--rating: {{ product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
-                        ></span>
-                      </div>
-                      <p class="rating-text caption">
-                        <span aria-hidden="true">
-                          {{- product.metafields.reviews.rating.value }} /
-                          {{ product.metafields.reviews.rating.value.scale_max -}}
-                        </span>
-                      </p>
-                      <p class="rating-count caption">
-                        <span aria-hidden="true">({{ product.metafields.reviews.rating_count }})</span>
-                        <span class="visually-hidden">
-                          {{- product.metafields.reviews.rating_count }}
-                          {{ 'accessibility.total_reviews' | t -}}
-                        </span>
-                      </p>
-                    </div>
-                  {%- endif -%}
+                  {% render 'bottle-rating', product: product, presentation: 'inline' %}
                 {%- when 'complementary' -%}
                   <product-recommendations
                     class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
@@ -934,6 +884,30 @@
             }
           ],
           "default": "circle"
+        },
+        {
+          "type": "header",
+          "content": "Bottle sizes"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_linked_bottle_sizes",
+          "label": "Show linked bottle sizes",
+          "default": true,
+          "info": "Uses the Other bottle sizes product metafield when there is no native Size or Volume option."
+        },
+        {
+          "type": "text",
+          "id": "bottle_size_label",
+          "label": "Bottle size metafield label",
+          "default": "Bottle size"
+        },
+        {
+          "type": "text",
+          "id": "demo_size_note",
+          "label": "Demo size pricing note",
+          "default": "Demo prices shown for additional sizes. Confirm final prices and stock before ordering.",
+          "info": "Shown only when the Demo size pricing product metafield is true."
         }
       ]
     },
@@ -2342,6 +2316,23 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Product image badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_rating_badge",
+      "label": "Show custom product rating on image",
+      "default": true,
+      "info": "Uses only the custom.rating product metafield."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_wishlist",
+      "label": "Show wishlist on product image",
+      "default": true
     }
   ]
 }
