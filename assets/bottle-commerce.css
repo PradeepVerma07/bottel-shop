@@ -840,7 +840,27 @@ bottle-quantity input::-webkit-inner-spin-button { -webkit-appearance: none; }
   .bs-product-card__image { aspect-ratio: 1 / 1 !important; height: auto !important; min-height: unset !important; }
   .bs-product-card__image img, .bs-product-card__image svg { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; min-height: 100% !important; object-fit: contain !important; }
   .bs-product-card h3 { font-size: clamp(16px, 4vw, 20px) !important; }
-  .bs-product-card__description { font-size: 12.5px; }
+  .bs-product-card__category::before,
+  .bs-product-card__category::after {
+    display: none !important;
+    content: none !important;
+  }
+  .bs-product-card__category {
+    gap: 0 !important;
+    margin: 0 0 4px !important;
+  }
+  .bs-product-card__description {
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-height: calc(1.35em * 3) !important;
+    margin: 0 0 8px !important;
+    text-align: center !important;
+  }
   .bs-related-heading { flex-direction: column; align-items: flex-start; gap: 14px; }
   .bs-related-actions { width: 100%; justify-content: space-between; }
   .bs-cart__heading .bs-button { max-width: 100%; }
