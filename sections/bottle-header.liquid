@@ -53,7 +53,7 @@
           </summary>
           <div class="bs-mobile-menu__portal">
             <div class="bs-mobile-menu__backdrop" data-bs-menu-close></div>
-            <nav class="bs-mobile-menu__drawer" aria-label="{{ section.settings.menu_label | escape }}">
+            <nav class="bs-mobile-menu__drawer" aria-label="{{ section.settings.menu_label | escape }}" style="--bs-mobile-menu-bg: url('{{ 'bs-mobile-menu-bg.jpg' | asset_url }}');">
               <div class="bs-mobile-menu__header">
                 <a class="bs-mobile-menu__logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }}">
                   {% if section.settings.logo != blank or logo_fallback != blank %}
@@ -152,9 +152,6 @@
                     <a href="tel:{{ section.settings.mobile_store_phone | default: '+1 (413) 384-2154' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' }}" class="bs-mobile-menu__store-text bs-mobile-menu__store-phone">{{ section.settings.mobile_store_phone | default: '+1 (413) 384-2154' | escape }}</a>
                   </div>
                 </div>
-                <div class="bs-mobile-menu__store-barrel" aria-hidden="true">
-                  {% render 'bottle-barrel-art' %}
-                </div>
               </div>
 
               <a href="{{ section.settings.mobile_cta_link | default: routes.all_products_collection_url }}" class="bs-mobile-menu__cta">
@@ -163,9 +160,6 @@
               </a>
 
               <div class="bs-mobile-menu__footer">
-                <div class="bs-mobile-menu__vineyard" aria-hidden="true">
-                  <img src="{{ 'bs-footer.png' | asset_url }}" alt="" width="360" height="90" loading="lazy">
-                </div>
                 <p class="bs-mobile-menu__legal">
                   <span class="bs-mobile-menu__legal-line" aria-hidden="true"></span>
                   <span class="bs-mobile-menu__legal-text">{{ section.settings.mobile_footer_text | default: 'Please enjoy responsibly. 21+ Only.' | escape }}</span>
