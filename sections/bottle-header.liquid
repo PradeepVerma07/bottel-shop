@@ -47,12 +47,133 @@
         {% if section.settings.show_search %}<details class="bs-mobile-search"><summary class="bs-icon-link" aria-label="{{ section.settings.search_label | escape }}">{% render 'bottle-icon', icon: 'search' %}</summary><form class="bs-mobile-search__form" action="{{ routes.search_url }}" method="get" role="search"><label class="bs-sr-only" for="BottleMobileSearch-{{ section.id }}">{{ section.settings.search_label | escape }}</label><input id="BottleMobileSearch-{{ section.id }}" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ section.settings.search_placeholder | escape }}"><input type="hidden" name="options[prefix]" value="last"><button class="bs-icon-link" type="submit" aria-label="{{ section.settings.search_label | escape }}">{% render 'bottle-icon', icon: 'search' %}</button></form></details>{% endif %}
         {% if section.settings.show_account and shop.customer_accounts_enabled %}<a class="bs-icon-link bs-header__account" href="{{ routes.account_url }}" aria-label="{{ section.settings.account_label | escape }}">{% render 'bottle-icon', icon: 'user' %}</a>{% endif %}
         {% if section.settings.show_cart %}<a id="cart-icon-bubble" class="bs-icon-link bs-cart-link" href="{{ routes.cart_url }}" aria-label="{{ section.settings.cart_label | escape }} ({{ cart.item_count }})">{% render 'bottle-icon', icon: 'bag' %}<svg class="bs-icon bs-cart-phone" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 3h3l3 13h11l3-10H6M8 19h11"/><circle cx="9" cy="22" r=".7"/><circle cx="18" cy="22" r=".7"/></svg><span class="bs-cart-count" aria-hidden="true">{{ cart.item_count }}</span></a>{% endif %}
-        <details class="bs-mobile-menu">
-          <summary class="bs-icon-link" aria-label="{{ section.settings.menu_label | escape }}">{% render 'bottle-icon', icon: 'menu' %}</summary>
-          <nav class="bs-mobile-menu__panel" aria-label="{{ section.settings.menu_label | escape }}"><ul>
-            {% if section.settings.menu != blank %}{% for link in section.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a>{% if link.links != blank %}<ul>{% for child in link.links %}<li><a href="{{ child.url }}">{{ child.title | escape }}</a></li>{% endfor %}</ul>{% endif %}</li>{% endfor %}
-            {% else %}{% for block in section.blocks %}<li><a href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.label | escape }}</a></li>{% endfor %}{% endif %}
-          </ul></nav>
+        <details class="bs-mobile-menu" id="BottleMobileMenu">
+          <summary class="bs-icon-link" aria-label="{{ section.settings.menu_label | escape }}">
+            {% render 'bottle-icon', icon: 'menu' %}
+          </summary>
+          <div class="bs-mobile-menu__portal">
+            <div class="bs-mobile-menu__backdrop" data-bs-menu-close></div>
+            <nav class="bs-mobile-menu__drawer" aria-label="{{ section.settings.menu_label | escape }}">
+              <div class="bs-mobile-menu__header">
+                <a class="bs-mobile-menu__logo" href="{{ routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }}">
+                  {% if section.settings.logo != blank or logo_fallback != blank %}
+                    {% render 'bottle-media', image: section.settings.logo, fallback: logo_fallback, width: 140, height: 140, alt: section.settings.brand_name, loading: 'eager', sizes: '70px' %}
+                  {% else %}
+                    <span class="bs-logo-text">{{ section.settings.brand_name | escape }}</span>
+                  {% endif %}
+                </a>
+                <button type="button" class="bs-mobile-menu__close" data-bs-menu-close aria-label="Close menu">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+              </div>
+
+              <form class="bs-mobile-menu__search" action="{{ routes.search_url }}" method="get" role="search">
+                <div class="bs-mobile-menu__search-field">
+                  <svg class="bs-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.8"/><path d="m16 16 5 5"/></svg>
+                  <input type="search" name="q" placeholder="Search products..." aria-label="Search products" autocomplete="off">
+                  <input type="hidden" name="type" value="product">
+                  <input type="hidden" name="options[prefix]" value="last">
+                </div>
+              </form>
+
+              <ul class="bs-mobile-menu__list">
+                {% if section.settings.menu != blank %}
+                  {% for link in section.settings.menu.links %}
+                    {% assign handle = link.title | downcase %}
+                    {% assign icon_name = 'wine' %}
+                    {% if handle contains 'spirit' %}{% assign icon_name = 'spirits' %}
+                    {% elsif handle contains 'beer' %}{% assign icon_name = 'beer' %}
+                    {% elsif handle contains 'ready' or handle contains 'drink' %}{% assign icon_name = 'ready-to-drink' %}
+                    {% elsif handle contains 'gift' %}{% assign icon_name = 'gifts' %}
+                    {% elsif handle contains 'deal' or handle contains 'sale' %}{% assign icon_name = 'deals' %}
+                    {% elsif handle contains 'about' or handle contains 'story' %}{% assign icon_name = 'about' %}
+                    {% endif %}
+                    <li>
+                      <a href="{{ link.url }}" class="bs-mobile-menu__link">
+                        <span class="bs-mobile-menu__link-icon">{% render 'bottle-menu-icon', icon: icon_name %}</span>
+                        <span class="bs-mobile-menu__link-title">{{ link.title | escape }}</span>
+                        <span class="bs-mobile-menu__link-chevron">
+                          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                        </span>
+                      </a>
+                    </li>
+                  {% endfor %}
+                {% else %}
+                  {% for block in section.blocks %}
+                    {% assign handle = block.settings.label | downcase %}
+                    {% assign icon_name = 'wine' %}
+                    {% if handle contains 'spirit' %}{% assign icon_name = 'spirits' %}
+                    {% elsif handle contains 'beer' %}{% assign icon_name = 'beer' %}
+                    {% elsif handle contains 'ready' or handle contains 'drink' %}{% assign icon_name = 'ready-to-drink' %}
+                    {% elsif handle contains 'gift' %}{% assign icon_name = 'gifts' %}
+                    {% elsif handle contains 'deal' or handle contains 'sale' %}{% assign icon_name = 'deals' %}
+                    {% elsif handle contains 'about' or handle contains 'story' %}{% assign icon_name = 'about' %}
+                    {% endif %}
+                    <li {{ block.shopify_attributes }}>
+                      <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="bs-mobile-menu__link">
+                        <span class="bs-mobile-menu__link-icon">{% render 'bottle-menu-icon', icon: icon_name %}</span>
+                        <span class="bs-mobile-menu__link-title">{{ block.settings.label | escape }}</span>
+                        <span class="bs-mobile-menu__link-chevron">
+                          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                        </span>
+                      </a>
+                    </li>
+                  {% endfor %}
+                {% endif %}
+              </ul>
+
+              <div class="bs-mobile-menu__actions">
+                <a href="{{ routes.account_url }}" class="bs-mobile-menu__action">
+                  {% render 'bottle-icon', icon: 'user' %}
+                  <span>My Account</span>
+                </a>
+                <span class="bs-mobile-menu__action-divider" aria-hidden="true"></span>
+                <a href="{{ routes.cart_url }}" class="bs-mobile-menu__action">
+                  {% render 'bottle-icon', icon: 'bag' %}
+                  <span>Cart ({{ cart.item_count }})</span>
+                </a>
+              </div>
+
+              <div class="bs-mobile-menu__store">
+                <div class="bs-mobile-menu__store-info">
+                  <div class="bs-mobile-menu__store-item bs-mobile-menu__store-item--address">
+                    <span class="bs-mobile-menu__store-icon">{% render 'bottle-icon', icon: 'location' %}</span>
+                    <div>
+                      <h3 class="bs-mobile-menu__store-heading">{{ section.settings.mobile_store_heading | default: 'OUR STORE' | escape }}</h3>
+                      <div class="bs-mobile-menu__store-text">{{ section.settings.mobile_store_address | default: '<p>923 Shaker Road,<br>Longmeadow, MA 01106</p>' }}</div>
+                    </div>
+                  </div>
+                  <div class="bs-mobile-menu__store-item">
+                    <span class="bs-mobile-menu__store-icon">{% render 'bottle-icon', icon: 'clock' %}</span>
+                    <div class="bs-mobile-menu__store-text">{{ section.settings.mobile_store_hours | default: '<p>Mon – Sat: 9AM – 9PM<br>Sun: 10AM – 6PM</p>' }}</div>
+                  </div>
+                  <div class="bs-mobile-menu__store-item">
+                    <span class="bs-mobile-menu__store-icon">{% render 'bottle-icon', icon: 'phone' %}</span>
+                    <a href="tel:{{ section.settings.mobile_store_phone | default: '+1 (413) 384-2154' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' }}" class="bs-mobile-menu__store-text bs-mobile-menu__store-phone">{{ section.settings.mobile_store_phone | default: '+1 (413) 384-2154' | escape }}</a>
+                  </div>
+                </div>
+                <div class="bs-mobile-menu__store-barrel" aria-hidden="true">
+                  {% render 'bottle-barrel-art' %}
+                </div>
+              </div>
+
+              <a href="{{ section.settings.mobile_cta_link | default: routes.all_products_collection_url }}" class="bs-mobile-menu__cta">
+                <span>{{ section.settings.mobile_cta_label | default: 'SHOP ALL PRODUCTS' | escape }}</span>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+              </a>
+
+              <div class="bs-mobile-menu__footer">
+                <div class="bs-mobile-menu__vineyard" aria-hidden="true">
+                  <img src="{{ 'bs-footer.png' | asset_url }}" alt="" width="360" height="90" loading="lazy">
+                </div>
+                <p class="bs-mobile-menu__legal">
+                  <span class="bs-mobile-menu__legal-line" aria-hidden="true"></span>
+                  <span class="bs-mobile-menu__legal-text">{{ section.settings.mobile_footer_text | default: 'Please enjoy responsibly. 21+ Only.' | escape }}</span>
+                  <span class="bs-mobile-menu__legal-line" aria-hidden="true"></span>
+                </p>
+              </div>
+            </nav>
+          </div>
         </details>
       </div>
     </div>
@@ -207,6 +328,51 @@
       "id": "cart_label",
       "label": "Cart label",
       "default": "Your shopping bag"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Drawer Menu"
+    },
+    {
+      "type": "text",
+      "id": "mobile_store_heading",
+      "label": "Store info heading",
+      "default": "OUR STORE"
+    },
+    {
+      "type": "richtext",
+      "id": "mobile_store_address",
+      "label": "Store address",
+      "default": "<p>923 Shaker Road,<br>Longmeadow, MA 01106</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "mobile_store_hours",
+      "label": "Store hours",
+      "default": "<p>Mon – Sat: 9AM – 9PM<br>Sun: 10AM – 6PM</p>"
+    },
+    {
+      "type": "text",
+      "id": "mobile_store_phone",
+      "label": "Store phone",
+      "default": "+1 (413) 384-2154"
+    },
+    {
+      "type": "text",
+      "id": "mobile_cta_label",
+      "label": "Mobile menu CTA label",
+      "default": "SHOP ALL PRODUCTS"
+    },
+    {
+      "type": "url",
+      "id": "mobile_cta_link",
+      "label": "Mobile menu CTA link"
+    },
+    {
+      "type": "text",
+      "id": "mobile_footer_text",
+      "label": "Mobile menu footer legal note",
+      "default": "Please enjoy responsibly. 21+ Only."
     },
     {
       "type": "header",

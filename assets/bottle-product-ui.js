@@ -130,12 +130,33 @@
     if (event.target.closest('[data-bs-wishlist-open]')) {
       event.preventDefault();
       openWishlist();
+      return;
+    }
+    if (event.target.closest('[data-bs-menu-close]')) {
+      const menu = document.getElementById('BottleMobileMenu');
+      if (menu) menu.removeAttribute('open');
     }
   });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      const menu = document.getElementById('BottleMobileMenu');
+      if (menu?.open) menu.removeAttribute('open');
+    }
+  });
+  const setupMobileMenu = () => {
+    const menu = document.getElementById('BottleMobileMenu');
+    if (menu && !menu.dataset.bsBound) {
+      menu.dataset.bsBound = 'true';
+      menu.addEventListener('toggle', () => {
+        document.documentElement.classList.toggle('bs-mobile-menu-open', menu.open);
+      });
+    }
+  };
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updateCounts);
+    document.addEventListener('DOMContentLoaded', () => { updateCounts(); setupMobileMenu(); });
   } else {
     updateCounts();
+    setupMobileMenu();
   }
   window.addEventListener('bottle:wishlist-update', updateCounts);
   customElements.define('bottle-image-tools', class extends HTMLElement {
